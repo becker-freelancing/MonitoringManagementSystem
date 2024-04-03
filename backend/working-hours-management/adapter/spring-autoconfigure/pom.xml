@@ -4,28 +4,28 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.jabasoft.mms</groupId>
-        <artifactId>backend</artifactId>
+        <groupId>com.jabasoft.mms.workinghoursmanagement</groupId>
+        <artifactId>adapter</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mms-starter</artifactId>
+    <artifactId>spring-autoconfigure</artifactId>
 
     <dependencies>
-
-        <!-- INTERNAT DEPENDENCIES -->
         <dependency>
             <groupId>com.jabasoft.mms.workinghoursmanagement</groupId>
-            <artifactId>spring-autoconfigure</artifactId>
+            <artifactId>rest-adapter</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
-        <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.2.0</version>
-            <scope>runtime</scope>
+            <groupId>com.jabasoft.mms.workinghoursmanagement</groupId>
+            <artifactId>application</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jabasoft.mms.workinghoursmanagement</groupId>
+            <artifactId>jpa-adapter</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -16,6 +16,7 @@
     <modules>
         <module>jpa-adapter</module>
         <module>rest-adapter</module>
+        <module>spring-autoconfigure</module>
     </modules>
 
 

@@ -1,0 +1,8 @@
+
+= Vorläufige Dokumentation
+
+== Docker für Postgres
+
+Diesen Command ausführen:
+
+ docker run -d -p 45000:5432 --name mms -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_USER=mms postgres
