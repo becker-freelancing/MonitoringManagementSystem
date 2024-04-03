@@ -9,14 +9,14 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>working-hours-management</artifactId>
+    <artifactId>document-management</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>whm-api</module>
-        <module>whm-application</module>
-        <module>whm-domain</module>
-        <module>whm-spi</module>
-        <module>whm-adapter</module>
+        <module>dm-adapter</module>
+        <module>dm-api</module>
+        <module>dm-application</module>
+        <module>dm-domain</module>
+        <module>dm-spi</module>
     </modules>
 
 </project>
