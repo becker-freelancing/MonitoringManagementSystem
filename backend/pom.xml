@@ -21,6 +21,7 @@
         <module>working-hours-management</module>
         <module>mms-libs</module>
         <module>document-management</module>
+        <module>settings</module>
     </modules>
 
     <properties>
