@@ -24,6 +24,11 @@
             <artifactId>dm-spring-autoconfigure</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.jabasoft.mms.settings</groupId>
+            <artifactId>st-spring-autoconfigure</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
