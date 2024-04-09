@@ -22,6 +22,7 @@
         <module>mms-libs</module>
         <module>document-management</module>
         <module>settings</module>
+        <module>customer-management</module>
 <!--        <module>tools</module>-->
     </modules>
 
