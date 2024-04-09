@@ -1,0 +1,27 @@
+#dashboardContent{
+  padding-left: 15px;
+  height: 100%;
+  width: 100%;
+}
+
+#dashboardUpperContent{
+  width: 100%;
+  height: 30%;
+}
+
+#dashboardLowerContent{
+  display: flex;
+  justify-items: right;
+  height: 70%;
+  width: 100%;
+}
+
+#dashboardIncomeAndWorkingHoursOverview{
+  height: 100%;
+  width: 50%;
+}
+
+#dashboardTodoOverviewWrapper{
+  height: 100%;
+  width: 50%;
+}

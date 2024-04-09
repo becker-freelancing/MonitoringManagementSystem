@@ -1,0 +1,21 @@
+#mainContent{
+  display: flex;
+  justify-items: right;
+  width: 100%;
+  height: 100%;
+}
+
+#menuBar{
+  height: 100%;
+}
+
+#logo{
+  padding: 10px;
+}
+
+#router-outlet{
+  height: 100%;
+  width: 100%;
+}
+
+
