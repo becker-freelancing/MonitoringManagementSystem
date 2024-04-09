@@ -10,10 +10,10 @@ import jakarta.persistence.Table;
 public class JpaSettings {
 
 	@Id
-	@Column(name = "SEL")
+	@Column(name = "ST_SELECTOR")
 	private String selector;
 
-	@Column(name = "VAL")
+	@Column(name = "ST_VALUE")
 	private String value;
 
 	public String getSelector() {

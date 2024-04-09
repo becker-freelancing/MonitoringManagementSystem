@@ -2,6 +2,8 @@ package com.jabasoft.mms.settings.adapter;
 
 import java.nio.file.Path;
 
+import javax.swing.filechooser.FileSystemView;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,14 @@ class JpaSettingsDao implements SettingsRepository {
 
 		JpaSettings jpaSettings = settingsRepository.findBySelector(LOCAL_DOCUMENT_ROOT_PATH_SELECTOR);
 
+		if(jpaSettings == null || jpaSettings.getValue().isEmpty()){
+
+			FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+
+			String documentsPath = fileSystemView.getDefaultDirectory().getPath();
+
+			return new LocalDocumentRootPath(Path.of(documentsPath));
+		}
 		return new LocalDocumentRootPath(Path.of(jpaSettings.getValue()));
 	}
 

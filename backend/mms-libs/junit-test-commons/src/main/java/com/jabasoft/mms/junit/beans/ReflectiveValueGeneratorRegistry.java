@@ -109,6 +109,11 @@ public class ReflectiveValueGeneratorRegistry implements ValueGeneratorRegistry 
 		return LocalDateTime.of(generateDate(), generateTime());
 	}
 
+	protected byte[] generateByte() {
+
+		return new byte[new Random().nextInt(1, 1000)];
+	}
+
 	protected Number generateNumber(Class<?> numberType) {
 
 		if (Integer.class.equals(numberType)) {
