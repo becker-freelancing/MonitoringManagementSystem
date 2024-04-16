@@ -69,26 +69,26 @@ class JpaCustomerDaoTest {
 		}
 
 	}
-
-	private Customer createCustomer(){
-		Country country = Math.random() < 0.5 ? Country.GERMANY : Country.SPAIN;
-		return new Customer("Test GmbH", new Address("Hauptstr.", "48A", "Test", country, "12345"), List.of(createContactPerson1()));
-	}
-
-	private ContactPerson createContactPerson1(){
-		return new ContactPerson(ContactPersonPosition.CEO, "John", "Doe", createEmails(), createPhoneNumber(), createReasonForContact());
-	}
-
-	private List<EMail> createEmails(){
-		return List.of(new EMail("abc@test.de"), new EMail("xy@test.com"));
-	}
-
-	private List<PhoneNumber> createPhoneNumber(){
-		return List.of(new PhoneNumber("123445564"), new PhoneNumber("+49 29738273-2873"));
-	}
-
-	private List<ReasonForContact> createReasonForContact(){
-		return List.of(ReasonForContact.HUMAN_RESOURCES, ReasonForContact.MARKETING);
-	}
+//
+//	private Customer createCustomer(){
+//		Country country = Math.random() < 0.5 ? Country.GERMANY : Country.SPAIN;
+//		return new Customer("Test GmbH", new Address("Hauptstr.", "48A", "Test", country, "12345"), List.of(createContactPerson1()));
+//	}
+//
+//	private ContactPerson createContactPerson1(){
+//		return new ContactPerson(ContactPersonPosition.CEO, "John", "Doe", createEmails(), createPhoneNumber(), createReasonForContact());
+//	}
+//
+//	private List<EMail> createEmails(){
+//		return List.of(new EMail("abc@test.de"), new EMail("xy@test.com"));
+//	}
+//
+//	private List<PhoneNumber> createPhoneNumber(){
+//		return List.of(new PhoneNumber("123445564"), new PhoneNumber("+49 29738273-2873"));
+//	}
+//
+//	private List<ReasonForContact> createReasonForContact(){
+//		return List.of(ReasonForContact.HUMAN_RESOURCES, ReasonForContact.MARKETING);
+//	}
 
 }

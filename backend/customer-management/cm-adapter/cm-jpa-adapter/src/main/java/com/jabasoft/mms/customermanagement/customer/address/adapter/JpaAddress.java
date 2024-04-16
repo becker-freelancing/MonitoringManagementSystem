@@ -29,8 +29,8 @@ public class JpaAddress {
 	@Column(name = "ID")
 	private Long id;
 
-	@OneToOne(mappedBy = "address")
-	private JpaCustomer customer;
+//	@OneToOne(mappedBy = "address")
+//	private JpaCustomer customer;
 
 	@Column(name = "STREET")
 	private String street;
@@ -47,15 +47,15 @@ public class JpaAddress {
 	@Column(name = "ZIP_CODE")
 	private String zipCode;
 
-	public JpaCustomer getCustomer() {
-
-		return customer;
-	}
-
-	public void setCustomer(JpaCustomer customer) {
-
-		this.customer = customer;
-	}
+//	public JpaCustomer getCustomer() {
+//
+//		return customer;
+//	}
+//
+//	public void setCustomer(JpaCustomer customer) {
+//
+//		this.customer = customer;
+//	}
 
 	public Long getId() {
 

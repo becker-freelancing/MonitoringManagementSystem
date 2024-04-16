@@ -12,11 +12,8 @@ import org.springframework.stereotype.Component;
 import com.jabasoft.mms.customermanagement.customer.address.adapter.CountryConverter;
 import com.jabasoft.mms.customermanagement.customer.address.adapter.JpaAddress;
 import com.jabasoft.mms.customermanagement.customer.contactperson.adapter.JpaContactPerson;
-import com.jabasoft.mms.customermanagement.customer.contactperson.adapter.PositionConverter;
 import com.jabasoft.mms.customermanagement.customer.contactperson.emails.adapter.JpaEmail;
 import com.jabasoft.mms.customermanagement.customer.contactperson.phonenumber.adapter.JpaPhoneNumber;
-import com.jabasoft.mms.customermanagement.customer.contactperson.reasonforcontact.adapter.JpaReasonForContact;
-import com.jabasoft.mms.customermanagement.customer.contactperson.reasonforcontact.adapter.ReasonForContactConverter;
 import com.jabasoft.mms.customermanagement.domain.model.Address;
 import com.jabasoft.mms.customermanagement.domain.model.ContactPerson;
 import com.jabasoft.mms.customermanagement.domain.model.ContactPersonPosition;
@@ -25,8 +22,7 @@ import com.jabasoft.mms.customermanagement.domain.model.Customer;
 import com.jabasoft.mms.customermanagement.domain.model.CustomerId;
 import com.jabasoft.mms.customermanagement.domain.model.EMail;
 import com.jabasoft.mms.customermanagement.domain.model.PhoneNumber;
-import com.jabasoft.mms.customermanagement.domain.model.ReasonForContact;
-import com.jabasoft.mms.customermanagement.spi.CustomerRepository;
+import com.jabasoft.mms.customermanagement.customer.spi.CustomerRepository;
 
 @Component
 class JpaCustomerDao implements CustomerRepository {
@@ -74,8 +70,6 @@ class JpaCustomerDao implements CustomerRepository {
 	public Customer saveCustomer(Customer customer) {
 
 		JpaCustomer jpaCustomer = mapCustomerToEntity(customer);
-		System.out.println(customer.getAddress().getCountry() + "\t" + jpaCustomer.getAddress().getCountry());
-
 		JpaCustomer savedCustomer = customerRepository.save(jpaCustomer);
 
 		return mapCustomerToDomain(savedCustomer);
@@ -86,10 +80,10 @@ class JpaCustomerDao implements CustomerRepository {
 		CustomerId customerId = new CustomerId(jpaCustomer.getCustomerId());
 		List<ContactPerson> contactPersons = jpaCustomer.getContactPersons().stream()
 			.map(this::mapContactPersonToDomain).toList();
-		Address address = mapAddressToDomain(jpaCustomer.getAddress());
+		//Address address = mapAddressToDomain(jpaCustomer.getAddress());
 		String companyName = jpaCustomer.getCompanyName();
 
-		return new Customer(customerId, companyName, address, contactPersons);
+		return new Customer(customerId, companyName, null, contactPersons);
 	}
 
 	private Address mapAddressToDomain(JpaAddress address) {
@@ -106,7 +100,7 @@ class JpaCustomerDao implements CustomerRepository {
 	private ContactPerson mapContactPersonToDomain(JpaContactPerson jpaContactPerson) {
 
 		BigInteger position = jpaContactPerson.getPosition();
-		ContactPersonPosition contactPersonPosition = new PositionConverter().convertToEntityAttribute(position);
+		//ContactPersonPosition contactPersonPosition = new PositionConverter().convertToEntityAttribute(position);
 
 		String firstName = jpaContactPerson.getFirstName();
 		String lastName = jpaContactPerson.getLastName();
@@ -119,12 +113,12 @@ class JpaCustomerDao implements CustomerRepository {
 			.map(JpaPhoneNumber::getPhoneNumber)
 			.map(PhoneNumber::new).toList();
 
-		ReasonForContactConverter reasonForContactConverter = new ReasonForContactConverter();
-		List<ReasonForContact> reasonForContacts = jpaContactPerson.getReasonForContacts().stream()
-			.map(JpaReasonForContact::getReasonForContact)
-			.map(reasonForContactConverter::convertToEntityAttribute).toList();
+//		ReasonForContactConverter reasonForContactConverter = new ReasonForContactConverter();
+//		List<ReasonForContact> reasonForContacts = jpaContactPerson.getReasonForContacts().stream()
+//			.map(JpaReasonForContact::getReasonForContact)
+//			.map(reasonForContactConverter::convertToEntityAttribute).toList();
 
-		return new ContactPerson(contactPersonPosition, firstName, lastName, emails, phoneNumbers, reasonForContacts);
+		return new ContactPerson(null, firstName, lastName, emails, phoneNumbers, List.of());
 	}
 
 	private JpaCustomer mapCustomerToEntity(Customer customer) {
@@ -141,7 +135,7 @@ class JpaCustomerDao implements CustomerRepository {
 		jpaCustomer.setContactPersons(contactPersons);
 
 		JpaAddress jpaAddress = mapAddressToEntity(customer.getAddress(), jpaCustomer);
-		jpaCustomer.setAddress(jpaAddress);
+		//jpaCustomer.setAddress(jpaAddress);
 
 		return jpaCustomer;
 	}
@@ -150,7 +144,7 @@ class JpaCustomerDao implements CustomerRepository {
 
 		JpaAddress jpaAddress = new JpaAddress();
 		//jpaAddress.setAddressId(customer);
-		jpaAddress.setCustomer(customer);
+//		jpaAddress.setCustomer(customer);
 		jpaAddress.setCity(address.getCity());
 		jpaAddress.setStreet(address.getStreet());
 		jpaAddress.setHouseNumber(address.getHouseNumber());
@@ -163,10 +157,10 @@ class JpaCustomerDao implements CustomerRepository {
 	private JpaContactPerson mapContactPersonToEntity(ContactPerson contactPerson, JpaCustomer jpaCustomer){
 
 		JpaContactPerson jpaContactPerson = new JpaContactPerson();
-		jpaContactPerson.setContactPersonId(jpaCustomer);
+		//jpaContactPerson.setContactPersonId(jpaCustomer);
 
-		BigInteger contactPersonPosition = new PositionConverter().convertToDatabaseColumn(contactPerson.getPosition());
-		jpaContactPerson.setPosition(contactPersonPosition);
+//		BigInteger contactPersonPosition = new PositionConverter().convertToDatabaseColumn(contactPerson.getPosition());
+//		jpaContactPerson.setPosition(contactPersonPosition);
 
 		jpaContactPerson.setFirstName(contactPerson.getFirstName());
 		jpaContactPerson.setLastName(contactPerson.getLastName());
@@ -189,16 +183,16 @@ class JpaCustomerDao implements CustomerRepository {
 		}
 		jpaContactPerson.setPhoneNumbers(jpaPhoneNumbers);
 
-		ReasonForContactConverter reasonForContactConverter = new ReasonForContactConverter();
-		List<JpaReasonForContact> jpaReasonForContacts = contactPerson.getReasonsForContact().stream()
-			.map(reasonForContactConverter::convertToDatabaseColumn)
-			.map(reason -> {
-				JpaReasonForContact jpaReasonForContact = new JpaReasonForContact();
-				jpaReasonForContact.setReasonForContact(reason);
-				jpaReasonForContact.setContactPersonId(jpaContactPerson);
-				return jpaReasonForContact;
-			}).toList();
-		jpaContactPerson.setReasonForContacts(jpaReasonForContacts);
+//		ReasonForContactConverter reasonForContactConverter = new ReasonForContactConverter();
+//		List<JpaReasonForContact> jpaReasonForContacts = contactPerson.getReasonsForContact().stream()
+//			.map(reasonForContactConverter::convertToDatabaseColumn)
+//			.map(reason -> {
+//				JpaReasonForContact jpaReasonForContact = new JpaReasonForContact();
+//				jpaReasonForContact.setReasonForContact(reason);
+//				jpaReasonForContact.setContactPersonId(jpaContactPerson);
+//				return jpaReasonForContact;
+//			}).toList();
+//		jpaContactPerson.setReasonForContacts(jpaReasonForContacts);
 
 		return jpaContactPerson;
 	}

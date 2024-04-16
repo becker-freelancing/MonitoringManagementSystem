@@ -13,35 +13,34 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "CUSTOMER_CONTACT_PERSON_REASON_FOR_CONTACT")
+@Table(name = "CONTACT_PERSON_REASON_FOR_CONTACT")
 public class JpaReasonForContact {
 
 	@Id
-	@Column(name = "REASON_FOR_CONTACT")
-	private BigInteger reasonForContact;
+	@Column(name = "REASON")
+	private String reason;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "CONTACT_PERSON_ID")
-	private JpaContactPerson contactPersonId;
+	@Column(name = "DESCRIPTION")
+	private String description;
 
-	public BigInteger getReasonForContact() {
+	public String getReason() {
 
-		return reasonForContact;
+		return reason;
 	}
 
-	public void setReasonForContact(BigInteger reasonForContact) {
+	public void setReason(String reason) {
 
-		this.reasonForContact = reasonForContact;
+		this.reason = reason;
 	}
 
-	public JpaContactPerson getContactPersonId() {
+	public String getDescription() {
 
-		return contactPersonId;
+		return description;
 	}
 
-	public void setContactPersonId(JpaContactPerson contactPersonId) {
+	public void setDescription(String description) {
 
-		this.contactPersonId = contactPersonId;
+		this.description = description;
 	}
 
 }
