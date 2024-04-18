@@ -5,6 +5,9 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 class Bean {
 
@@ -20,6 +23,62 @@ class Bean {
 	private LocalDateTime localDateTime;
 	private ValuesEnum valuesEnum;
 	private EnumWithOneValue enumWithOneValue;
+	private Bean2 bean2;
+	private Boolean aBoolean;
+	private Bean3 bean3;
+	private byte[] bytes;
+	private List<Bean2> bean2s;
+
+
+	public List<Bean2> getBean2s() {
+
+		return bean2s;
+	}
+
+	public void setBean2s(List<Bean2> bean2s) {
+
+		this.bean2s = bean2s;
+	}
+
+	public byte[] getBytes() {
+
+		return bytes;
+	}
+
+	public void setBytes(byte[] bytes) {
+
+		this.bytes = bytes;
+	}
+
+	public Bean3 getBean3() {
+
+		return bean3;
+	}
+
+	public void setBean3(Bean3 bean3) {
+
+		this.bean3 = bean3;
+	}
+
+	public Boolean getaBoolean() {
+
+		return aBoolean;
+	}
+
+	public void setaBoolean(Boolean aBoolean) {
+
+		this.aBoolean = aBoolean;
+	}
+
+	public Bean2 getBean2() {
+
+		return bean2;
+	}
+
+	public void setBean2(Bean2 bean2) {
+
+		this.bean2 = bean2;
+	}
 
 	public String getName() {
 

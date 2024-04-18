@@ -1,37 +1,42 @@
 package com.jabasoft.mms.junit.beans;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 class BeanWithEquals extends Bean {
 
+
 	@Override
 	public boolean equals(Object o) {
 
-		if (this == o) {
+		if (this == o)
 			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
+		if (o == null || getClass() != o.getClass())
 			return false;
-		}
-		Bean that = (Bean) o;
-		return Objects.equals(getName(), that.getName())
-			&& Objects.equals(getIntValue(), that.getIntValue())
-			&& Objects.equals(getLongValue(), that.getLongValue())
-			&& Objects.equals(getFloatValue(), that.getFloatValue())
-			&& Objects.equals(getDoubleValue(), that.getDoubleValue())
-			&& Objects.equals(getBigIntegerValue(), that.getBigIntegerValue())
-			&& Objects.equals(getBigDecimalValue(), that.getBigDecimalValue())
-			&& Objects.equals(getLocalDate(), that.getLocalDate())
-			&& Objects.equals(getLocalTime(), that.getLocalTime())
-			&& Objects.equals(getLocalDateTime(), that.getLocalDateTime())
-			&& getValuesEnum() == that.getValuesEnum()
-			&& getEnumWithOneValue() == that.getEnumWithOneValue();
+		Bean bean = (Bean) o;
+		return Objects.equals(getName(), bean.getName())
+			&& Objects.equals(getIntValue(), bean.getIntValue())
+			&& Objects.equals(getLongValue(), bean.getLongValue())
+			&& Objects.equals(getFloatValue(), bean.getFloatValue())
+			&& Objects.equals(getDoubleValue(), bean.getDoubleValue())
+			&& Objects.equals(getBigIntegerValue(), bean.getBigIntegerValue())
+			&& Objects.equals(getBigDecimalValue(), bean.getBigDecimalValue())
+			&& Objects.equals(getLocalDate(), bean.getLocalDate())
+			&& Objects.equals(getLocalTime(), bean.getLocalTime())
+			&& Objects.equals(getLocalDateTime(), bean.getLocalDateTime())
+			&& getValuesEnum() == bean.getValuesEnum()
+			&& getEnumWithOneValue() == bean.getEnumWithOneValue()
+			&& Objects.equals(getBean2(), bean.getBean2())
+			&& Objects.equals(getaBoolean(), bean.getaBoolean())
+			&& Objects.equals(getBean3(), bean.getBean3())
+			&& Arrays.equals(getBytes(), bean.getBytes())
+			&& Objects.equals(getBean2s(), bean.getBean2s());
 	}
 
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(
+		int result = Objects.hash(
 			getName(),
 			getIntValue(),
 			getLongValue(),
@@ -43,6 +48,13 @@ class BeanWithEquals extends Bean {
 			getLocalTime(),
 			getLocalDateTime(),
 			getValuesEnum(),
-			getEnumWithOneValue());
+			getEnumWithOneValue(),
+			getBean2(),
+			getaBoolean(),
+			getBean3(),
+			getBean2s());
+		result = 31 * result + Arrays.hashCode(getBytes());
+		return result;
 	}
+
 }

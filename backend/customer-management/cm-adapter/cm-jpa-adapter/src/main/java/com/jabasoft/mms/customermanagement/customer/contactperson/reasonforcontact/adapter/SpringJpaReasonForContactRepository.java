@@ -2,6 +2,9 @@ package com.jabasoft.mms.customermanagement.customer.contactperson.reasonforcont
 
 import org.springframework.data.repository.CrudRepository;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
 public interface SpringJpaReasonForContactRepository extends CrudRepository<JpaReasonForContact, String> {
 
 	public boolean existsByReason(String reason);

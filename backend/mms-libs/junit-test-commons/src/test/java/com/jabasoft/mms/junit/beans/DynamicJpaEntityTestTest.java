@@ -3,13 +3,19 @@ package com.jabasoft.mms.junit.beans;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 class DynamicJpaEntityTestTest extends DynamicBeanTestTest {
 
@@ -43,12 +49,6 @@ class DynamicJpaEntityTestTest extends DynamicBeanTestTest {
 
 				return CorrectAnnotatedEntity.class;
 			}
-
-			@Override
-			protected Class<? extends Annotation> entityAnnotation() {
-
-				return EntityAnnotationMock.class;
-			}
 		};
 
 		dummyDynamicJpaEntityTest.testClassIsAnnotatedWithEntity();
@@ -64,12 +64,6 @@ class DynamicJpaEntityTestTest extends DynamicBeanTestTest {
 
 				return CorrectAnnotatedEntity.class;
 			}
-
-			@Override
-			protected Class<? extends Annotation> tableAnnotation() {
-
-				return TableAnnotationMock.class;
-			}
 		};
 
 		dummyDynamicJpaEntityTest.testClassIsAnnotatedWithTable();
@@ -81,19 +75,13 @@ class DynamicJpaEntityTestTest extends DynamicBeanTestTest {
 		DummyDynamicJpaEntityTest dummyDynamicJpaEntityTest = new DummyDynamicJpaEntityTest() {
 
 			@Override
-			protected Class<? extends Annotation> columnAnnotation() {
-
-				return ColumnAnnotationMock.class;
-			}
-
-			@Override
 			protected Class<?> createEntity() {
 
 				return CorrectAnnotatedEntity.class;
 			}
 		};
 
-		dummyDynamicJpaEntityTest.testAttributesAreAnnotatedWithColumn();
+		dummyDynamicJpaEntityTest.testAttributesAreCorrectAnnotated();
 	}
 
 	@Test
@@ -102,19 +90,13 @@ class DynamicJpaEntityTestTest extends DynamicBeanTestTest {
 		DummyDynamicJpaEntityTest dummyDynamicJpaEntityTest = new DummyDynamicJpaEntityTest() {
 
 			@Override
-			protected Class<? extends Annotation> columnAnnotation() {
-
-				return ColumnAnnotationMock.class;
-			}
-
-			@Override
 			protected Class<?> createEntity() {
 
 				return NotCorrectAnnotatedEntity.class;
 			}
 		};
 
-		Assertions.assertThrows(AssertionFailedError.class, dummyDynamicJpaEntityTest::testAttributesAreAnnotatedWithColumn);
+		Assertions.assertThrows(AssertionFailedError.class, dummyDynamicJpaEntityTest::testAttributesAreCorrectAnnotated);
 	}
 
 	@Test
@@ -126,12 +108,6 @@ class DynamicJpaEntityTestTest extends DynamicBeanTestTest {
 			protected Class<?> createEntity() {
 
 				return NotCorrectAnnotatedEntity.class;
-			}
-
-			@Override
-			protected Class<? extends Annotation> entityAnnotation() {
-
-				return EntityAnnotationMock.class;
 			}
 		};
 
@@ -148,39 +124,44 @@ class DynamicJpaEntityTestTest extends DynamicBeanTestTest {
 
 				return NotCorrectAnnotatedEntity.class;
 			}
-
-			@Override
-			protected Class<? extends Annotation> tableAnnotation() {
-
-				return TableAnnotationMock.class;
-			}
 		};
 
 		Assertions.assertThrows(AssertionFailedError.class, dummyDynamicJpaEntityTest::testClassIsAnnotatedWithTable);
 	}
 
-	@Retention(RetentionPolicy.RUNTIME)
-	private @interface TableAnnotationMock {
+	@Test
+	void testWithNotCorrectOneToOneAttributeInEntityFails() {
 
+		DummyDynamicJpaEntityTest dummyDynamicJpaEntityTest = new DummyDynamicJpaEntityTest() {
+
+			@Override
+			protected Class<?> createEntity() {
+
+				return NotCorrectOneToOneAnnotatedEntity.class;
+			}
+		};
+
+		Assertions.assertThrows(AssertionFailedError.class, dummyDynamicJpaEntityTest::testAttributesAreCorrectAnnotated);
 	}
 
-	@Retention(RetentionPolicy.RUNTIME)
-	private @interface EntityAnnotationMock {
+	@Test
+	void testWithNotCorrectOneToManyAttributeInEntityFails() {
 
+		DummyDynamicJpaEntityTest dummyDynamicJpaEntityTest = new DummyDynamicJpaEntityTest() {
+
+			@Override
+			protected Class<?> createEntity() {
+
+				return NotCorrectOneToManyAnnotatedEntity.class;
+			}
+		};
+
+		Assertions.assertThrows(AssertionFailedError.class, dummyDynamicJpaEntityTest::testAttributesAreCorrectAnnotated);
 	}
 
-	@Retention(RetentionPolicy.RUNTIME)
-	private @interface ColumnAnnotationMock {
 
-	}
 
 	private static class DummyDynamicJpaEntityTest extends DynamicJpaEntityTest {
-
-		@Override
-		protected Class<? extends Annotation> columnAnnotation() {
-
-			return null;
-		}
 
 		@Override
 		protected Class<?> createEntity() {
@@ -188,39 +169,57 @@ class DynamicJpaEntityTestTest extends DynamicBeanTestTest {
 			return null;
 		}
 
-		@Override
-		protected Class<? extends Annotation> entityAnnotation() {
+	}
 
-			return null;
-		}
-
-		@Override
-		protected Class<? extends Annotation> tableAnnotation() {
-
-			return null;
-		}
+	@Entity
+	protected static class InnerEntityObject{
 
 	}
 
-	@TableAnnotationMock
-	@EntityAnnotationMock
+	@Table
+	@Entity
 	protected static class CorrectAnnotatedEntity {
 
-		@ColumnAnnotationMock
+		@Column
 		private int col1;
 
-		@ColumnAnnotationMock
+		@Column
 		private int col2;
 
+		@OneToOne
+		@JoinColumn
+		private InnerEntityObject col3;
+
+		@OneToMany
+		@JoinTable
+		private List<InnerEntityObject> col4;
 	}
 
 	protected static class NotCorrectAnnotatedEntity {
 
-		@ColumnAnnotationMock
+		@Column
 		private int col1;
 
 		private int col2;
 
+	}
+
+	@Entity
+	@Table
+	protected static class NotCorrectOneToOneAnnotatedEntity{
+
+		@OneToOne
+		private InnerEntityObject col1;
+	}
+
+
+
+	@Entity
+	@Table
+	protected static class NotCorrectOneToManyAnnotatedEntity{
+
+		@OneToMany
+		private List<InnerEntityObject> col1;
 	}
 
 }

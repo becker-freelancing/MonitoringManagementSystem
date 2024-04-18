@@ -1,9 +1,11 @@
 package com.jabasoft.mms.customermanagement.domain.model;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class ContactPersonPosition {
 
+	private ContactPersonId contactPersonId;
 	private String position;
 	private String description;
 
@@ -16,6 +18,18 @@ public class ContactPersonPosition {
 
 		this.position = position;
 		this.description = description;
+	}
+
+	public ContactPersonPosition(ContactPersonId contactPersonId, String position, String description) {
+
+		this.contactPersonId = contactPersonId;
+		this.position = position;
+		this.description = description;
+	}
+
+	public Optional<ContactPersonId> getContactPersonId() {
+
+		return Optional.ofNullable(contactPersonId);
 	}
 
 	public String getPosition() {

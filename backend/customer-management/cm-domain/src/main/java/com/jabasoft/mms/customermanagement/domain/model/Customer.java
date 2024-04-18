@@ -1,5 +1,6 @@
 package com.jabasoft.mms.customermanagement.domain.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,7 +16,7 @@ public class Customer {
 
 		this.companyName = companyName;
 		this.address = address;
-		this.contactPersons = contactPersons;
+		this.contactPersons = new ArrayList<>(contactPersons);
 	}
 
 	public Customer(CustomerId customerId, String companyName, Address address, List<ContactPerson> contactPersons) {
@@ -23,7 +24,11 @@ public class Customer {
 		this.customerId = customerId;
 		this.companyName = companyName;
 		this.address = address;
-		this.contactPersons = contactPersons;
+		this.contactPersons = new ArrayList<>(contactPersons);
+	}
+
+	public void addContactPerson(ContactPerson contactPerson){
+		contactPersons.add(contactPerson);
 	}
 
 	public Optional<CustomerId> getCustomerId() {
@@ -54,7 +59,7 @@ public class Customer {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		Customer customer = (Customer) o;
-		return Objects.equals(customerId, customer.customerId) && Objects.equals(
+		return Objects.equals(
 			companyName,
 			customer.companyName) && Objects.equals(address, customer.address) && Objects.equals(
 			contactPersons,
@@ -64,7 +69,7 @@ public class Customer {
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(customerId, companyName, address, contactPersons);
+		return Objects.hash(companyName, address, contactPersons);
 	}
 
 }

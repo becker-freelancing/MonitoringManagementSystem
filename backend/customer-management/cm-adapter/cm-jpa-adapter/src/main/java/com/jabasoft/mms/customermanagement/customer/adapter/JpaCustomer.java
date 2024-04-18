@@ -31,27 +31,25 @@ public class JpaCustomer {
 	@Column(name = "COMPANY_NAME")
 	private String companyName;
 
-	//@OneToMany(fetch = FetchType.EAGER, mappedBy = "contactPersonId", cascade = CascadeType.ALL)
-	@OneToMany
-	@JoinTable(name = "CONTACT_PERSONS",
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "CUSTOMER_TO_CONTACT_PERSONS",
 		joinColumns = @JoinColumn(name = "CUSTOMER_ID"),
 		inverseJoinColumns = @JoinColumn(name = "CONTACT_PERSON_ID"))
 	private List<JpaContactPerson> contactPersons;
 
-//	//@OneToOne(fetch = FetchType.EAGER, mappedBy = "address_id", cascade = CascadeType.ALL)
-//	@OneToOne(cascade = CascadeType.ALL)
-//	@JoinColumn(name = "address_id", referencedColumnName = "id")
-//	private JpaAddress address;
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "address_id", referencedColumnName = "ADDRESS_ID")
+	private JpaAddress address;
 
-//	public JpaAddress getAddress() {
-//
-//		return address;
-//	}
-//
-//	public void setAddress(JpaAddress address) {
-//
-//		this.address = address;
-//	}
+	public JpaAddress getAddress() {
+
+		return address;
+	}
+
+	public void setAddress(JpaAddress address) {
+
+		this.address = address;
+	}
 
 	public String getCustomerId() {
 

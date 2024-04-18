@@ -1,5 +1,7 @@
 package com.jabasoft.mms.junit.beans;
 
+import java.util.Arrays;
+
 class BeanWithToString extends Bean {
 
 	@Override
@@ -18,6 +20,12 @@ class BeanWithToString extends Bean {
 			", localDateTime=" + getLocalDateTime() +
 			", valuesEnum=" + getValuesEnum() +
 			", enumWithOneValue=" + getEnumWithOneValue() +
+			", bean2=" + getBean2() +
+			", aBoolean=" + getaBoolean() +
+			", bean3=" + getBean3() +
+			", bytes=" + getBytes() +
+			", bean2s=" + getBean2s() +
 			'}';
 	}
+
 }

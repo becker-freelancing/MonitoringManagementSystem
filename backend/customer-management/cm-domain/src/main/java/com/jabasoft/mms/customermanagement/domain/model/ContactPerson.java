@@ -2,15 +2,35 @@ package com.jabasoft.mms.customermanagement.domain.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ContactPerson {
 
+	private ContactPersonId contactPersonId;
 	private ContactPersonPosition position;
 	private String firstName;
 	private String lastName;
 	private List<EMail> emails;
 	private List<PhoneNumber> phoneNumbers;
 	private List<ReasonForContact> reasonsForContact;
+
+	public ContactPerson(
+		ContactPersonId contactPersonId,
+		ContactPersonPosition position,
+		String firstName,
+		String lastName,
+		List<EMail> emails,
+		List<PhoneNumber> phoneNumbers,
+		List<ReasonForContact> reasonsForContact) {
+
+		this.contactPersonId = contactPersonId;
+		this.position = position;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.emails = emails;
+		this.phoneNumbers = phoneNumbers;
+		this.reasonsForContact = reasonsForContact;
+	}
 
 	public ContactPerson(
 		ContactPersonPosition position,
@@ -26,6 +46,11 @@ public class ContactPerson {
 		this.emails = emails;
 		this.phoneNumbers = phoneNumbers;
 		this.reasonsForContact = reasonsForContact;
+	}
+
+	public Optional<ContactPersonId> getContactPersonId() {
+
+		return Optional.ofNullable(contactPersonId);
 	}
 
 	public ContactPersonPosition getPosition() {
@@ -66,11 +91,12 @@ public class ContactPerson {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		ContactPerson that = (ContactPerson) o;
-		return position == that.position && Objects.equals(firstName, that.firstName) && Objects.equals(
-			lastName,
-			that.lastName) && Objects.equals(emails, that.emails) && Objects.equals(
-			phoneNumbers,
-			that.phoneNumbers) && Objects.equals(reasonsForContact, that.reasonsForContact);
+		return Objects.equals(position, that.position)
+			&& Objects.equals(firstName, that.firstName)
+			&& Objects.equals(lastName, that.lastName)
+			&& Objects.equals(emails, that.emails)
+			&& Objects.equals(phoneNumbers, that.phoneNumbers)
+			&& Objects.equals(reasonsForContact, that.reasonsForContact);
 	}
 
 	@Override

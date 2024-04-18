@@ -3,21 +3,23 @@ package com.jabasoft.mms.customermanagement.customer.contactperson.adapter;
 import java.math.BigInteger;
 import java.util.List;
 
-import com.jabasoft.mms.customermanagement.customer.adapter.JpaCustomer;
 import com.jabasoft.mms.customermanagement.customer.contactperson.emails.adapter.JpaEmail;
 import com.jabasoft.mms.customermanagement.customer.contactperson.phonenumber.adapter.JpaPhoneNumber;
-import com.jabasoft.mms.customermanagement.domain.model.ReasonForContact;
+import com.jabasoft.mms.customermanagement.customer.contactperson.position.adapter.JpaContactPersonPosition;
+import com.jabasoft.mms.customermanagement.customer.contactperson.reasonforcontact.adapter.JpaReasonForContact;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,10 +28,13 @@ public class JpaContactPerson {
 
 	@Id
 	@Column(name = "CONTACT_PERSON_ID")
-	private String contactPersonId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long contactPersonId;
 
-	@Column(name = "CONTACT_PERSON_POSITION")
-	private BigInteger position;
+	//@Column(name = "CONTACT_PERSON_POSITION")
+	@OneToOne
+	@JoinColumn(name = "CONTACT_PERSON_ID", referencedColumnName = "CONTACT_PERSON_ID")
+	private JpaContactPersonPosition position;
 
 	@Column(name = "FIRST_NAME")
 	private String firstName;
@@ -37,24 +42,26 @@ public class JpaContactPerson {
 	@Column(name = "LAST_NAME")
 	private String lastName;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "contactPersonId", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "CONTACT_PERSON_ID", referencedColumnName = "CONTACT_PERSON_ID")
 	private List<JpaEmail> emails;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "contactPersonId", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "CONTACT_PERSON_ID", referencedColumnName = "CONTACT_PERSON_ID")
 	private List<JpaPhoneNumber> phoneNumbers;
 
-//	@ManyToMany
-//	@JoinTable(name = "CONTACT_PERSON_REASON_FOR_CONTACT",
-//		joinColumns = @JoinColumn(name = "CONTACT_PERSON_ID"),
-//		inverseJoinColumns = @JoinColumn(name = "REASON"))
-//	private List<JpaReasonForContact> reasonForContacts;
+	@ManyToMany
+	@JoinTable(name = "CONTACT_PERSON_TO_REASON_FOR_CONTACT",
+	joinColumns = @JoinColumn(name = "REASON_FOR_CONTACT"),
+	inverseJoinColumns = @JoinColumn(name = "REASON"))
+	private List<JpaReasonForContact> reasonForContacts;
 
-	public BigInteger getPosition() {
+	public JpaContactPersonPosition getPosition() {
 
 		return position;
 	}
 
-	public void setPosition(BigInteger position) {
+	public void setPosition(JpaContactPersonPosition position) {
 
 		this.position = position;
 	}
@@ -99,24 +106,24 @@ public class JpaContactPerson {
 		this.phoneNumbers = phoneNumbers;
 	}
 
-	public String getContactPersonId() {
+	public Long getContactPersonId() {
 
 		return contactPersonId;
 	}
 
-	public void setContactPersonId(String contactPersonId) {
+	public void setContactPersonId(Long contactPersonId) {
 
 		this.contactPersonId = contactPersonId;
 	}
 
-//	public List<JpaReasonForContact> getReasonForContacts() {
-//
-//		return reasonForContacts;
-//	}
-//
-//	public void setReasonForContacts(List<JpaReasonForContact> reasonForContacts) {
-//
-//		this.reasonForContacts = reasonForContacts;
-//	}
+	public List<JpaReasonForContact> getReasonForContacts() {
+
+		return reasonForContacts;
+	}
+
+	public void setReasonForContacts(List<JpaReasonForContact> reasonForContacts) {
+
+		this.reasonForContacts = reasonForContacts;
+	}
 
 }

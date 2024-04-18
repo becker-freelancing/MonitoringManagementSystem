@@ -18,11 +18,8 @@ public class JpaPhoneNumber {
 	@Column(name = "PHONE_NUMBER")
 	private String phoneNumber;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "CONTACT_PERSON_ID")
-	private JpaContactPerson contactPersonId;
-
 	public String getPhoneNumber() {
+
 
 		return phoneNumber;
 	}
@@ -30,16 +27,6 @@ public class JpaPhoneNumber {
 	public void setPhoneNumber(String phoneNumber) {
 
 		this.phoneNumber = phoneNumber;
-	}
-
-	public JpaContactPerson getContactPersonId() {
-
-		return contactPersonId;
-	}
-
-	public void setContactPersonId(JpaContactPerson contactPersonId) {
-
-		this.contactPersonId = contactPersonId;
 	}
 
 }

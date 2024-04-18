@@ -19,18 +19,10 @@ import jakarta.persistence.Table;
 @Table(name = "CUSTOMER_ADDRESSES")
 public class JpaAddress {
 
-//	@Id
-//	@OneToOne(cascade = CascadeType.ALL)
-//	@JoinColumn(name = "CUSTOMER_ID")
-//	private JpaCustomer addressId;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
+	@Column(name = "ADDRESS_ID")
 	private Long id;
-
-//	@OneToOne(mappedBy = "address")
-//	private JpaCustomer customer;
 
 	@Column(name = "STREET")
 	private String street;
@@ -47,16 +39,6 @@ public class JpaAddress {
 	@Column(name = "ZIP_CODE")
 	private String zipCode;
 
-//	public JpaCustomer getCustomer() {
-//
-//		return customer;
-//	}
-//
-//	public void setCustomer(JpaCustomer customer) {
-//
-//		this.customer = customer;
-//	}
-
 	public Long getId() {
 
 		return id;
@@ -66,16 +48,6 @@ public class JpaAddress {
 
 		this.id = id;
 	}
-
-	//	public JpaCustomer getAddressId() {
-//
-//		return addressId;
-//	}
-//
-//	public void setAddressId(JpaCustomer addressId) {
-//
-//		this.addressId = addressId;
-//	}
 
 	public String getStreet() {
 

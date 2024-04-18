@@ -6,6 +6,7 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public abstract class RandomBeanCreator<B> {
@@ -36,7 +37,8 @@ public abstract class RandomBeanCreator<B> {
 				Object instance = constructor.newInstance();
 				return List.of((B) instance);
 			}
-			catch (Exception ignored) {
+			catch (Exception e) {
+				throw new NotConstructableException(e);
 			}
 		}
 
@@ -57,7 +59,7 @@ public abstract class RandomBeanCreator<B> {
 						parameterValues.add(genericParameter);
 					}
 					catch (ClassNotFoundException e) {
-						throw new RuntimeException(e);
+						throw new NotConstructableException(e);
 					}
 				}
 			} else {

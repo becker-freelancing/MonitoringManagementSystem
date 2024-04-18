@@ -14,13 +14,10 @@ import jakarta.persistence.Table;
 @Table(name = "CUSTOMER_CONTACT_PERSON_E_MAILS")
 public class JpaEmail {
 
+
 	@Id
 	@Column(name = "E_MAIL")
 	private String email;
-
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "CONTACT_PERSON_ID")
-	private JpaContactPerson contactPersonId;
 
 	public String getEmail() {
 
@@ -30,16 +27,6 @@ public class JpaEmail {
 	public void setEmail(String email) {
 
 		this.email = email;
-	}
-
-	public JpaContactPerson getContactPersonId() {
-
-		return contactPersonId;
-	}
-
-	public void setContactPersonId(JpaContactPerson contactPersonId) {
-
-		this.contactPersonId = contactPersonId;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.jabasoft.mms.customermanagement.MmsDaoImplTest;
 import com.jabasoft.mms.customermanagement.domain.model.ReasonForContact;
 import com.jabasoft.mms.junit.beans.RandomBeanCreator;
+import com.jabasoft.mms.junit.beans.RandomBeanSupplierRegistry;
 
 @MmsDaoImplTest
 class ReasonForContactDaoTest {
@@ -26,6 +28,12 @@ class ReasonForContactDaoTest {
 	public ReasonForContactDaoTest(ReasonForContactDao reasonForContactDao) {
 
 		this.reasonForContactDao = reasonForContactDao;
+	}
+
+	@BeforeAll
+	static void clearBeanSupplierRegistry(){
+
+		RandomBeanSupplierRegistry.clear();
 	}
 
 	@BeforeEach

@@ -1,8 +1,21 @@
 package com.jabasoft.mms.customermanagement.domain.model;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class Address {
+
+	private AddressId addressId;
+
+	public Address(AddressId addressId, String street, String houseNumber, String city, Country country, String zipCode) {
+
+		this.addressId = addressId;
+		this.street = street;
+		this.houseNumber = houseNumber;
+		this.city = city;
+		this.country = country;
+		this.zipCode = zipCode;
+	}
 
 	private String street;
 	private String houseNumber;
@@ -17,6 +30,11 @@ public class Address {
 		this.city = city;
 		this.country = country;
 		this.zipCode = zipCode;
+	}
+
+	public Optional<AddressId> getAddressId() {
+
+		return Optional.ofNullable(addressId);
 	}
 
 	public String getStreet() {

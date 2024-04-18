@@ -1,5 +1,7 @@
 package com.jabasoft.mms.junit.beans;
 
+import static org.mockito.Mockito.mock;
+
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,6 +17,8 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import org.mockito.Mockito;
 
 @SuppressWarnings({"java:S112"})
 public class ReflectiveValueGeneratorRegistry implements ValueGeneratorRegistry {
@@ -101,6 +105,12 @@ public class ReflectiveValueGeneratorRegistry implements ValueGeneratorRegistry 
 			}
 		}
 
+		for (Method generatorMethod : generatorMethods) {
+			if(generatorMethod.getName().equals("generateComplexObject")){
+				return Optional.of(new GeneratorMethod(generatorMethod, type));
+			}
+		}
+
 		return Optional.empty();
 	}
 
@@ -165,5 +175,12 @@ public class ReflectiveValueGeneratorRegistry implements ValueGeneratorRegistry 
 		List<Object> enumConstantsList = Arrays.asList(enumConstants);
 		Collections.shuffle(enumConstantsList);
 		return (Enum<?>) enumConstantsList.get(0);
+	}
+
+	protected Object generateComplexObject(Class<?> objectClass){
+		if(objectClass.isInterface()){
+			return mock(objectClass);
+		}
+		return RandomBeanSupplierRegistry.getRandomBeanSupplier(objectClass).get();
 	}
 }

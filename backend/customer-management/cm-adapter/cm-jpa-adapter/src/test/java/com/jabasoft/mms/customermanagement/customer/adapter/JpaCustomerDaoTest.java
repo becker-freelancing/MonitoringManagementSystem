@@ -1,14 +1,19 @@
 package com.jabasoft.mms.customermanagement.customer.adapter;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.Set;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,15 +25,16 @@ import com.jabasoft.mms.customermanagement.domain.model.Country;
 import com.jabasoft.mms.customermanagement.domain.model.Customer;
 import com.jabasoft.mms.customermanagement.domain.model.CustomerId;
 import com.jabasoft.mms.customermanagement.domain.model.EMail;
-import com.jabasoft.mms.customermanagement.domain.model.PhoneNumber;
 import com.jabasoft.mms.customermanagement.domain.model.ReasonForContact;
-import com.jabasoft.mms.junit.beans.RandomBeanCreator;
+import com.jabasoft.mms.junit.beans.RandomBeanSupplier;
+import com.jabasoft.mms.junit.beans.RandomBeanSupplierRegistrar;
+import com.jabasoft.mms.junit.beans.RandomBeanSupplierRegistry;
 
 @MmsDaoImplTest
 class JpaCustomerDaoTest {
 
 	private JpaCustomerDao customerDao;
-	private RandomBeanCreator<Customer> customerCreator;
+	private RandomBeanSupplier<Customer> customerCreator;
 
 	@Autowired
 	public JpaCustomerDaoTest(JpaCustomerDao customerDao) {
@@ -36,24 +42,45 @@ class JpaCustomerDaoTest {
 		this.customerDao = customerDao;
 	}
 
+	@BeforeAll
+	static void registerBeanSupplier() throws NoSuchMethodException {
+
+		RandomBeanSupplierRegistry.clear();
+
+		new RandomBeanSupplierRegistrar<>(Customer.class)
+			.withConstructors(List.of(Customer.class.getConstructor(String.class, Address.class, List.class))).register();
+
+		new RandomBeanSupplierRegistrar<>(Address.class)
+			.withConstructors(List.of(Address.class.getConstructor(
+				String.class,
+				String.class,
+				String.class,
+				Country.class,
+				String.class))).register();
+
+		new RandomBeanSupplierRegistrar<>(ContactPerson.class)
+			.withConstructors(List.of(ContactPerson.class.getConstructor(
+				ContactPersonPosition.class,
+				String.class,
+				String.class,
+				List.class,
+				List.class,
+				List.class))).register();
+
+		new RandomBeanSupplierRegistrar<>(ContactPersonPosition.class)
+			.withConstructors(List.of(ContactPersonPosition.class.getConstructor(String.class, String.class))).register();
+	}
+
 	@BeforeEach
-	void setUp(){
+	void setUp() {
 
-		customerCreator = new RandomBeanCreator<>() {
-
-			@Override
-			protected Class<? extends Customer> getBeanClass() {
-
-				return Customer.class;
-			}
-
-		};
+		customerCreator = RandomBeanSupplierRegistry.getRandomBeanSupplier(Customer.class);
 	}
 
 	@Test
-	void testSaveAndLoadCustomers(){
+	void testSaveAndLoadCustomers() {
 
-		List<Customer> customers = customerCreator.createBeans().toList();//List.of(createCustomer(), createCustomer());//
+		List<Customer> customers = customerCreator.createBeans(50);
 
 		List<Customer> expectedCustomers = new ArrayList<>();
 		for (Customer customer : customers) {
@@ -62,33 +89,76 @@ class JpaCustomerDaoTest {
 		}
 
 		for (Customer expected : expectedCustomers) {
-			Optional<Customer> actual = customerDao.findCustomer(expected.getCustomerId().orElse(null), expected);
+			Optional<Customer> actual = customerDao.findCustomer(expected.getCustomerId().orElse(null));
 
 			assertTrue(actual.isPresent());
 			assertEquals(expected, actual.get());
+			assertTrue(customers.contains(actual.get()));
+		}
+	}
+
+	@Test
+	void testDeleteCustomerWithExistingCustomerReturnsTrue() {
+
+		List<Customer> customers = customerCreator.createBeans(3);
+
+		List<Customer> expectedCustomers = new ArrayList<>();
+		for (Customer customer : customers) {
+			Customer savedCustomer = customerDao.saveCustomer(customer);
+			expectedCustomers.add(savedCustomer);
 		}
 
+		Customer deleted = expectedCustomers.remove(0);
+
+		assertEquals(3, customerDao.findAllCustomer().size());
+
+		boolean isDeleted = customerDao.deleteCustomer(deleted.getCustomerId().get());
+		List<Customer> allCustomerAfterDelete = customerDao.findAllCustomer();
+
+		assertTrue(isDeleted);
+		assertEquals(2, allCustomerAfterDelete.size());
+		assertFalse(allCustomerAfterDelete.contains(deleted));
 	}
-//
-//	private Customer createCustomer(){
-//		Country country = Math.random() < 0.5 ? Country.GERMANY : Country.SPAIN;
-//		return new Customer("Test GmbH", new Address("Hauptstr.", "48A", "Test", country, "12345"), List.of(createContactPerson1()));
-//	}
-//
-//	private ContactPerson createContactPerson1(){
-//		return new ContactPerson(ContactPersonPosition.CEO, "John", "Doe", createEmails(), createPhoneNumber(), createReasonForContact());
-//	}
-//
-//	private List<EMail> createEmails(){
-//		return List.of(new EMail("abc@test.de"), new EMail("xy@test.com"));
-//	}
-//
-//	private List<PhoneNumber> createPhoneNumber(){
-//		return List.of(new PhoneNumber("123445564"), new PhoneNumber("+49 29738273-2873"));
-//	}
-//
-//	private List<ReasonForContact> createReasonForContact(){
-//		return List.of(ReasonForContact.HUMAN_RESOURCES, ReasonForContact.MARKETING);
-//	}
+
+	@Test
+	void testDeleteCustomerWithNoExistingCustomerReturnFalse() {
+
+		List<Customer> customers = customerCreator.createBeans(3);
+
+		for (Customer customer : customers) {
+			customerDao.saveCustomer(customer);
+		}
+
+		boolean isDeleted = customerDao.deleteCustomer(new CustomerId(UUID.randomUUID().toString()));
+
+		assertFalse(isDeleted);
+	}
+
+	@Test
+	void addingAContactPersonAddsNewContactPerson() {
+
+		List<Customer> beans = customerCreator.createBeans(1);
+		assertEquals(1, beans.size());
+
+		Customer customer = beans.get(0);
+
+		Customer expectedCustomer = customerDao.saveCustomer(customer);
+
+		assertEquals(customer, expectedCustomer);
+
+		ContactPerson contactPerson = new ContactPerson(
+			new ContactPersonPosition("CEO"),
+			"First",
+			"Last",
+			List.of(new EMail(UUID.randomUUID().toString()), new EMail(UUID.randomUUID().toString())),
+			List.of(),
+			List.of(new ReasonForContact("Marketing")));
+
+		expectedCustomer.addContactPerson(contactPerson);
+
+		Customer actualCustomer = customerDao.saveCustomer(expectedCustomer);
+
+		assertEquals(expectedCustomer, actualCustomer);
+	}
 
 }
