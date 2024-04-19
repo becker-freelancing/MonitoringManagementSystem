@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Kunde hinzufügen</h2>
+<mat-dialog-content>
+  <div>
+    <p>Kunden-Daten</p>
+    <input id ="add-customer-dialog-customer-name" type="text" [(ngModel)]="customerName" placeholder="Name des Kunden">
+  </div>
+  <div>
+    <p>Adresse</p>
+
+    <div>
+      <input id="add-customer-dialog-street" type="text" [(ngModel)]="street" placeholder="Straße">
+      <input id="add-customer-dialog-house-number" type="text" [(ngModel)]="houseNumber" placeholder="Hausnummer">
+    </div>
+
+    <div>
+      <input id="add-customer-dialog-zip-code" type="text" [(ngModel)]="zipCode" placeholder="PLZ">
+      <input id="add-customer-dialog-city" type="text" [(ngModel)]="city" placeholder="Stadt">
+      <select id="add-customer-dialog-country" [(ngModel)]="country">
+        <option *ngFor="let country of countries">{{country}}</option>
+      </select>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Abbrechen</button>
+  <button mat-button mat-dialog-close cdkFocusInitial (click)="saveCustomer()">Speichern</button>
+</mat-dialog-actions>

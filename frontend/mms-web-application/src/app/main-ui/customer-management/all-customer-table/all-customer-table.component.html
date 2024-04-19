@@ -1,0 +1,28 @@
+<div>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Kunde</th>
+      <th>Projekt Aktiv</th>
+      <th>Offene TODO's</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let customer of customers">
+      <td>{{ customer.customer.customerId }}</td>
+      <td>{{ customer.customer.companyName }}</td>
+      @if (customer.activeProjects() > 0){
+        <td><img ngSrc="assets/customer-management/check.png" alt="Check" height="15" width="15">{{customer.activeProjects()}}</td>
+      } @else {
+        <td></td>
+      }
+      @if (customer.activeTodos() > 0){
+        <td><img ngSrc="assets/customer-management/to-do-list.png" alt="Todo" height="15" width="15">{{customer.activeTodos()}}</td>
+      } @else {
+        <td></td>
+      }
+    </tr>
+    </tbody>
+  </table>
+</div>

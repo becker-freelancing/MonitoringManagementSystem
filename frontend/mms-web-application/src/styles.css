@@ -7,3 +7,15 @@ html, body {
 body{
   background-color: #f0f0f0;
 }
+
+.menu-bar{
+  margin-top: 15px;
+  margin-left: 15px;
+}
+.menu-bar button{
+  margin-left: 10px;
+}
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
