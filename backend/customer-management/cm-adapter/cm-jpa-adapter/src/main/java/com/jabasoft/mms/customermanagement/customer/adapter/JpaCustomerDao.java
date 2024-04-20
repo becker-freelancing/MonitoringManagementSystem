@@ -47,15 +47,15 @@ class JpaCustomerDao implements CustomerRepository {
 	}
 
 	@Override
-	public boolean deleteCustomer(CustomerId customerId) {
+	public Optional<Customer> deleteCustomer(CustomerId customerId) {
 
-		if (!customerRepository.existsByCustomerId(customerId.getCustomerId())) {
-			return false;
+		Optional<JpaCustomer> customer = customerRepository.findById(customerId.getCustomerId());
+
+		if(customer.isPresent()) {
+			customerRepository.deleteById(customerId.getCustomerId());
 		}
 
-		customerRepository.deleteById(customerId.getCustomerId());
-
-		return true;
+		return customer.map(this::mapCustomerToDomain);
 	}
 
 	@Override
@@ -142,7 +142,7 @@ class JpaCustomerDao implements CustomerRepository {
 
 		jpaCustomer.setCompanyName(customer.getCompanyName());
 
-		String customerId = customer.getCustomerId().map(CustomerId::getCustomerId).orElse(UUID.randomUUID().toString());
+		Long customerId = customer.getCustomerId().map(CustomerId::getCustomerId).orElse(null);
 		jpaCustomer.setCustomerId(customerId);
 
 		List<JpaContactPerson> contactPersons = new ArrayList<>(customer.getContactPersons().stream()

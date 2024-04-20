@@ -5,12 +5,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.jabasoft.mms.customermanagement.customer.contactperson.reasonforcontact.api.ReasonForContactPort;
 import com.jabasoft.mms.customermanagement.customer.contactperson.reasonforcontact.spi.ReasonForContactRepository;
 import com.jabasoft.mms.customermanagement.domain.model.ReasonForContact;
 import com.jabasoft.mms.customermanagement.dto.ReasonForContactDto;
 
+@Component
 class ReasonForContactPosition implements ReasonForContactPort {
 
 	private ReasonForContactRepository reasonForContactRepository;

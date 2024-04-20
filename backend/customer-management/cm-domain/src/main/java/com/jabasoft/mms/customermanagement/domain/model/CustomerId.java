@@ -4,14 +4,14 @@ import java.util.Objects;
 
 public class CustomerId {
 
-	private String customerId;
+	private Long customerId;
 
-	public CustomerId(String customerId) {
+	public CustomerId(Long customerId) {
 
 		this.customerId = customerId;
 	}
 
-	public String getCustomerId() {
+	public Long getCustomerId() {
 
 		return customerId;
 	}

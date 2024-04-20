@@ -26,7 +26,8 @@ public class JpaCustomer {
 
 	@Id
 	@Column(name = "CUSTOMER_ID")
-	private String customerId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long customerId;
 
 	@Column(name = "COMPANY_NAME")
 	private String companyName;
@@ -51,12 +52,12 @@ public class JpaCustomer {
 		this.address = address;
 	}
 
-	public String getCustomerId() {
+	public Long getCustomerId() {
 
 		return customerId;
 	}
 
-	public void setCustomerId(String customerId) {
+	public void setCustomerId(Long customerId) {
 
 		this.customerId = customerId;
 	}

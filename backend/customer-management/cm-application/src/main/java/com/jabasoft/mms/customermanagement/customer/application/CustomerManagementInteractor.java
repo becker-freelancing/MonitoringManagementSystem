@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jabasoft.mms.customermanagement.customer.api.CustomerManagementPort;
+import com.jabasoft.mms.customermanagement.domain.model.AddressId;
+import com.jabasoft.mms.customermanagement.domain.model.ContactPersonId;
 import com.jabasoft.mms.customermanagement.dto.AddressDto;
 import com.jabasoft.mms.customermanagement.dto.ContactPersonDto;
 import com.jabasoft.mms.customermanagement.dto.ContactPersonPositionDto;
@@ -36,7 +38,7 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 	}
 
 	@Override
-	public CustomerDto addCustomer(CustomerDto customerDto) {
+	public CustomerDto saveCustomer(CustomerDto customerDto) {
 
 		Customer customer = mapCustomerToDomain(customerDto);
 		Customer savedCustomer = customerRepository.saveCustomer(customer);
@@ -45,17 +47,27 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 	}
 
 	@Override
-	public boolean deleteCustomer(String customerId) {
+	public Optional<CustomerDto> deleteCustomer(Long customerId) {
 
-		return customerRepository.deleteCustomer(new CustomerId(customerId));
+		Optional<Customer> customer = customerRepository.deleteCustomer(new CustomerId(customerId));
+
+		return customer.map(this::mapCustomerToDto);
 	}
 
 	@Override
-	public Optional<CustomerDto> getCustomer(String customerId) {
+	public Optional<CustomerDto> getCustomer(Long customerId) {
 
 		Optional<Customer> customer = customerRepository.findCustomer(new CustomerId(customerId));
 
 		return customer.map(this::mapCustomerToDto);
+	}
+
+	@Override
+	public List<CustomerDto> findAll() {
+
+		List<Customer> customers = customerRepository.findAllCustomer();
+
+		return customers.stream().map(this::mapCustomerToDto).toList();
 	}
 
 	private Address mapAddressToDomain(AddressDto addressDto){
@@ -65,6 +77,11 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 		String city = addressDto.getCity();
 		Country country = mapEnumByName(Country.class, addressDto.getCountry());
 		String zipCode = addressDto.getZipCode();
+		Long addressId = addressDto.getId();
+
+		if(addressId != null){
+			return new Address(new AddressId(addressId), street, houseNumber, city, country, zipCode);
+		}
 		return new Address(street, houseNumber, city, country, zipCode);
 	}
 
@@ -79,6 +96,11 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 			contactPersonDto.getPosition().getPosition(),
 			contactPersonDto.getPosition().getDescription());
 
+		Long id = contactPersonDto.getId();
+
+		if(id != null){
+			return new ContactPerson(new ContactPersonId(id), contactPersonPosition, contactPersonDto.getFirstName(), contactPersonDto.getLastName(), emails, phoneNumbers, reasonForContacts);
+		}
 		return new ContactPerson(contactPersonPosition, contactPersonDto.getFirstName(), contactPersonDto.getLastName(), emails, phoneNumbers, reasonForContacts);
 	}
 
@@ -87,6 +109,10 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 		Address address = mapAddressToDomain(customerDto.getAddress());
 		List<ContactPerson> contactPersons =
 			customerDto.getContactPersons().stream().map(this::mapContactPersonToDomain).collect(Collectors.toList());
+		Long id = customerDto.getId();
+		if(id != null){
+			return new Customer(new CustomerId(id), customerDto.getCompanyName(), address, contactPersons);
+		}
 		return new Customer(customerDto.getCompanyName(), address, contactPersons);
 	}
 
@@ -98,6 +124,7 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 		addressDto.setCity(address.getCity());
 		addressDto.setCountry(mapEnumByName(CountryDto.class, address.getCountry()));
 		addressDto.setZipCode(address.getZipCode());
+		addressDto.setId(address.getAddressId().map(AddressId::getAddressId).orElse(null));
 
 		return addressDto;
 	}
@@ -120,6 +147,7 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 			reasonForCantact.setDescription(reason.getDescription());
 			return reasonForCantact;
 		}).toList());
+		contactPersonDto.setId(contactPerson.getContactPersonId().map(ContactPersonId::getContactPersonId).orElse(null));
 
 		return contactPersonDto;
 	}
@@ -133,6 +161,7 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 		customerDto.setCompanyName(customer.getCompanyName());
 		customerDto.setAddress(address);
 		customerDto.setContactPersons(contactPersons);
+		customerDto.setId(customer.getCustomerId().map(CustomerId::getCustomerId).orElse(null));
 
 		return customerDto;
 	}

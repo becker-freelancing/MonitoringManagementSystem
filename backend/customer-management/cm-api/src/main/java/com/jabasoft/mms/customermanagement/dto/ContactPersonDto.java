@@ -4,6 +4,7 @@ import java.util.List;
 
 public class ContactPersonDto {
 
+	private Long id;
 	private ContactPersonPositionDto position;
 	private String firstName;
 	private String lastName;
@@ -11,9 +12,19 @@ public class ContactPersonDto {
 	private List<String> phoneNumbers;
 	private List<ReasonForContactDto> reasonsForContact;
 
+	public Long getId() {
+
+		return id;
+	}
+
 	public ContactPersonPositionDto getPosition() {
 
 		return position;
+	}
+
+	public void setId(Long id) {
+
+		this.id = id;
 	}
 
 	public void setPosition(ContactPersonPositionDto position) {

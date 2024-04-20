@@ -2,11 +2,17 @@ package com.jabasoft.mms.customermanagement.dto;
 
 public class AddressDto {
 
+	private Long id;
 	private String street;
 	private String houseNumber;
 	private String city;
 	private CountryDto country;
 	private String zipCode;
+
+	public Long getId() {
+
+		return id;
+	}
 
 	public String getStreet() {
 
@@ -16,6 +22,11 @@ public class AddressDto {
 	public String getZipCode() {
 
 		return zipCode;
+	}
+
+	public void setId(Long id) {
+
+		this.id = id;
 	}
 
 	public void setStreet(String street) {

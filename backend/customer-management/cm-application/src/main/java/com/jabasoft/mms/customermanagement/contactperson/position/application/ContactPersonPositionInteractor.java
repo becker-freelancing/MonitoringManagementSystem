@@ -5,12 +5,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.jabasoft.mms.customermanagement.customer.contactperson.position.api.ContactPersonPositionPort;
 import com.jabasoft.mms.customermanagement.customer.contactperson.position.spi.ContactPersonPositionRepository;
 import com.jabasoft.mms.customermanagement.domain.model.ContactPersonPosition;
 import com.jabasoft.mms.customermanagement.dto.ContactPersonPositionDto;
 
+@Component
 class ContactPersonPositionInteractor implements ContactPersonPositionPort {
 
 	private ContactPersonPositionRepository positionRepository;

@@ -112,12 +112,13 @@ class JpaCustomerDaoTest {
 
 		assertEquals(3, customerDao.findAllCustomer().size());
 
-		boolean isDeleted = customerDao.deleteCustomer(deleted.getCustomerId().get());
+		Optional<Customer> isDeleted = customerDao.deleteCustomer(deleted.getCustomerId().get());
 		List<Customer> allCustomerAfterDelete = customerDao.findAllCustomer();
 
-		assertTrue(isDeleted);
+		assertTrue(isDeleted.isPresent());
 		assertEquals(2, allCustomerAfterDelete.size());
 		assertFalse(allCustomerAfterDelete.contains(deleted));
+		assertEquals(deleted, isDeleted.get());
 	}
 
 	@Test
@@ -129,9 +130,9 @@ class JpaCustomerDaoTest {
 			customerDao.saveCustomer(customer);
 		}
 
-		boolean isDeleted = customerDao.deleteCustomer(new CustomerId(UUID.randomUUID().toString()));
+		Optional<Customer> isDeleted = customerDao.deleteCustomer(new CustomerId(Long.MAX_VALUE));
 
-		assertFalse(isDeleted);
+		assertTrue(isDeleted.isEmpty());
 	}
 
 	@Test

@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import jakarta.transaction.Transactional;
 
 @Transactional
-public interface SpringJpaCustomerRepository extends CrudRepository<JpaCustomer, String> {
+public interface SpringJpaCustomerRepository extends CrudRepository<JpaCustomer, Long> {
 
-	public boolean existsByCustomerId(String customerId);
+	public boolean existsByCustomerId(Long customerId);
 }

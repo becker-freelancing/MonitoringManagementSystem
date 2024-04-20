@@ -4,6 +4,7 @@ import java.util.List;
 
 public class CustomerDto {
 
+	private Long id;
 	private String companyName;
 	private AddressDto address;
 	private List<ContactPersonDto> contactPersons;
@@ -13,6 +14,11 @@ public class CustomerDto {
 	public String getCompanyName() {
 
 		return companyName;
+	}
+
+	public Long getId() {
+
+		return id;
 	}
 
 	public void setCompanyName(String companyName) {
@@ -43,6 +49,11 @@ public class CustomerDto {
 	public byte[] getLogo() {
 
 		return logo;
+	}
+
+	public void setId(Long id) {
+
+		this.id = id;
 	}
 
 	public void setLogo(byte[] logo) {
