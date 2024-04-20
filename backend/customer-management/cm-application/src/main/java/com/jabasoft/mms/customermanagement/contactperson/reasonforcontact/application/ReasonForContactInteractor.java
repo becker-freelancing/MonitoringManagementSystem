@@ -13,12 +13,12 @@ import com.jabasoft.mms.customermanagement.domain.model.ReasonForContact;
 import com.jabasoft.mms.customermanagement.dto.ReasonForContactDto;
 
 @Component
-class ReasonForContactPosition implements ReasonForContactPort {
+class ReasonForContactInteractor implements ReasonForContactPort {
 
 	private ReasonForContactRepository reasonForContactRepository;
 
 	@Autowired
-	public ReasonForContactPosition(ReasonForContactRepository reasonForContactRepository) {
+	public ReasonForContactInteractor(ReasonForContactRepository reasonForContactRepository) {
 
 		this.reasonForContactRepository = reasonForContactRepository;
 	}
