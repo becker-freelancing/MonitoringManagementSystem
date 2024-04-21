@@ -81,7 +81,9 @@ class JpaCustomerDao implements CustomerRepository {
 	public Optional<Customer> saveCustomer(Customer customer) {
 
 		JpaCustomer jpaCustomer = mapCustomerToEntity(customer);
-		addressRepository.save(jpaCustomer.getAddress());
+		if (customer.getAddress() != null) {
+			addressRepository.save(jpaCustomer.getAddress());
+		}
 		contactPersonRepository.saveAll(jpaCustomer.getContactPersons());
 		JpaCustomer savedCustomer = customerRepository.save(jpaCustomer);
 
@@ -101,6 +103,10 @@ class JpaCustomerDao implements CustomerRepository {
 
 	private Address mapAddressToDomain(JpaAddress address) {
 
+		if (address == null){
+			return null;
+		}
+
 		String city = address.getCity();
 		String street = address.getStreet();
 		String houseNumber = address.getHouseNumber();
@@ -114,8 +120,10 @@ class JpaCustomerDao implements CustomerRepository {
 	private ContactPerson mapContactPersonToDomain(JpaContactPerson jpaContactPerson) {
 
 		JpaContactPersonPosition jpaPosition = jpaContactPerson.getPosition();
-		ContactPersonPosition contactPersonPosition =
-			new ContactPersonPosition(jpaPosition.getPosition(), jpaPosition.getDescription());
+		ContactPersonPosition contactPersonPosition = null;
+		if (jpaPosition != null) {
+			contactPersonPosition = new ContactPersonPosition(jpaPosition.getPosition(), jpaPosition.getDescription());
+		}
 
 		List<ReasonForContact> reasonsForContact = jpaContactPerson.getReasonForContacts().stream()
 			.map(reason -> new ReasonForContact(reason.getReason(), reason.getDescription())).toList();
@@ -157,6 +165,9 @@ class JpaCustomerDao implements CustomerRepository {
 
 	private JpaAddress mapAddressToEntity(Address address){
 
+		if (address == null){
+			return null;
+		}
 		JpaAddress jpaAddress = new JpaAddress();
 		jpaAddress.setCity(address.getCity());
 		jpaAddress.setStreet(address.getStreet());
@@ -173,10 +184,12 @@ class JpaCustomerDao implements CustomerRepository {
 		JpaContactPerson jpaContactPerson = new JpaContactPerson();
 
 		ContactPersonPosition position = contactPerson.getPosition();
-		JpaContactPersonPosition jpaContactPersonPosition = new JpaContactPersonPosition();
-		jpaContactPersonPosition.setPosition(position.getPosition());
-		jpaContactPersonPosition.setDescription(position.getDescription());
-		jpaContactPerson.setPosition(jpaContactPersonPosition);
+		if (position != null) {
+			JpaContactPersonPosition jpaContactPersonPosition = new JpaContactPersonPosition();
+			jpaContactPersonPosition.setPosition(position.getPosition());
+			jpaContactPersonPosition.setDescription(position.getDescription());
+			jpaContactPerson.setPosition(jpaContactPersonPosition);
+		}
 
 		jpaContactPerson.setFirstName(contactPerson.getFirstName());
 		jpaContactPerson.setLastName(contactPerson.getLastName());

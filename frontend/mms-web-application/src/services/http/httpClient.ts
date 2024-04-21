@@ -2,7 +2,11 @@ import axios, { AxiosResponse, AxiosError } from "axios";
 
 export class HttpClient {
 
-  constructor(private baseUrl: string) {}
+  baseUrl: string;
+
+  constructor(baseUrl?: string) {
+    this.baseUrl = baseUrl ?? 'http://localhost:45001/mms/api';
+  }
 
   public get(endpoint: string): Promise<AxiosResponse<any>> {
     return axios.get(this.baseUrl + '/' + endpoint);

@@ -38,7 +38,9 @@ public class JpaContactPersonDao {
 
 	public void save(JpaContactPerson contactPerson){
 		reasonForContactRepository.saveAll(contactPerson.getReasonForContacts());
-		positionRepository.save(contactPerson.getPosition());
+		if (contactPerson.getPosition() != null) {
+			positionRepository.save(contactPerson.getPosition());
+		}
 		contactPersonRepository.save(contactPerson);
 	}
 
