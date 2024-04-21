@@ -5,10 +5,10 @@ export class Customer{
 
   customerId: number | undefined;
   companyName: string;
-  address: Address;
+  address?: Address;
   contactPersons: ContactPerson[];
 
-  constructor(compName: string, addr: Address, contactPers?: ContactPerson[], custId?: number) {
+  constructor(compName: string, addr?: Address, contactPers?: ContactPerson[], custId?: number) {
     this.customerId = custId;
     this.companyName = compName;
     this.address = addr;

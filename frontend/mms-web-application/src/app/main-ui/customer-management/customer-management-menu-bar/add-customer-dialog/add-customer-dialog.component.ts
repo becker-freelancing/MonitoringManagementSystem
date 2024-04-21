@@ -1,15 +1,19 @@
-import {NgForOf} from "@angular/common";
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormsModule} from "@angular/forms";
+import {NgForOf, NgIf} from "@angular/common";
+import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {
   MatDialogActions,
-  MatDialogClose,
+  MatDialogClose, MatDialogContainer,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
+import {MatFormField} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {Address} from "../../../../../model/cutomer/address";
+import {ContactPerson} from "../../../../../model/cutomer/contactPerson";
 import {Country} from "../../../../../model/cutomer/country";
 import {Customer} from "../../../../../model/cutomer/customer";
 import {CustomerManagementService} from "../../../../../services/customermanagement/customerManagementService";
@@ -17,55 +21,56 @@ import {CustomerManagementService} from "../../../../../services/customermanagem
 @Component({
   selector: 'app-add-customer-dialog',
   standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, NgForOf, FormsModule],
+  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, NgForOf, FormsModule, MatDialogContainer, MatFormField, MatInput, ReactiveFormsModule, NgIf, MatRadioGroup, MatRadioButton],
   templateUrl: './add-customer-dialog.component.html',
   styleUrl: './add-customer-dialog.component.css',
   providers: [CustomerManagementService]
 })
 export class AddCustomerDialogComponent implements OnInit{
 
-  countries: string[];
-  positions: string[];
-  reasonsForContact: string[];
+  @Output('savedCustomer') savedCustomerOutput = new EventEmitter<Customer>();
+
+  form: FormGroup;
 
   customerName: string = '';
-  street: string = '';
-  houseNumber: string = '';
-  zipCode: string = '';
-  city: string = '';
-  country: string = '';
+  contactPersonFirstName: string = '';
+  contactPersonLastName: string = '';
+  contactPersonEMail: string = '';
+  contactPersonPhoneNumber: string = '';
 
-  constructor(public dialogRef: MatDialogRef<AddCustomerDialogComponent>, private customerService: CustomerManagementService) {
-    this.countries = this.getEnumRepresentationValues(Country);
-    this.positions = [];
-    this.reasonsForContact = [];
+  customerNameNotValid: boolean = false;
+
+  constructor(
+    fb: FormBuilder,
+    private dialogRef: MatDialogRef<AddCustomerDialogComponent>) {
+    this.form = fb.group({
+      customerName: [this.customerName, Validators.required],
+      contactPersonFirstName: [this.contactPersonFirstName],
+      contactPersonLastName: [this.contactPersonLastName],
+      contactPersonEMail: [this.contactPersonEMail],
+      contactPersonPhoneNumber: [this.contactPersonPhoneNumber]
+    });
   }
 
-  getEnumRepresentationValues(enumType: any): string[] {
-    return Object.keys(enumType)
-      .filter(key => !isNaN(Number(enumType[key])))
-      .map(key => enumType[key]);
-  }
+  ngOnInit() {
 
-  getEnumValue(value: string, enumType: any): Country | null {
-    const keys = Object.keys(Country).filter(x => enumType[x] === value);
-    if (keys.length > 0) {
-      return enumType[keys[0]];
-    } else {
-      return null;
-    }
-  }
-
-  ngOnInit(): void {
   }
 
   saveCustomer() {
-    let country = this.getEnumValue(this.country, Country);
-    let address = new Address(this.street, this.houseNumber, this.city, country, this.zipCode);
-    let customer = new Customer(this.customerName, address);
+    if(this.form.valid) {
+      let formValues = this.form.value;
 
-    this.customerService.addCustomer(customer);
+      let contactPeron: ContactPerson[]  = [];
+      if(formValues['contactPersonFirstName'] != null && formValues['contactPersonLastName'] != null){
+        let email: string[] = formValues['contactPersonEMail'] == '' ? [] : [formValues['contactPersonEMail']]
+        let phoneNumber: string[] = formValues['contactPersonPhoneNumber'] == '' ? [] : [formValues['contactPersonPhoneNumber']]
+        contactPeron.push(new ContactPerson(formValues['contactPersonFirstName'], formValues['contactPersonLastName'], email, phoneNumber));
+      }
+
+      let customer = new Customer(formValues['customerName'], undefined, contactPeron);
+      this.dialogRef.close(customer);
+    } else {
+      this.customerNameNotValid = true;
+    }
   }
-
-
 }

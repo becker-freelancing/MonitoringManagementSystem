@@ -1,27 +1,45 @@
-<h2 mat-dialog-title>Kunde hinzufügen</h2>
-<mat-dialog-content>
-  <div>
-    <p>Kunden-Daten</p>
-    <input id ="add-customer-dialog-customer-name" type="text" [(ngModel)]="customerName" placeholder="Name des Kunden">
-  </div>
-  <div>
-    <p>Adresse</p>
+<mat-dialog-content [formGroup]="form">
+  <header>
+    <h2>Kunde hinzufügen</h2>
+  </header>
 
-    <div>
-      <input id="add-customer-dialog-street" type="text" [(ngModel)]="street" placeholder="Straße">
-      <input id="add-customer-dialog-house-number" type="text" [(ngModel)]="houseNumber" placeholder="Hausnummer">
+  <div class="form-division">
+    <h3>Kunden-Daten</h3>
+    <div class="form-input">
+      <mat-form-field class="form-input-field">
+        <input matInput placeholder="Firmen-Name" type="text" id="name" required formControlName="customerName">
+      </mat-form-field>
+      <div class="form-input-not-valid-label" *ngIf="customerNameNotValid">Firmen-Name benötigt</div>
+    </div>
+  </div>
+
+  <div class="form-division">
+
+    <h3>Kontakt-Person</h3>
+
+    <div class="form-input form-input-horizontal">
+      <mat-form-field class="form-input-field">
+        <input matInput class="add-customer-dialog-input" type="text" formControlName="contactPersonFirstName" placeholder="Vorname">
+      </mat-form-field>
+      <mat-form-field class="form-input-field">
+        <input matInput class="add-customer-dialog-input" type="text" formControlName="contactPersonLastName" placeholder="Nachname">
+      </mat-form-field>
     </div>
 
-    <div>
-      <input id="add-customer-dialog-zip-code" type="text" [(ngModel)]="zipCode" placeholder="PLZ">
-      <input id="add-customer-dialog-city" type="text" [(ngModel)]="city" placeholder="Stadt">
-      <select id="add-customer-dialog-country" [(ngModel)]="country">
-        <option *ngFor="let country of countries">{{country}}</option>
-      </select>
+    <div class="form-input">
+      <mat-form-field class="form-input-field">
+        <input matInput class="add-customer-dialog-input" type="email" formControlName="contactPersonEMail" placeholder="E-Mail">
+      </mat-form-field>
+    </div>
+
+    <div class="form-input">
+      <mat-form-field class="form-input-field">
+        <input matInput class="add-customer-dialog-input" type="tel" formControlName="contactPersonPhoneNumber" placeholder="Telefon-Nummer">
+      </mat-form-field>
     </div>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Abbrechen</button>
-  <button mat-button mat-dialog-close cdkFocusInitial (click)="saveCustomer()">Speichern</button>
+  <button mat-button cdkFocusInitial (click)="saveCustomer()">Speichern</button>
 </mat-dialog-actions>
