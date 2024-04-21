@@ -184,7 +184,7 @@ class JpaCustomerDao implements CustomerRepository {
 		JpaContactPerson jpaContactPerson = new JpaContactPerson();
 
 		ContactPersonPosition position = contactPerson.getPosition();
-		if (position != null) {
+		if (position != null && false) {
 			JpaContactPersonPosition jpaContactPersonPosition = new JpaContactPersonPosition();
 			jpaContactPersonPosition.setPosition(position.getPosition());
 			jpaContactPersonPosition.setDescription(position.getDescription());

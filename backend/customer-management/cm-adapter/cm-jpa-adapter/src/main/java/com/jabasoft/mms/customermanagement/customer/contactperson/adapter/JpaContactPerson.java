@@ -33,7 +33,7 @@ public class JpaContactPerson {
 
 	//@Column(name = "CONTACT_PERSON_POSITION")
 	@OneToOne
-	@JoinColumn(name = "CONTACT_PERSON_ID", referencedColumnName = "CONTACT_PERSON_ID")
+	@JoinColumn(name = "POSITION", referencedColumnName = "POSITION")
 	private JpaContactPersonPosition position;
 
 	@Column(name = "FIRST_NAME")

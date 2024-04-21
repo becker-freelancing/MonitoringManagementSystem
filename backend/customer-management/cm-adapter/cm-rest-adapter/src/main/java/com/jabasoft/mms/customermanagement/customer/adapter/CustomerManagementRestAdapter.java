@@ -3,8 +3,9 @@ package com.jabasoft.mms.customermanagement.customer.adapter;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,11 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jabasoft.mms.customermanagement.customer.api.CustomerManagementPort;
 import com.jabasoft.mms.customermanagement.dto.CustomerDto;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 
 @RestController
 @RequestMapping("/mms/api/customers")
 class CustomerManagementRestAdapter {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerManagementRestAdapter.class);
 
 	private CustomerManagementPort customerManagementPort;
 
@@ -41,7 +43,7 @@ class CustomerManagementRestAdapter {
 
 			return customerDto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(810).build());
 		} catch (Exception e){
-			e.printStackTrace();
+			LOGGER.error("Exception in saveCustomer-Request", e);
 			return ResponseEntity.internalServerError().build();
 		}
 	}
@@ -54,6 +56,7 @@ class CustomerManagementRestAdapter {
 			return deleted.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(810).build());
 
 		} catch (Exception e){
+			LOGGER.error("Exception in deleteCustomer-Request", e);
 			return ResponseEntity.internalServerError().build();
 		}
 	}
@@ -66,6 +69,7 @@ class CustomerManagementRestAdapter {
 
 			return customer.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(810).build());
 		} catch (Exception e){
+			LOGGER.error("Exception in getCustomer-Request", e);
 			return ResponseEntity.internalServerError().build();
 		}
 	}
@@ -77,6 +81,7 @@ class CustomerManagementRestAdapter {
 
 			return ResponseEntity.ok(all);
 		} catch (Exception e){
+			LOGGER.error("Exception in findAllCustomer-Request", e);
 			return ResponseEntity.internalServerError().build();
 		}
 	}
