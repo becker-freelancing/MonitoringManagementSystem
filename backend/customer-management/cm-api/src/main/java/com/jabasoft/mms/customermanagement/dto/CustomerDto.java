@@ -1,6 +1,8 @@
 package com.jabasoft.mms.customermanagement.dto;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class CustomerDto {
 
@@ -59,6 +61,29 @@ public class CustomerDto {
 	public void setLogo(byte[] logo) {
 
 		this.logo = logo;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		CustomerDto that = (CustomerDto) o;
+		return Objects.equals(id, that.id)
+			&& Objects.equals(companyName, that.companyName)
+			&& Objects.equals(address, that.address)
+			&& Objects.equals(contactPersons, that.contactPersons)
+			&& Arrays.equals(logo, that.logo);
+	}
+
+	@Override
+	public int hashCode() {
+
+		int result = Objects.hash(id, companyName, address, contactPersons);
+		result = 31 * result + Arrays.hashCode(logo);
+		return result;
 	}
 
 }

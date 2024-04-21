@@ -24,7 +24,7 @@ class ContactPersonPositionInteractorTest {
 
 	@BeforeEach
 	void setUp(){
-		repository = mock(repository);
+		repository = mock(ContactPersonPositionRepository.class);
 		interactor = new ContactPersonPositionInteractor(repository);
 	}
 
@@ -111,7 +111,7 @@ class ContactPersonPositionInteractorTest {
 		expected.setPosition("7feb44d1-85a5-438e-ab44-d185a5538e22");
 		expected.setDescription("fb4d339c-fd9b-4e65-8d33-9cfd9b6e659d");
 
-		when(repository.deleteByPosition(any())).thenReturn(Optional.of(new ContactPersonPosition(expected.getPosition(), expected.getDescription())));
+		when(repository.findByPosition(any())).thenReturn(Optional.of(new ContactPersonPosition(expected.getPosition(), expected.getDescription())));
 
 		Optional<ContactPersonPositionDto> position = interactor.getPosition("600b3ebd-5ee1-484c-8b3e-bd5ee1584c36");
 

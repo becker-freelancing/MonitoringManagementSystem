@@ -1,5 +1,7 @@
 package com.jabasoft.mms.customermanagement.dto;
 
+import java.util.Objects;
+
 public class AddressDto {
 
 	private Long id;
@@ -67,6 +69,27 @@ public class AddressDto {
 	public void setZipCode(String zipCode) {
 
 		this.zipCode = zipCode;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		AddressDto that = (AddressDto) o;
+		return Objects.equals(id, that.id) && Objects.equals(street, that.street) && Objects.equals(
+			houseNumber,
+			that.houseNumber) && Objects.equals(city, that.city) && country == that.country && Objects.equals(
+			zipCode,
+			that.zipCode);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id, street, houseNumber, city, country, zipCode);
 	}
 
 }

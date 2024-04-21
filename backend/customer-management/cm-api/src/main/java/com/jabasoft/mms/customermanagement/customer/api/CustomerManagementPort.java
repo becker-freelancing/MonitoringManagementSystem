@@ -7,7 +7,7 @@ import com.jabasoft.mms.customermanagement.dto.CustomerDto;
 
 public interface CustomerManagementPort {
 
-	public CustomerDto saveCustomer(CustomerDto customerDto);
+	public Optional<CustomerDto> saveCustomer(CustomerDto customerDto);
 
 	public Optional<CustomerDto> deleteCustomer(Long customerId);
 

@@ -38,12 +38,12 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 	}
 
 	@Override
-	public CustomerDto saveCustomer(CustomerDto customerDto) {
+	public Optional<CustomerDto> saveCustomer(CustomerDto customerDto) {
 
 		Customer customer = mapCustomerToDomain(customerDto);
-		Customer savedCustomer = customerRepository.saveCustomer(customer);
+		Optional<Customer> savedCustomer = customerRepository.saveCustomer(customer);
 
-		return mapCustomerToDto(savedCustomer);
+		return savedCustomer.map(this::mapCustomerToDto);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 		return new ContactPerson(contactPersonPosition, contactPersonDto.getFirstName(), contactPersonDto.getLastName(), emails, phoneNumbers, reasonForContacts);
 	}
 
-	private Customer mapCustomerToDomain(CustomerDto customerDto){
+	protected Customer mapCustomerToDomain(CustomerDto customerDto){
 
 		Address address = mapAddressToDomain(customerDto.getAddress());
 		List<ContactPerson> contactPersons =
@@ -137,7 +137,7 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 		position.setDescription(contactPerson.getPosition().getDescription());
 		contactPersonDto.setPosition(position);
 		contactPersonDto.setFirstName(contactPerson.getFirstName());
-		contactPersonDto.setLastName(contactPersonDto.getLastName());
+		contactPersonDto.setLastName(contactPerson.getLastName());
 		contactPersonDto.setEmails(contactPerson.getEmails().stream().map(EMail::getEmail).toList());
 		contactPersonDto.setPhoneNumbers(contactPerson.getPhoneNumbers().stream().map(PhoneNumber::getPhoneNumber).toList());
 		contactPersonDto.setReasonsForContact(contactPerson.getReasonsForContact().stream()

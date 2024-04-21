@@ -11,6 +11,6 @@ public interface CustomerRepository {
 	Optional<Customer> deleteCustomer(CustomerId customerId);
 	Optional<Customer> findCustomer(CustomerId customerId);
 	List<Customer> findAllCustomer();
-	public Customer saveCustomer(Customer customer);
+	public Optional<Customer> saveCustomer(Customer customer);
 
 }

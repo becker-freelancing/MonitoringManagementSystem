@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jabasoft.mms.customermanagement.MmsDaoImplTest;
@@ -84,8 +85,8 @@ class JpaCustomerDaoTest {
 
 		List<Customer> expectedCustomers = new ArrayList<>();
 		for (Customer customer : customers) {
-			Customer savedCustomer = customerDao.saveCustomer(customer);
-			expectedCustomers.add(savedCustomer);
+			Optional<Customer> savedCustomer = customerDao.saveCustomer(customer);
+			expectedCustomers.add(savedCustomer.orElseThrow(AssertionFailedError::new));
 		}
 
 		for (Customer expected : expectedCustomers) {
@@ -104,8 +105,8 @@ class JpaCustomerDaoTest {
 
 		List<Customer> expectedCustomers = new ArrayList<>();
 		for (Customer customer : customers) {
-			Customer savedCustomer = customerDao.saveCustomer(customer);
-			expectedCustomers.add(savedCustomer);
+			Optional<Customer> savedCustomer = customerDao.saveCustomer(customer);
+			expectedCustomers.add(savedCustomer.orElseThrow(AssertionFailedError::new));
 		}
 
 		Customer deleted = expectedCustomers.remove(0);
@@ -143,7 +144,7 @@ class JpaCustomerDaoTest {
 
 		Customer customer = beans.get(0);
 
-		Customer expectedCustomer = customerDao.saveCustomer(customer);
+		Customer expectedCustomer = customerDao.saveCustomer(customer).orElseThrow(AssertionFailedError::new);
 
 		assertEquals(customer, expectedCustomer);
 
@@ -157,7 +158,7 @@ class JpaCustomerDaoTest {
 
 		expectedCustomer.addContactPerson(contactPerson);
 
-		Customer actualCustomer = customerDao.saveCustomer(expectedCustomer);
+		Customer actualCustomer = customerDao.saveCustomer(expectedCustomer).orElseThrow(AssertionFailedError::new);
 
 		assertEquals(expectedCustomer, actualCustomer);
 	}

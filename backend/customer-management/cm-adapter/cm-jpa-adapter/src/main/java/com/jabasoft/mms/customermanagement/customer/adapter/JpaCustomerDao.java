@@ -78,14 +78,14 @@ class JpaCustomerDao implements CustomerRepository {
 	}
 
 	@Override
-	public Customer saveCustomer(Customer customer) {
+	public Optional<Customer> saveCustomer(Customer customer) {
 
 		JpaCustomer jpaCustomer = mapCustomerToEntity(customer);
 		addressRepository.save(jpaCustomer.getAddress());
 		contactPersonRepository.saveAll(jpaCustomer.getContactPersons());
 		JpaCustomer savedCustomer = customerRepository.save(jpaCustomer);
 
-		return mapCustomerToDomain(savedCustomer);
+		return Optional.of(mapCustomerToDomain(savedCustomer));
 	}
 
 	private Customer mapCustomerToDomain(JpaCustomer jpaCustomer) {

@@ -19,6 +19,7 @@ import com.jabasoft.mms.customermanagement.dto.ContactPersonPositionDto;
 import com.jabasoft.mms.customermanagement.dto.CountryDto;
 import com.jabasoft.mms.customermanagement.dto.CustomerDto;
 import com.jabasoft.mms.customermanagement.dto.ReasonForContactDto;
+import com.jabasoft.mms.junit.beans.BeanAssertion;
 
 class CustomerManagementInteractorTest {
 
@@ -27,12 +28,12 @@ class CustomerManagementInteractorTest {
 
 	@BeforeEach
 	void setUp(){
-		repository = mock(repository);
+		repository = mock(CustomerRepository.class);
 		interactor = new CustomerManagementInteractor(repository);
 	}
 
 	@Test
-	void testGetPositionsWithNoAvailablePositionsReturnsEmptyList() {
+	void testGetCustomersWithNoAvailableCustomersReturnsEmptyList() {
 
 		when(repository.findAllCustomer()).thenReturn(List.of());
 
@@ -42,121 +43,104 @@ class CustomerManagementInteractorTest {
 	}
 
 	@Test
-	void testGetPositionsReturnAllPositions(){
+	void testGetCustomersReturnAllCustomers(){
 
-		CustomerDto dto1 = new CustomerDto();
-		dto1.setPosition("7feb44d1-85a5-438e-ab44-d185a5538e22");
-		dto1.setDescription("fb4d339c-fd9b-4e65-8d33-9cfd9b6e659d");
-
-		CustomerDto dto2 = new CustomerDto();
-		dto1.setPosition("e9285b53-69c5-4dcb-a85b-5369c5ddcbc4");
+		CustomerDto dto1 = createCustomer1();
+		CustomerDto dto2 = createCustomer2();
 
 		List<CustomerDto> expected = List.of(dto1, dto2);
 
 		when(repository.findAllCustomer()).thenReturn(List.of(
-			new ContactPersonPosition(dto1.getPosition(), dto1.getDescription()),
-			new ContactPersonPosition(dto2.getPosition(), dto2.getDescription())
+			interactor.mapCustomerToDomain(dto1),
+			interactor.mapCustomerToDomain(dto2)
 		));
 
 
 		List<CustomerDto> actual = interactor.findAll();
 
 		assertEquals(expected.size(), actual.size());
-		assertEquals(expected.get(0).getPosition(), actual.get(0).getPosition());
-		assertEquals(expected.get(0).getDescription(), actual.get(0).getDescription());
-		assertEquals(expected.get(1).getPosition(), actual.get(1).getPosition());
-		assertEquals(expected.get(1).getDescription(), actual.get(1).getDescription());
+		assertEquals(expected.get(0), actual.get(0));
+		assertEquals(expected.get(1), actual.get(1));
 	}
 
 	@Test
-	void testGetPositionReturnsPositionWhenPositionExists() {
+	void testGetCustomerReturnsCustomerWhenCustomerExists() {
 
-		CustomerDto expected = new CustomerDto();
-		expected.setPosition("7feb44d1-85a5-438e-ab44-d185a5538e22");
-		expected.setDescription("fb4d339c-fd9b-4e65-8d33-9cfd9b6e659d");
+		CustomerDto expected = createCustomer1();
 
-		when(repository.findCustomer(any())).thenReturn(Optional.of(new ContactPersonPosition(expected.getPosition(), expected.getDescription())));
+		when(repository.findCustomer(any())).thenReturn(Optional.of(interactor.mapCustomerToDomain(expected)));
 
-		Optional<CustomerDto> position = interactor.getCustomer("600b3ebd-5ee1-484c-8b3e-bd5ee1584c36");
+		Optional<CustomerDto> position = interactor.getCustomer(1234L);
 
 		assertTrue(position.isPresent());
 
 		CustomerDto actual = position.get();
 
-		assertEquals(expected.getPosition(), actual.getPosition());
-		assertEquals(expected.getDescription(), actual.getDescription());
+		assertEquals(expected, actual);
 	}
 
 	@Test
-	void testGetPositionReturnsEmptyOptionalWhenNoPositionExists() {
+	void testGetCustomerReturnsEmptyOptionalWhenNoCustomerExists() {
 
 		when(repository.findCustomer(any())).thenReturn(Optional.empty());
 
-		Optional<CustomerDto> position = interactor.getPosition("600b3ebd-5ee1-484c-8b3e-bd5ee1584c36");
+		Optional<CustomerDto> position = interactor.getCustomer(1234L);
 
 		assertTrue(position.isEmpty());
 	}
 
 	@Test
-	void testDeletePositionReturnEmptyOptionalWhenNoPositionExists() {
+	void testDeleteCustomerReturnEmptyOptionalWhenNoCustomerExists() {
 
 		when(repository.findCustomer(any())).thenReturn(Optional.empty());
 
-		Optional<CustomerDto> position = interactor.deletePosition("600b3ebd-5ee1-484c-8b3e-bd5ee1584c36");
+		Optional<CustomerDto> position = interactor.deleteCustomer(1234L);
 
 		assertTrue(position.isEmpty());
 	}
 
 	@Test
-	void testDeletePositionReturnPositionWhenPositionExists() {
+	void testDeleteCustomerReturnCustomerWhenCustomerExists() {
 
-		CustomerDto expected = new CustomerDto();
-		expected.setPosition("7feb44d1-85a5-438e-ab44-d185a5538e22");
-		expected.setDescription("fb4d339c-fd9b-4e65-8d33-9cfd9b6e659d");
+		CustomerDto expected = createCustomer1();
 
-		when(repository.deleteCustomer(any())).thenReturn(Optional.of(new ContactPersonPosition(expected.getPosition(), expected.getDescription())));
+		when(repository.deleteCustomer(any())).thenReturn(Optional.of(interactor.mapCustomerToDomain(expected)));
 
-		Optional<CustomerDto> position = interactor.getPosition("600b3ebd-5ee1-484c-8b3e-bd5ee1584c36");
+		Optional<CustomerDto> position = interactor.deleteCustomer(1234L);
 
 		assertTrue(position.isPresent());
 
 		CustomerDto actual = position.get();
 
-		assertEquals(expected.getPosition(), actual.getPosition());
-		assertEquals(expected.getDescription(), actual.getDescription());
+		assertEquals(expected, actual);
 	}
 
 	@Test
-	void testSavePositionReturnsEmptyOptionalWhenRepositoryDoesNotSave() {
+	void testSaveCustomerReturnsEmptyOptionalWhenRepositoryDoesNotSave() {
 
-		CustomerDto dto = new CustomerDto();
-		dto.setPosition("7feb44d1-85a5-438e-ab44-d185a5538e22");
-		dto.setDescription("fb4d339c-fd9b-4e65-8d33-9cfd9b6e659d");
+		CustomerDto dto = createCustomer1();
 
-		when(repository.savePosition(any())).thenReturn(Optional.empty());
+		when(repository.saveCustomer(any())).thenReturn(Optional.empty());
 
-		Optional<CustomerDto> position = interactor.savePosition(dto);
+		Optional<CustomerDto> position = interactor.saveCustomer(dto);
 
 		assertTrue(position.isEmpty());
 	}
 
 	@Test
-	void testSavePositionReturnPositionWhenRepositorySaves() {
+	void testSaveCustomerReturnCustomerWhenRepositorySaves() {
 
-		CustomerDto expected = new CustomerDto();
-		expected.setPosition("7feb44d1-85a5-438e-ab44-d185a5538e22");
-		expected.setDescription("fb4d339c-fd9b-4e65-8d33-9cfd9b6e659d");
+		CustomerDto expected = createCustomer1();
 
-		when(repository.savePosition(any())).thenReturn(Optional.of(new ContactPersonPosition(expected.getPosition(), expected.getDescription())));
+		when(repository.saveCustomer(any())).thenReturn(Optional.of(interactor.mapCustomerToDomain(expected)));
 
-		Optional<CustomerDto> position = interactor.savePosition(expected);
+		Optional<CustomerDto> position = interactor.saveCustomer(expected);
 
 		assertTrue(position.isPresent());
 
 		CustomerDto actual = position.get();
 
-		assertEquals(expected.getPosition(), actual.getPosition());
-		assertEquals(expected.getDescription(), actual.getDescription());
+		assertEquals(expected, actual);
 	}
 
 	private static CustomerDto createCustomer1(){

@@ -1,6 +1,7 @@
 package com.jabasoft.mms.customermanagement.dto;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ContactPersonDto {
 
@@ -80,6 +81,31 @@ public class ContactPersonDto {
 	public void setReasonsForContact(List<ReasonForContactDto> reasonsForContact) {
 
 		this.reasonsForContact = reasonsForContact;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		ContactPersonDto that = (ContactPersonDto) o;
+		return Objects.equals(id, that.id)
+			&& Objects.equals(position, that.position)
+			&& Objects.equals(
+			firstName,
+			that.firstName)
+			&& Objects.equals(lastName, that.lastName)
+			&& Objects.equals(emails, that.emails)
+			&& Objects.equals(phoneNumbers, that.phoneNumbers)
+			&& Objects.equals(reasonsForContact, that.reasonsForContact);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id, position, firstName, lastName, emails, phoneNumbers, reasonsForContact);
 	}
 
 }

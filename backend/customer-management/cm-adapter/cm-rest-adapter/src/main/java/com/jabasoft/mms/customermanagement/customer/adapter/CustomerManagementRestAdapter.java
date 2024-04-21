@@ -35,9 +35,9 @@ class CustomerManagementRestAdapter {
 	public ResponseEntity<CustomerDto> saveCustomer(@RequestBody CustomerDto customer){
 
 		try {
-			CustomerDto customerDto = customerManagementPort.saveCustomer(customer);
+			Optional<CustomerDto> customerDto = customerManagementPort.saveCustomer(customer);
 
-			return ResponseEntity.ok(customerDto);
+			return customerDto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(810).build());
 		} catch (Exception e){
 			return ResponseEntity.internalServerError().build();
 		}

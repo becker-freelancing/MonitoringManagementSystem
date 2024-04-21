@@ -23,7 +23,7 @@ class ReasonForContactInteractorTest {
 
 	@BeforeEach
 	void setUp(){
-		repository = mock(repository);
+		repository = mock(ReasonForContactRepository.class);
 		interactor = new ReasonForContactInteractor(repository);
 	}
 
@@ -110,7 +110,7 @@ class ReasonForContactInteractorTest {
 		expected.setReason("7feb44d1-85a5-438e-ab44-d185a5538e22");
 		expected.setDescription("fb4d339c-fd9b-4e65-8d33-9cfd9b6e659d");
 
-		when(repository.deleteByReason(any())).thenReturn(Optional.of(new ReasonForContact(expected.getReason(), expected.getDescription())));
+		when(repository.findByReason(any())).thenReturn(Optional.of(new ReasonForContact(expected.getReason(), expected.getDescription())));
 
 		Optional<ReasonForContactDto> position = interactor.getReason("600b3ebd-5ee1-484c-8b3e-bd5ee1584c36");
 
