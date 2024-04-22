@@ -74,6 +74,7 @@ class CustomerManagementRestAdapter {
 		}
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/get")
 	public ResponseEntity<List<CustomerDto>> findAll(){
 		try{

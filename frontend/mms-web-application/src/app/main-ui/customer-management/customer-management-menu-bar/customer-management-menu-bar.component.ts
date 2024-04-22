@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
+import {Updatable} from "../../../../model/util/updatable";
 import {CustomerManagementService} from "../../../../services/customermanagement/customerManagementService";
 import {AddCustomerDialogComponent} from "./add-customer-dialog/add-customer-dialog.component";
 import {DeleteCustomerDialogComponent} from "./delete-customer-dialog/delete-customer-dialog.component";
@@ -13,11 +14,13 @@ import {EditCustomerDialogComponent} from "./edit-customer-dialog/edit-customer-
   templateUrl: './customer-management-menu-bar.component.html',
   styleUrl: './customer-management-menu-bar.component.css'
 })
-export class CustomerManagementMenuBarComponent {
+export class CustomerManagementMenuBarComponent implements Updatable{
 
   customerManagementService: CustomerManagementService;
 
-  constructor(public dialog: MatDialog, customerManagementService: CustomerManagementService) {
+  constructor(
+    public dialog: MatDialog,
+    customerManagementService: CustomerManagementService) {
     this.customerManagementService = customerManagementService;
   }
 
@@ -29,6 +32,7 @@ export class CustomerManagementMenuBarComponent {
 
     dialogRef.afterClosed().subscribe(customer => {
       this.customerManagementService.addCustomer(customer);
+      this.update();
     })
 
   }
@@ -40,4 +44,10 @@ export class CustomerManagementMenuBarComponent {
   openDeleteCustomerDialog() {
     this.dialog.open(DeleteCustomerDialogComponent, {})
   }
+
+  update(): void {
+    window.location.reload();
+  }
+
+
 }
