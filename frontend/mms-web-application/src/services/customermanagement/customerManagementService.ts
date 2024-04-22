@@ -1,7 +1,4 @@
 import {Injectable} from "@angular/core";
-import {
-  CustomerManagementCustomer
-} from "../../app/main-ui/customer-management/all-customer-table/customerManagementCustomer";
 import {Address} from "../../model/cutomer/address";
 import {ContactPerson} from "../../model/cutomer/contactPerson";
 import {Customer} from "../../model/cutomer/customer";

@@ -1,6 +1,6 @@
 import {CdkScrollable} from "@angular/cdk/overlay";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 import {
   MatCell,
   MatCellDef, MatColumnDef,
@@ -13,7 +13,7 @@ import {
 import {Customer} from "../../../../model/cutomer/customer";
 import {Updatable} from "../../../../model/util/updatable";
 import {CustomerManagementService} from "../../../../services/customermanagement/customerManagementService";
-import {CustomerManagementCustomer} from "./customerManagementCustomer";
+import {CustomerManagementCustomer} from "../customerManagementCustomer";
 
 @Component({
   selector: 'app-all-customer-table',
@@ -39,6 +39,9 @@ import {CustomerManagementCustomer} from "./customerManagementCustomer";
 })
 export class AllCustomerTableComponent implements AfterViewInit, Updatable{
 
+  @Output('selectedCustomer') selectedCustomer = new EventEmitter<CustomerManagementCustomer>();
+  @Output('dblClickedCustomer') dblClickedCustomer = new EventEmitter<CustomerManagementCustomer>();
+
   customerService: CustomerManagementService;
 
   customers: CustomerManagementCustomer[];
@@ -62,5 +65,13 @@ export class AllCustomerTableComponent implements AfterViewInit, Updatable{
         this.customers.push(customerManagementCustomer);
       }
     }, (status: number) => alert(status))
+  }
+
+  emitSingleClickedCustomerEvent(customer: CustomerManagementCustomer){
+   this.selectedCustomer.emit(customer);
+  }
+
+  emitDblClickedCustomerEvent(customer: CustomerManagementCustomer) {
+    this.dblClickedCustomer.emit(customer);
   }
 }

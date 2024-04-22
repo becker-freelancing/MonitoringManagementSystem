@@ -1,5 +1,5 @@
 <div id="mat-table-wrapper">
-  <table mat-table [dataSource]="customers" id="mat-table-wrapper-2">
+  <table mat-table [dataSource]="customers">
 
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef class="all-customers-table-id-column">ID</th>
@@ -33,7 +33,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="emitSingleClickedCustomerEvent(row)" (dblclick)="emitDblClickedCustomerEvent(row)"></tr>
   </table>
 </div>
 
