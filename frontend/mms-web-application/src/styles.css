@@ -1,3 +1,7 @@
+/*
+Body and HTML
+ */
+
 html, body {
   margin: 0;
   height: 100%;
@@ -8,6 +12,13 @@ body{
   background-color: #f0f0f0;
 }
 
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/*
+Menu Bar
+ */
+
 .menu-bar{
   margin-top: 15px;
   margin-left: 15px;
@@ -16,28 +27,15 @@ body{
   margin-left: 10px;
 }
 
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/*
+Forms
+ */
 
 .form-input-not-valid-label{
   color: red;
   margin-top: 2px;
   font-size: 0.8rem;
 }
-
-div.mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align{
-  height: 0;
-}
-
-mat-dialog-content.mat-mdc-dialog-content.mdc-dialog__content{
-  height: 100%;
-}
-
-mat-dialog-content.mdc-dialog__content{
-  max-height: 100%;
-}
-
 .form-division {
   margin-bottom: 25px;
   width: 100%;
@@ -59,4 +57,67 @@ mat-dialog-content.mdc-dialog__content{
 
 .form-input-horizontal *:not(:last-child){
   margin-right: 5px;
+}
+
+/*
+MatDialogs
+ */
+
+div.mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align{
+  height: 0;
+}
+
+mat-dialog-content.mat-mdc-dialog-content.mdc-dialog__content{
+  height: 100%;
+}
+
+mat-dialog-content.mdc-dialog__content{
+  max-height: 100%;
+}
+
+/*
+Buttons
+ */
+
+button {
+  width: 8%;
+  height: 4%;
+  margin: 5px;
+}
+
+.primary-button{
+
+  background-image: radial-gradient(#98c0d9, #6392b0);
+  border-radius: 5px;
+  color: white;
+  border: 2px solid #6392b0;
+  box-shadow: 2px -1px rgba(26, 26, 26, 0.3);
+  font-weight: bold;
+  font-size: 1.0rem;
+  text-shadow:1px 1px black;
+}
+
+.primary-button:hover{
+  background-image: radial-gradient(#3a4146, #3a4146);
+  color: #65ebf6;
+  border: 2px solid #3a4146;
+  box-shadow: 3px -2px rgba(26, 26, 26, 0.3);
+}
+
+.secondary-button{
+  border-radius: 5px;
+  color: #145279;
+  border: 2px solid #98c0d9;
+  font-weight: bold;
+}
+
+.secondary-button:hover{
+
+  color: #6094b4;
+  border: 2px solid #145279;
+}
+
+.disabled-button{
+  border: 2px solid gray;
+  border-radius: 5px;
 }
