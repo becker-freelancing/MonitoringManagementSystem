@@ -1,11 +1,16 @@
+import {CdkScrollable} from "@angular/cdk/overlay";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {AfterViewChecked, AfterViewInit, Component} from '@angular/core';
-import {Address} from "../../../../model/cutomer/address";
-import {ContactPerson} from "../../../../model/cutomer/contactPerson";
-import {ContactPersonPosition} from "../../../../model/cutomer/contactPersonPosition";
-import {Country} from "../../../../model/cutomer/country";
+import {AfterViewInit, Component} from '@angular/core';
+import {
+  MatCell,
+  MatCellDef, MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow, MatHeaderRowDef,
+  MatRow, MatRowDef,
+  MatTable
+} from "@angular/material/table";
 import {Customer} from "../../../../model/cutomer/customer";
-import {Project} from "../../../../model/project/project";
 import {Updatable} from "../../../../model/util/updatable";
 import {CustomerManagementService} from "../../../../services/customermanagement/customerManagementService";
 import {CustomerManagementCustomer} from "./customerManagementCustomer";
@@ -16,7 +21,18 @@ import {CustomerManagementCustomer} from "./customerManagementCustomer";
   imports: [
     NgForOf,
     NgIf,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatTable,
+    MatHeaderCell,
+    MatCell,
+    MatHeaderCellDef,
+    MatCellDef,
+    MatHeaderRow,
+    MatRow,
+    MatHeaderRowDef,
+    MatRowDef,
+    MatColumnDef,
+    CdkScrollable
   ],
   templateUrl: './all-customer-table.component.html',
   styleUrl: './all-customer-table.component.css'
@@ -26,6 +42,7 @@ export class AllCustomerTableComponent implements AfterViewInit, Updatable{
   customerService: CustomerManagementService;
 
   customers: CustomerManagementCustomer[];
+  displayedColumns: string[] = ['id', 'customerName', 'activeTodos', 'activeProjects'];
 
   constructor(customerService: CustomerManagementService) {
     this.customers = [];
