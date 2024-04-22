@@ -18,7 +18,6 @@ export class CustomerManagementService {
 
   addCustomer(customer: Customer): Customer | null {
 
-    console.log(customer)
     this.httpClient.post('customers/save', customer).then(r => {
       if (r.status == 200){
         return null;

@@ -1,5 +1,5 @@
 <div class="menu-bar">
-  <button (click)="openAddCustomerDialog()">Hinzufügen</button>
-  <button (click)="openEditCustomerDialog(currentlySelectedCustomer)">Bearbeiten</button>
-  <button (click)="openDeleteCustomerDialog(currentlySelectedCustomer)">Löschen</button>
+  <button (click)="openAddCustomerDialog()" class="primary-button">Hinzufügen</button>
+  <button (click)="openEditCustomerDialog(currentlySelectedCustomer)" [ngClass]="editButtonClass">Bearbeiten</button>
+  <button (click)="openDeleteCustomerDialog(currentlySelectedCustomer)" [ngClass]="editButtonClass">Löschen</button>
 </div>
