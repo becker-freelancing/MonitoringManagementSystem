@@ -1,2 +1,2 @@
-<app-customer-management-menu-bar></app-customer-management-menu-bar>
-<app-all-customer-table></app-all-customer-table>
+<app-customer-management-menu-bar #customerManagementMenuBar [currentlySelectedCustomer]="currentlySelectedCustomer"></app-customer-management-menu-bar>
+<app-all-customer-table (dblClickedCustomer)="onDoubleClickedCustomer($event)" (selectedCustomer)="changeSelectedCustomerProperty($event)"></app-all-customer-table>

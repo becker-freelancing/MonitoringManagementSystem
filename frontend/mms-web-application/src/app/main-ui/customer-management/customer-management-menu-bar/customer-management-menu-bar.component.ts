@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
 import {Updatable} from "../../../../model/util/updatable";
 import {CustomerManagementService} from "../../../../services/customermanagement/customerManagementService";
+import {CustomerManagementCustomer} from "../customerManagementCustomer";
 import {AddCustomerDialogComponent} from "./add-customer-dialog/add-customer-dialog.component";
 import {DeleteCustomerDialogComponent} from "./delete-customer-dialog/delete-customer-dialog.component";
 import {EditCustomerDialogComponent} from "./edit-customer-dialog/edit-customer-dialog.component";
@@ -15,6 +16,8 @@ import {EditCustomerDialogComponent} from "./edit-customer-dialog/edit-customer-
   styleUrl: './customer-management-menu-bar.component.css'
 })
 export class CustomerManagementMenuBarComponent implements Updatable{
+
+  @Input('currentlySelectedCustomer') currentlySelectedCustomer: CustomerManagementCustomer | null = null;
 
   customerManagementService: CustomerManagementService;
 
@@ -37,12 +40,24 @@ export class CustomerManagementMenuBarComponent implements Updatable{
 
   }
 
-  openEditCustomerDialog() {
-    this.dialog.open(EditCustomerDialogComponent, {})
+  openEditCustomerDialog(customer: CustomerManagementCustomer | null) {
+    if (customer == null){
+      return;
+    }
+
+    this.dialog.open(EditCustomerDialogComponent, {
+      data: customer
+    });
   }
 
-  openDeleteCustomerDialog() {
-    this.dialog.open(DeleteCustomerDialogComponent, {})
+  openDeleteCustomerDialog(customer: CustomerManagementCustomer | null) {
+    if(customer == null){
+      return;
+    }
+
+    this.dialog.open(DeleteCustomerDialogComponent, {
+      data: customer
+    });
   }
 
   update(): void {
