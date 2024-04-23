@@ -33,7 +33,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="emitSingleClickedCustomerEvent(row)" (dblclick)="emitDblClickedCustomerEvent(row)"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="row.uiId == currentlySelectedCustomerUiId ? selectedTableCell : ''" (click)="onCustomerSingleClicked(row)" (dblclick)="emitDblClickedCustomerEvent(row)"></tr>
   </table>
 </div>
 
