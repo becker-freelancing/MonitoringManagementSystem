@@ -5,12 +5,14 @@ import {Todo} from "../../../model/todo/todo";
 
 export class CustomerManagementCustomer{
 
+  uiId: number;
   customer: Customer;
   projects: Project[];
   todos: Todo[];
 
 
-  constructor(customer: Customer, projects?:Project[], todo?:Todo[]) {
+  constructor(uiId: number, customer: Customer, projects?:Project[], todo?:Todo[]) {
+    this.uiId = uiId;
     this.customer = customer;
     this.projects = projects ?? [];
     this.todos = todo ?? []

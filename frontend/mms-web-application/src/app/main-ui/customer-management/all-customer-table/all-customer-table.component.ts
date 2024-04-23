@@ -60,8 +60,10 @@ export class AllCustomerTableComponent implements AfterViewInit, Updatable{
   update(): void{
     this.customerService.getAllCustomers((customers: Customer[]): void => {
       this.customers = [];
+      let uiId = 0;
       for (let customer of customers){
-        let customerManagementCustomer = new CustomerManagementCustomer(customer);
+        uiId++;
+        let customerManagementCustomer = new CustomerManagementCustomer(uiId, customer);
         this.customers.push(customerManagementCustomer);
       }
     }, (status: number) => alert(status))
