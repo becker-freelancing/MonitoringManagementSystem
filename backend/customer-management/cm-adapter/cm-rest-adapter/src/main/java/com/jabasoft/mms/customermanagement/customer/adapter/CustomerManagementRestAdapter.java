@@ -48,6 +48,7 @@ class CustomerManagementRestAdapter {
 		}
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<CustomerDto> deleteCustomer(@PathVariable("id") Long id){
 		try {
@@ -61,6 +62,8 @@ class CustomerManagementRestAdapter {
 		}
 	}
 
+
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/get/{id}")
 	public ResponseEntity<CustomerDto> getCustomer(@PathVariable("id") Long id){
 

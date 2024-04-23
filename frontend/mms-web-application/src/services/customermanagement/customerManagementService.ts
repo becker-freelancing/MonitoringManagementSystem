@@ -32,8 +32,17 @@ export class CustomerManagementService {
     return null;
   }
 
-  deleteCustomer(customer: Customer): Customer | null {
-    return null;
+  deleteCustomer(customer: Customer, onSuccess: (customer: Customer) => void, onError: (status: number) => void): void{
+    if(customer.customerId == -1){
+      return;
+    }
+    this.httpClient.delete('customers/delete', customer.customerId).then(r =>{
+      if (r.status != 200){
+        onError(r.status);
+        return;
+      }
+      onSuccess(this.mapToCustomer(r.data))
+      }).catch(error => {onError(error.status)})
   }
 
   getCustomer(customer: Customer): Customer | null {
@@ -54,7 +63,7 @@ export class CustomerManagementService {
       }
       accept(responseCustomers)
     }).catch((reason: any) => {
-      new DefaultErrorDialog(reason).show();
+      onError(reason.status)
     })
   }
 

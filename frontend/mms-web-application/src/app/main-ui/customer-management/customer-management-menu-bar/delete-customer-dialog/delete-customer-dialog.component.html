@@ -1,1 +1,22 @@
-<p>delete-customer-dialog works!</p>
+<mat-dialog-content>
+  <header>
+    <h2>Kunde löschen</h2>
+  </header>
+
+  <div class="form-division">
+    <p>Es werden alle Kundenbezogenen Daten gelöscht inklusive:</p>
+    <ul>
+      <li>Kunden-Stammdaten</li>
+      <li>Offene und abgeschlossene TODO's</li>
+    </ul>
+    <p>Außerdem werden alle aktiven Projekte des Kunden auf "abgeschlossen" gestellt.</p>
+  </div>
+
+  <h2>Diese Aktion kann nicht rückgängig gemacht werden</h2>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Abbrechen</button>
+  <button mat-button cdkFocusInitial (click)="deleteCustomer()">Löschen</button>
+</mat-dialog-actions>
+
