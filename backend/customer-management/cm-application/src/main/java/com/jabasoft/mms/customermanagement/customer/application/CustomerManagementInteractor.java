@@ -136,7 +136,7 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 		List<ContactPerson> contactPersons =
 			customerDto.getContactPersons().stream().map(this::mapContactPersonToDomain)
 				.filter(Objects::nonNull).collect(Collectors.toList());
-		Long id = customerDto.getId();
+		Long id = customerDto.getCustomerId();
 		if (id != null) {
 			return new Customer(new CustomerId(id), customerDto.getCompanyName(), address, contactPersons);
 		}
@@ -198,7 +198,7 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 		customerDto.setCompanyName(customer.getCompanyName());
 		customerDto.setAddress(address);
 		customerDto.setContactPersons(contactPersons);
-		customerDto.setId(customer.getCustomerId().map(CustomerId::getCustomerId).orElse(null));
+		customerDto.setCustomerId(customer.getCustomerId().map(CustomerId::getCustomerId).orElse(null));
 
 		return customerDto;
 	}

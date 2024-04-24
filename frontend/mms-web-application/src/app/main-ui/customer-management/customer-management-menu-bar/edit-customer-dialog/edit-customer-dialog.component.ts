@@ -50,7 +50,7 @@ export class EditCustomerDialogComponent implements OnInit {
   customerNameNotValid: boolean = false;
 
 
-  constructor(public dialogRef: MatDialogRef<EditCustomerDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<EditCustomerDialogComponent, CustomerManagementCustomer>,
               editCustomerDataFormBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) data: CustomerManagementCustomer) {
 

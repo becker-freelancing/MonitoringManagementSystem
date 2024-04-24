@@ -55,7 +55,7 @@ public class ContactPersonDto {
 
 	public List<String> getEmails() {
 
-		return emails;
+		return emails == null ? List.of() : emails;
 	}
 
 	public void setEmails(List<String> emails) {
@@ -65,7 +65,7 @@ public class ContactPersonDto {
 
 	public List<String> getPhoneNumbers() {
 
-		return phoneNumbers;
+		return phoneNumbers == null ? List.of() : phoneNumbers;
 	}
 
 	public void setPhoneNumbers(List<String> phoneNumbers) {
@@ -75,7 +75,7 @@ public class ContactPersonDto {
 
 	public List<ReasonForContactDto> getReasonsForContact() {
 
-		return reasonsForContact;
+		return reasonsForContact == null ? List.of() : reasonsForContact;
 	}
 
 	public void setReasonsForContact(List<ReasonForContactDto> reasonsForContact) {

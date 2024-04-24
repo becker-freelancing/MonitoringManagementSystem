@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class CustomerDto {
 
-	private Long id;
+	private Long customerId;
 	private String companyName;
 	private AddressDto address;
 	private List<ContactPersonDto> contactPersons;
@@ -18,9 +18,9 @@ public class CustomerDto {
 		return companyName;
 	}
 
-	public Long getId() {
+	public Long getCustomerId() {
 
-		return id;
+		return customerId;
 	}
 
 	public void setCompanyName(String companyName) {
@@ -40,7 +40,7 @@ public class CustomerDto {
 
 	public List<ContactPersonDto> getContactPersons() {
 
-		return contactPersons;
+		return contactPersons == null ? List.of() : contactPersons;
 	}
 
 	public void setContactPersons(List<ContactPersonDto> contactPersons) {
@@ -53,9 +53,9 @@ public class CustomerDto {
 		return logo;
 	}
 
-	public void setId(Long id) {
+	public void setCustomerId(Long id) {
 
-		this.id = id;
+		this.customerId = id;
 	}
 
 	public void setLogo(byte[] logo) {
@@ -71,7 +71,7 @@ public class CustomerDto {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		CustomerDto that = (CustomerDto) o;
-		return Objects.equals(id, that.id)
+		return Objects.equals(customerId, that.customerId)
 			&& Objects.equals(companyName, that.companyName)
 			&& Objects.equals(address, that.address)
 			&& Objects.equals(contactPersons, that.contactPersons)
@@ -81,7 +81,7 @@ public class CustomerDto {
 	@Override
 	public int hashCode() {
 
-		int result = Objects.hash(id, companyName, address, contactPersons);
+		int result = Objects.hash(customerId, companyName, address, contactPersons);
 		result = 31 * result + Arrays.hashCode(logo);
 		return result;
 	}

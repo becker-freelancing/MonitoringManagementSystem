@@ -82,7 +82,7 @@ export class CustomerManagementService {
 
   mapToCustomer(data: CustomerResponseData): Customer{
 
-    let id: number = data['id'];
+    let id: number = data['customerId'];
     let compName: string = data['companyName'];
     let address: Address | undefined = this.mapAddress(data['address']);
     let logo: Object[] | null = data['logo'];
@@ -105,7 +105,7 @@ export class CustomerManagementService {
 }
 
 export interface CustomerResponseData {
-  id: number;
+  customerId: number;
   companyName: string;
   address: Object | null;
   contactPersons: Object[];

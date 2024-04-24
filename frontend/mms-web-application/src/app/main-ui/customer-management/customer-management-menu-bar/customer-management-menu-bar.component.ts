@@ -60,7 +60,10 @@ export class CustomerManagementMenuBarComponent implements Updatable, OnChanges{
       width: '90%',
       height: '90%',
       data: customer
-    }).afterClosed().subscribe(customer => console.log(customer));
+    }).afterClosed().subscribe(customer => {
+      this.customerManagementService.saveCustomer(customer.customer);
+      window.location.reload();
+    });
   }
 
   openDeleteCustomerDialog(customer: CustomerManagementCustomer | null) {
