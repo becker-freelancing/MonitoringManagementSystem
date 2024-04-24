@@ -16,7 +16,7 @@ export class CustomerManagementService {
     this.httpClient = new HttpClient();
   }
 
-  addCustomer(customer: Customer): Customer | null {
+  saveCustomer(customer: Customer, onSuccess?: (customer: Customer) => void, onError?: (status: number) => void): Customer | null {
 
     this.httpClient.post('customers/save', customer).then(r => {
       if (r.status == 200){
@@ -24,7 +24,20 @@ export class CustomerManagementService {
       }
 
       return r.data;
-    })
+    }).then(r =>{
+      if (r.status != 200){
+        if (onError) {
+          onError(r.status);
+        }
+        return;
+      }
+      if (onSuccess) {
+        onSuccess(this.mapToCustomer(r.data))
+      }
+    }).catch(error => {
+      if (onError) {
+        onError(error.status)
+      }})
     return null;
   }
 

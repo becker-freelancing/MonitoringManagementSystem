@@ -43,7 +43,6 @@ export class DeleteCustomerDialogComponent implements OnInit {
   }
 
   deleteCustomer(): void {
-    console.log(this.data)
     let customer = this.data.customer;
 
     this.todoService.deleteTodosForCustomer(customer, (todos: Todo[]) => {

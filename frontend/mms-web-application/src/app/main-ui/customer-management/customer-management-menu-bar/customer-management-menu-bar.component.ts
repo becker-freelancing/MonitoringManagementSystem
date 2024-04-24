@@ -45,7 +45,7 @@ export class CustomerManagementMenuBarComponent implements Updatable, OnChanges{
     });
 
     dialogRef.afterClosed().subscribe(customer => {
-      this.customerManagementService.addCustomer(customer);
+      this.customerManagementService.saveCustomer(customer);
       this.update();
     })
 
@@ -57,8 +57,10 @@ export class CustomerManagementMenuBarComponent implements Updatable, OnChanges{
     }
 
     this.dialog.open(EditCustomerDialogComponent, {
+      width: '90%',
+      height: '90%',
       data: customer
-    });
+    }).afterClosed().subscribe(customer => console.log(customer));
   }
 
   openDeleteCustomerDialog(customer: CustomerManagementCustomer | null) {

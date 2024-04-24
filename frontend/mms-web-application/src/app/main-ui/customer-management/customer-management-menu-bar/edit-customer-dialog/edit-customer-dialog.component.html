@@ -1,1 +1,52 @@
-<p>Works</p>
+<mat-tab-group>
+  <mat-tab label="Kunden-Daten" [formGroup]="editCustomerDataForm" [ngClass]="">
+    <ng-template matTabContent>
+      <div>
+        <h2>Firmen-Daten</h2>
+        <mat-form-field class="form-input-field">
+          <input matInput type="text" formControlName="customerName" placeholder="Firmen-Name">
+          <div class="form-input-not-valid-label" *ngIf="customerNameNotValid">Firmen-Name erforderlich</div>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <h2>Adresse</h2>
+        <div class="form-input-horizontal">
+          <mat-form-field class="form-input-field">
+            <input matInput type="text" formControlName="addressStreet" placeholder="Straße">
+          </mat-form-field>
+          <mat-form-field class="form-input-field">
+            <input matInput type="text" formControlName="addressHouseNumber" placeholder="Hausnummer">
+          </mat-form-field>
+        </div>
+        <div class="form-input-horizontal">
+          <!--      <mat-form-field class="form-input-field">-->
+          <!--        <select matInput formControlName="addressCountry">-->
+          <!--          <option>Test</option>-->
+          <!--          <option>Test2</option>-->
+          <!--        </select>-->
+          <!--      </mat-form-field>-->
+          <mat-form-field class="form-input-field">
+            <input matInput type="text" formControlName="addressZipCode" placeholder="PLZ">
+          </mat-form-field>
+          <mat-form-field class="form-input-field">
+            <input matInput type="text" formControlName="addressCity" placeholder="Ort">
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab label="Kontakt-Personen">
+    <ng-template matTabContent>
+<!--        <app-edit-customer-dialog-contact-persons [customer]="customer"></app-edit-customer-dialog-contact-persons>-->
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Projekte"> Content 3</mat-tab>
+  <mat-tab label="TODO's"></mat-tab>
+</mat-tab-group>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="close()">Abbrechen</button>
+  <button mat-button cdkFocusInitial (click)="save()">Speichern</button>
+</mat-dialog-actions>

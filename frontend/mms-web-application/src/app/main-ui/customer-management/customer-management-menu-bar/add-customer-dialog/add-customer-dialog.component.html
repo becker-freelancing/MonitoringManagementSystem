@@ -9,7 +9,7 @@
       <mat-form-field class="form-input-field">
         <input matInput placeholder="Firmen-Name" type="text" id="name" required formControlName="customerName">
       </mat-form-field>
-      <div class="form-input-not-valid-label" *ngIf="customerNameNotValid">Firmen-Name benötigt</div>
+      <div class="form-input-not-valid-label" *ngIf="customerNameNotValid">Firmen-Name erforderlich</div>
     </div>
   </div>
 
@@ -19,22 +19,22 @@
 
     <div class="form-input form-input-horizontal">
       <mat-form-field class="form-input-field">
-        <input matInput class="add-customer-dialog-input" type="text" formControlName="contactPersonFirstName" placeholder="Vorname">
+        <input matInput type="text" formControlName="contactPersonFirstName" placeholder="Vorname">
       </mat-form-field>
       <mat-form-field class="form-input-field">
-        <input matInput class="add-customer-dialog-input" type="text" formControlName="contactPersonLastName" placeholder="Nachname">
-      </mat-form-field>
-    </div>
-
-    <div class="form-input">
-      <mat-form-field class="form-input-field">
-        <input matInput class="add-customer-dialog-input" type="email" formControlName="contactPersonEMail" placeholder="E-Mail">
+        <input matInput type="text" formControlName="contactPersonLastName" placeholder="Nachname">
       </mat-form-field>
     </div>
 
     <div class="form-input">
       <mat-form-field class="form-input-field">
-        <input matInput class="add-customer-dialog-input" type="tel" formControlName="contactPersonPhoneNumber" placeholder="Telefon-Nummer">
+        <input matInput type="email" formControlName="contactPersonEMail" placeholder="E-Mail">
+      </mat-form-field>
+    </div>
+
+    <div class="form-input">
+      <mat-form-field class="form-input-field">
+        <input matInput type="tel" formControlName="contactPersonPhoneNumber" placeholder="Telefon-Nummer">
       </mat-form-field>
     </div>
   </div>

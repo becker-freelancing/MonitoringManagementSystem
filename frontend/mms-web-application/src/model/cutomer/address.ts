@@ -2,14 +2,14 @@ import {Country} from "./country";
 
 export class Address {
 
-  street: string | null;
-  houseNumber: string | null;
-  city: string | null;
-  country: Country | null;
-  zipCode: string | null;
+  street: string | undefined;
+  houseNumber: string | undefined;
+  city: string | undefined;
+  country: Country | undefined;
+  zipCode: string | undefined;
   addressId?: number;
 
-  constructor(street: string | null, houseNumber: string | null, city: string | null, country: Country | null, zipCode: string | null, addressId?: number) {
+  constructor(street?: string, houseNumber?: string, city?: string, country?: Country, zipCode?: string, addressId?: number) {
 
     this.street = street;
     this.houseNumber = houseNumber;
