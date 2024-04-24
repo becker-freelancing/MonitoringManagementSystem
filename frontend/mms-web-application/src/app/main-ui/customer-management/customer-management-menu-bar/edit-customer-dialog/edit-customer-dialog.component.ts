@@ -1,4 +1,4 @@
-import {NgClass, NgIf, NgOptimizedImage} from "@angular/common";
+import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
@@ -26,6 +26,7 @@ import {
 } from "@angular/material/table";
 import {MatTab, MatTabContent, MatTabGroup} from "@angular/material/tabs";
 import {Address} from "../../../../../model/cutomer/address";
+import {Country, CountryUtil} from "../../../../../model/cutomer/country";
 import {CustomerManagementService} from "../../../../../services/customermanagement/customerManagementService";
 import {DeepCloneService} from "../../../../../services/util/deepCloneService";
 import {CustomerManagementCustomer} from "../../customerManagementCustomer";
@@ -34,18 +35,19 @@ import {CustomerManagementCustomer} from "../../customerManagementCustomer";
 @Component({
   selector: 'app-edit-customer-dialog',
   standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, MatTabGroup, MatTab, MatFormField, MatInput, ReactiveFormsModule, MatTabContent, MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, NgOptimizedImage, MatHeaderCellDef, NgIf, NgClass],
+  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, MatTabGroup, MatTab, MatFormField, MatInput, ReactiveFormsModule, MatTabContent, MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, NgOptimizedImage, MatHeaderCellDef, NgIf, NgClass, NgForOf],
   templateUrl: './edit-customer-dialog.component.html',
   styleUrl: './edit-customer-dialog.component.css'
 })
 export class EditCustomerDialogComponent implements OnInit {
+
+  countryValues: string[] = CountryUtil.values();
 
   customer: CustomerManagementCustomer;
   addressId: number | undefined;
 
   editCustomerDataForm: FormGroup;
   customerNameNotValid: boolean = false;
-  customerDataNotValidClass: string = '';
 
 
   constructor(public dialogRef: MatDialogRef<EditCustomerDialogComponent>,
@@ -82,7 +84,7 @@ export class EditCustomerDialogComponent implements OnInit {
     console.log(editCustomerDataValues)
 
     this.customer.customer.companyName = editCustomerDataValues.customerName;
-    this.customer.customer.address = new Address(editCustomerDataValues.addressStreet, editCustomerDataValues.addressHouseNumber, editCustomerDataValues.addressCity, editCustomerDataValues.country, editCustomerDataValues.addressZipCode, this.addressId);
+    this.customer.customer.address = new Address(editCustomerDataValues.addressStreet, editCustomerDataValues.addressHouseNumber, editCustomerDataValues.addressCity, CountryUtil.fromValue(editCustomerDataValues.addressCountry), editCustomerDataValues.addressZipCode, this.addressId);
 
     this.dialogRef.close(this.customer)
   }
