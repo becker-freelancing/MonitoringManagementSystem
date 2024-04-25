@@ -19,7 +19,10 @@ export class CountryUtil {
     return values;
   }
 
-  static fromValue(value: string): Country | undefined {
+  static fromValue(value: string | null): Country | undefined {
+    if(value === null){
+      return undefined;
+    }
    let enumObject: any = Country;
 
     for (const key in enumObject) {
@@ -30,5 +33,18 @@ export class CountryUtil {
       }
     }
     return undefined;
+  }
+
+  static toString(country: Country | undefined): string | undefined{
+    if(country === undefined){
+      return undefined;
+    }
+
+    for (const key in Country) {
+      if (Country[key as keyof typeof Country] === country) {
+        return Country[key as keyof typeof Country];
+      }
+    }
+    throw new Error('Ungültiges Land');
   }
 }

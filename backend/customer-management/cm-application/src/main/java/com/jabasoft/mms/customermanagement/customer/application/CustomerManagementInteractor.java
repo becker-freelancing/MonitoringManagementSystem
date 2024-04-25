@@ -81,9 +81,9 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 		String street = addressDto.getStreet();
 		String houseNumber = addressDto.getHouseNumber();
 		String city = addressDto.getCity();
-		Country country = mapEnumByName(Country.class, addressDto.getCountry());
+		Country country = mapEnumByName(Country.class, CountryDto.fromCountryName(addressDto.getCountry()));
 		String zipCode = addressDto.getZipCode();
-		Long addressId = addressDto.getId();
+		Long addressId = addressDto.getAddressId();
 
 		if (addressId != null) {
 			return new Address(new AddressId(addressId), street, houseNumber, city, country, zipCode);
@@ -150,12 +150,13 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 		}
 
 		AddressDto addressDto = new AddressDto();
-		addressDto.setStreet(addressDto.getStreet());
+		addressDto.setStreet(address.getStreet());
 		addressDto.setHouseNumber(address.getHouseNumber());
 		addressDto.setCity(address.getCity());
-		addressDto.setCountry(mapEnumByName(CountryDto.class, address.getCountry()));
+		CountryDto countryDto = mapEnumByName(CountryDto.class, address.getCountry());
+		addressDto.setCountry(countryDto == null ? null : countryDto.getCountryName());
 		addressDto.setZipCode(address.getZipCode());
-		addressDto.setId(address.getAddressId().map(AddressId::getAddressId).orElse(null));
+		addressDto.setAddressId(address.getAddressId().map(AddressId::getAddressId).orElse(null));
 
 		return addressDto;
 	}

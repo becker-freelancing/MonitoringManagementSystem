@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Address} from "../../model/cutomer/address";
 import {ContactPerson} from "../../model/cutomer/contactPerson";
+import {CountryUtil} from "../../model/cutomer/country";
 import {Customer} from "../../model/cutomer/customer";
 import {DefaultErrorDialog} from "../http/defaultErrorDialog";
 import {HttpClient} from "../http/httpClient";
@@ -84,7 +85,7 @@ export class CustomerManagementService {
 
     let id: number = data['customerId'];
     let compName: string = data['companyName'];
-    let address: Address | undefined = this.mapAddress(data['address']);
+    let address: Address | undefined = this.mapAddress(data['address'] as AddressResponseData);
     let logo: Object[] | null = data['logo'];
     let contactPersons: ContactPerson[] = this.mapContactPersons(data['contactPersons']);
 
@@ -96,7 +97,7 @@ export class CustomerManagementService {
       return undefined;
     }
 
-    return undefined;
+    return new Address(data.street ?? undefined, data.houseNumber ?? undefined, data.city ?? undefined, CountryUtil.fromValue(data.country), data.zipCode ?? undefined, data.id ?? undefined);
   }
 
   private mapContactPersons(datum: ContactPersonResponseData[]) {
@@ -113,7 +114,12 @@ export interface CustomerResponseData {
 }
 
 export interface AddressResponseData {
-
+  id: number | null;
+  street: string | null;
+  houseNumber: string | null;
+  city: string | null;
+  country: string | null;
+  zipCode: string | null;
 }
 
 export interface ContactPersonResponseData {

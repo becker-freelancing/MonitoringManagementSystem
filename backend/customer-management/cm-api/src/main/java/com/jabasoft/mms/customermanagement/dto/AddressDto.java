@@ -4,16 +4,16 @@ import java.util.Objects;
 
 public class AddressDto {
 
-	private Long id;
+	private Long addressId;
 	private String street;
 	private String houseNumber;
 	private String city;
-	private CountryDto country;
+	private String country;
 	private String zipCode;
 
-	public Long getId() {
+	public Long getAddressId() {
 
-		return id;
+		return addressId;
 	}
 
 	public String getStreet() {
@@ -26,9 +26,9 @@ public class AddressDto {
 		return zipCode;
 	}
 
-	public void setId(Long id) {
+	public void setAddressId(Long addressId) {
 
-		this.id = id;
+		this.addressId = addressId;
 	}
 
 	public void setStreet(String street) {
@@ -56,12 +56,12 @@ public class AddressDto {
 		this.city = city;
 	}
 
-	public CountryDto getCountry() {
+	public String getCountry() {
 
 		return country;
 	}
 
-	public void setCountry(CountryDto country) {
+	public void setCountry(String country) {
 
 		this.country = country;
 	}
@@ -79,7 +79,7 @@ public class AddressDto {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		AddressDto that = (AddressDto) o;
-		return Objects.equals(id, that.id) && Objects.equals(street, that.street) && Objects.equals(
+		return Objects.equals(addressId, that.addressId) && Objects.equals(street, that.street) && Objects.equals(
 			houseNumber,
 			that.houseNumber) && Objects.equals(city, that.city) && country == that.country && Objects.equals(
 			zipCode,
@@ -89,7 +89,7 @@ public class AddressDto {
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, street, houseNumber, city, country, zipCode);
+		return Objects.hash(addressId, street, houseNumber, city, country, zipCode);
 	}
 
 }

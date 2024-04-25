@@ -12,6 +12,7 @@ import {
 } from "@angular/material/dialog";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
+import {MatOption, MatSelect} from "@angular/material/select";
 import {
   MatCell,
   MatCellDef,
@@ -35,7 +36,7 @@ import {CustomerManagementCustomer} from "../../customerManagementCustomer";
 @Component({
   selector: 'app-edit-customer-dialog',
   standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, MatTabGroup, MatTab, MatFormField, MatInput, ReactiveFormsModule, MatTabContent, MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, NgOptimizedImage, MatHeaderCellDef, NgIf, NgClass, NgForOf],
+  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, MatTabGroup, MatTab, MatFormField, MatInput, ReactiveFormsModule, MatTabContent, MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, NgOptimizedImage, MatHeaderCellDef, NgIf, NgClass, NgForOf, MatSelect, MatOption],
   templateUrl: './edit-customer-dialog.component.html',
   styleUrl: './edit-customer-dialog.component.css'
 })
@@ -49,6 +50,7 @@ export class EditCustomerDialogComponent implements OnInit {
   editCustomerDataForm: FormGroup;
   customerNameNotValid: boolean = false;
 
+  country: string;
 
   constructor(public dialogRef: MatDialogRef<EditCustomerDialogComponent, CustomerManagementCustomer>,
               editCustomerDataFormBuilder: FormBuilder,
@@ -57,13 +59,15 @@ export class EditCustomerDialogComponent implements OnInit {
     this.customer = new DeepCloneService().deepCopy(data);
     this.addressId = this.customer.customer.address?.addressId;
 
+    this.country = CountryUtil.toString(this.customer.customer.address?.country) ?? '----';
+
     this.editCustomerDataForm = editCustomerDataFormBuilder.group({
       customerName: [this.customer.customer.companyName, Validators.required],
       addressStreet: [this.customer.customer.address?.street],
       addressHouseNumber: [this.customer.customer.address?.houseNumber],
       addressZipCode: [this.customer.customer.address?.zipCode],
       addressCity: [this.customer.customer.address?.city],
-      addressCountry: [this.customer.customer.address?.country]
+      addressCountry: [this.country]
     })
   }
 

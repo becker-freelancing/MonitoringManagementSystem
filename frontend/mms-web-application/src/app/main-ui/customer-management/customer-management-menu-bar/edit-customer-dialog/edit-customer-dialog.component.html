@@ -21,10 +21,10 @@
         </div>
         <div class="form-input-horizontal">
                 <mat-form-field class="form-input-field">
-                  <select matNativeControl formControlName="addressCountry">
-                    <option>----</option>
-                    <option *ngFor="let country of countryValues">{{country}}</option>
-                  </select>
+                  <mat-select formControlName="addressCountry" [(value)]="country">
+                    <mat-option>----</mat-option>
+                    <mat-option *ngFor="let country of countryValues" value="{{country}}">{{country}}</mat-option>
+                  </mat-select>
                 </mat-form-field>
           <mat-form-field class="form-input-field">
             <input matInput type="text" formControlName="addressZipCode" placeholder="PLZ">
@@ -39,7 +39,7 @@
 
   <mat-tab label="Kontakt-Personen">
     <ng-template matTabContent>
-<!--        <app-edit-customer-dialog-contact-persons [customer]="customer"></app-edit-customer-dialog-contact-persons>-->
+
     </ng-template>
   </mat-tab>
   <mat-tab label="Projekte"> Content 3</mat-tab>
