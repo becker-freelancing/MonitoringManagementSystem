@@ -81,7 +81,7 @@ public class AddressDto {
 		AddressDto that = (AddressDto) o;
 		return Objects.equals(addressId, that.addressId) && Objects.equals(street, that.street) && Objects.equals(
 			houseNumber,
-			that.houseNumber) && Objects.equals(city, that.city) && country == that.country && Objects.equals(
+			that.houseNumber) && Objects.equals(city, that.city) && Objects.equals(country, that.country) && Objects.equals(
 			zipCode,
 			that.zipCode);
 	}

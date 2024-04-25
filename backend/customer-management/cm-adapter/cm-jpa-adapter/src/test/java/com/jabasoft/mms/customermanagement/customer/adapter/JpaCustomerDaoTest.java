@@ -26,6 +26,7 @@ import com.jabasoft.mms.customermanagement.domain.model.Country;
 import com.jabasoft.mms.customermanagement.domain.model.Customer;
 import com.jabasoft.mms.customermanagement.domain.model.CustomerId;
 import com.jabasoft.mms.customermanagement.domain.model.EMail;
+import com.jabasoft.mms.customermanagement.domain.model.PhoneNumber;
 import com.jabasoft.mms.customermanagement.domain.model.ReasonForContact;
 import com.jabasoft.mms.junit.beans.RandomBeanSupplier;
 import com.jabasoft.mms.junit.beans.RandomBeanSupplierRegistrar;
@@ -64,9 +65,9 @@ class JpaCustomerDaoTest {
 				ContactPersonPosition.class,
 				String.class,
 				String.class,
-				List.class,
-				List.class,
-				List.class))).register();
+				EMail.class,
+				PhoneNumber.class,
+				ReasonForContact.class))).register();
 
 		new RandomBeanSupplierRegistrar<>(ContactPersonPosition.class)
 			.withConstructors(List.of(ContactPersonPosition.class.getConstructor(String.class, String.class))).register();
@@ -152,9 +153,9 @@ class JpaCustomerDaoTest {
 			new ContactPersonPosition("CEO"),
 			"First",
 			"Last",
-			List.of(new EMail(UUID.randomUUID().toString()), new EMail(UUID.randomUUID().toString())),
-			List.of(),
-			List.of(new ReasonForContact("Marketing")));
+			new EMail(UUID.randomUUID().toString()),
+			new PhoneNumber(null),
+			new ReasonForContact("Marketing"));
 
 		expectedCustomer.addContactPerson(contactPerson);
 

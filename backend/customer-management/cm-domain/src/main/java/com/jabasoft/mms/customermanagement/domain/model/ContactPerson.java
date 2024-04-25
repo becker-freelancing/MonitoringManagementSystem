@@ -1,6 +1,5 @@
 package com.jabasoft.mms.customermanagement.domain.model;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -10,18 +9,18 @@ public class ContactPerson {
 	private ContactPersonPosition position;
 	private String firstName;
 	private String lastName;
-	private List<EMail> emails;
-	private List<PhoneNumber> phoneNumbers;
-	private List<ReasonForContact> reasonsForContact;
+	private EMail emails;
+	private PhoneNumber phoneNumbers;
+	private ReasonForContact reasonsForContact;
 
 	public ContactPerson(
 		ContactPersonId contactPersonId,
 		ContactPersonPosition position,
 		String firstName,
 		String lastName,
-		List<EMail> emails,
-		List<PhoneNumber> phoneNumbers,
-		List<ReasonForContact> reasonsForContact) {
+		EMail emails,
+		PhoneNumber phoneNumbers,
+		ReasonForContact reasonsForContact) {
 
 		this.contactPersonId = contactPersonId;
 		this.position = position;
@@ -36,9 +35,9 @@ public class ContactPerson {
 		ContactPersonPosition position,
 		String firstName,
 		String lastName,
-		List<EMail> emails,
-		List<PhoneNumber> phoneNumbers,
-		List<ReasonForContact> reasonsForContact) {
+		EMail emails,
+		PhoneNumber phoneNumbers,
+		ReasonForContact reasonsForContact) {
 
 		this.position = position;
 		this.firstName = firstName;
@@ -68,17 +67,17 @@ public class ContactPerson {
 		return lastName;
 	}
 
-	public List<EMail> getEmails() {
+	public EMail getEmail() {
 
 		return emails;
 	}
 
-	public List<PhoneNumber> getPhoneNumbers() {
+	public PhoneNumber getPhoneNumber() {
 
 		return phoneNumbers;
 	}
 
-	public List<ReasonForContact> getReasonsForContact() {
+	public ReasonForContact getReasonForContact() {
 
 		return reasonsForContact;
 	}

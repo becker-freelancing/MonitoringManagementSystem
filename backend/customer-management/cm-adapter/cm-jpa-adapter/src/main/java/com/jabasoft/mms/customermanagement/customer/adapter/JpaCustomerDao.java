@@ -3,7 +3,6 @@ package com.jabasoft.mms.customermanagement.customer.adapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,8 +12,6 @@ import com.jabasoft.mms.customermanagement.customer.address.adapter.JpaAddress;
 import com.jabasoft.mms.customermanagement.customer.address.adapter.SpringJpaAddressRepository;
 import com.jabasoft.mms.customermanagement.customer.contactperson.adapter.JpaContactPerson;
 import com.jabasoft.mms.customermanagement.customer.contactperson.adapter.JpaContactPersonDao;
-import com.jabasoft.mms.customermanagement.customer.contactperson.emails.adapter.JpaEmail;
-import com.jabasoft.mms.customermanagement.customer.contactperson.phonenumber.adapter.JpaPhoneNumber;
 import com.jabasoft.mms.customermanagement.customer.contactperson.position.adapter.JpaContactPersonPosition;
 import com.jabasoft.mms.customermanagement.customer.contactperson.reasonforcontact.adapter.JpaReasonForContact;
 import com.jabasoft.mms.customermanagement.domain.model.Address;
@@ -125,23 +122,19 @@ class JpaCustomerDao implements CustomerRepository {
 			contactPersonPosition = new ContactPersonPosition(jpaPosition.getPosition(), jpaPosition.getDescription());
 		}
 
-		List<ReasonForContact> reasonsForContact = jpaContactPerson.getReasonForContacts().stream()
-			.map(reason -> new ReasonForContact(reason.getReason(), reason.getDescription())).toList();
+		JpaReasonForContact jpaReasonForContact = jpaContactPerson.getReasonForContacts();
+		ReasonForContact reasonForContact =
+			new ReasonForContact(jpaReasonForContact.getReason(), jpaReasonForContact.getDescription());
 
 		String firstName = jpaContactPerson.getFirstName();
 		String lastName = jpaContactPerson.getLastName();
 
-		List<EMail> emails = jpaContactPerson.getEmails().stream()
-			.map(JpaEmail::getEmail)
-			.map(EMail::new).toList();
-
-		List<PhoneNumber> phoneNumbers = jpaContactPerson.getPhoneNumbers().stream()
-			.map(JpaPhoneNumber::getPhoneNumber)
-			.map(PhoneNumber::new).toList();
+		EMail email = new EMail(jpaContactPerson.getEmail());
+		PhoneNumber phoneNumber = new PhoneNumber(jpaContactPerson.getPhoneNumber());
 
 		ContactPersonId contactPersonId = new ContactPersonId(jpaContactPerson.getContactPersonId());
 
-		return new ContactPerson(contactPersonId, contactPersonPosition, firstName, lastName, emails, phoneNumbers, reasonsForContact);
+		return new ContactPerson(contactPersonId, contactPersonPosition, firstName, lastName, email, phoneNumber, reasonForContact);
 	}
 
 	private JpaCustomer mapCustomerToEntity(Customer customer) {
@@ -154,7 +147,7 @@ class JpaCustomerDao implements CustomerRepository {
 		jpaCustomer.setCustomerId(customerId);
 
 		List<JpaContactPerson> contactPersons = new ArrayList<>(customer.getContactPersons().stream()
-			.map(person -> mapContactPersonToEntity(person)).toList());
+			.map(this::mapContactPersonToEntity).toList());
 		jpaCustomer.setContactPersons(contactPersons);
 
 		JpaAddress jpaAddress = mapAddressToEntity(customer.getAddress());
@@ -184,7 +177,7 @@ class JpaCustomerDao implements CustomerRepository {
 		JpaContactPerson jpaContactPerson = new JpaContactPerson();
 
 		ContactPersonPosition position = contactPerson.getPosition();
-		if (position != null && false) {
+		if (position != null) {
 			JpaContactPersonPosition jpaContactPersonPosition = new JpaContactPersonPosition();
 			jpaContactPersonPosition.setPosition(position.getPosition());
 			jpaContactPersonPosition.setDescription(position.getDescription());
@@ -194,30 +187,13 @@ class JpaCustomerDao implements CustomerRepository {
 		jpaContactPerson.setFirstName(contactPerson.getFirstName());
 		jpaContactPerson.setLastName(contactPerson.getLastName());
 
-		List<JpaEmail> jpaEmails = new ArrayList<>();
-		for (EMail email : contactPerson.getEmails()) {
-			JpaEmail jpaEmail = new JpaEmail();
-			jpaEmail.setEmail(email.getEmail());
-			jpaEmails.add(jpaEmail);
-		}
-		jpaContactPerson.setEmails(jpaEmails);
+		jpaContactPerson.setEmail(Optional.ofNullable(contactPerson.getEmail()).map(EMail::getEmail).orElse(null));
+		jpaContactPerson.setPhoneNumbers(Optional.ofNullable(contactPerson.getPhoneNumber()).map(PhoneNumber::getPhoneNumber).orElse(null));
 
-		List<JpaPhoneNumber> jpaPhoneNumbers = new ArrayList<>();
-		for (PhoneNumber phoneNumber : contactPerson.getPhoneNumbers()) {
-			JpaPhoneNumber jpaPhoneNumber = new JpaPhoneNumber();
-			jpaPhoneNumber.setPhoneNumber(phoneNumber.getPhoneNumber());
-			jpaPhoneNumbers.add(jpaPhoneNumber);
-		}
-		jpaContactPerson.setPhoneNumbers(jpaPhoneNumbers);
-
-		List<JpaReasonForContact> jpaReasonForContacts = new ArrayList<>(contactPerson.getReasonsForContact().stream()
-			.map(reason -> {
-				JpaReasonForContact jpaReasonForContact = new JpaReasonForContact();
-				jpaReasonForContact.setReason(reason.getReason());
-				jpaReasonForContact.setDescription(reason.getDescription());
-				return jpaReasonForContact;
-			}).toList());
-		jpaContactPerson.setReasonForContacts(jpaReasonForContacts);
+		JpaReasonForContact jpaReasonForContact = new JpaReasonForContact();
+		jpaReasonForContact.setReason(contactPerson.getReasonForContact().getReason());
+		jpaReasonForContact.setDescription(contactPerson.getReasonForContact().getDescription());
+		jpaContactPerson.setReasonForContact(jpaReasonForContact);
 
 		jpaContactPerson.setContactPersonId(contactPerson.getContactPersonId().map(ContactPersonId::getContactPersonId).orElse(null));
 

@@ -40,7 +40,7 @@ public class CustomerDto {
 
 	public List<ContactPersonDto> getContactPersons() {
 
-		return contactPersons == null ? List.of() : contactPersons;
+		return contactPersons;
 	}
 
 	public void setContactPersons(List<ContactPersonDto> contactPersons) {

@@ -6,9 +6,9 @@ public class PhoneNumber {
 
 	private String phoneNumber;
 
-	public PhoneNumber(String email) {
+	public PhoneNumber(String phoneNumber) {
 
-		this.phoneNumber = email;
+		this.phoneNumber = phoneNumber;
 	}
 
 	public String getPhoneNumber() {

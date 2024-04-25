@@ -97,17 +97,10 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 			return null;
 		}
 
-		List<EMail> emails = contactPersonDto.getEmails().stream().map(EMail::new).toList();
-		List<PhoneNumber> phoneNumbers = contactPersonDto.getPhoneNumbers().stream().map(PhoneNumber::new).toList();
-		List<ReasonForContact> reasonForContacts = contactPersonDto.getReasonsForContact().stream()
-			.map(reason -> new ReasonForContact(reason.getReason(), reason.getDescription()))
-			.toList();
-		ContactPersonPosition contactPersonPosition = null ;
-		if (contactPersonDto.getPosition() != null){
-			contactPersonPosition = new ContactPersonPosition(
-				contactPersonDto.getPosition().getPosition(),
-				contactPersonDto.getPosition().getDescription());
-		}
+		EMail eMail = Optional.ofNullable(contactPersonDto.getEmail()).map(EMail::new).orElse(null);
+		PhoneNumber phoneNumber = Optional.ofNullable(contactPersonDto.getPhoneNumber()).map(PhoneNumber::new).orElse(null);
+		ReasonForContact reasonForContact = Optional.ofNullable(contactPersonDto.getReasonForContact()).map(reason -> new ReasonForContact(reason.getReason(), reason.getDescription())).orElse(null);
+		ContactPersonPosition contactPersonPosition = Optional.ofNullable(contactPersonDto.getPosition()).map(position -> new ContactPersonPosition(position.getPosition(), position.getDescription())).orElse(null);
 
 		Long id = contactPersonDto.getId();
 
@@ -117,24 +110,24 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 				contactPersonPosition,
 				contactPersonDto.getFirstName(),
 				contactPersonDto.getLastName(),
-				emails,
-				phoneNumbers,
-				reasonForContacts);
+				eMail,
+				phoneNumber,
+				reasonForContact);
 		}
 		return new ContactPerson(
 			contactPersonPosition,
 			contactPersonDto.getFirstName(),
 			contactPersonDto.getLastName(),
-			emails,
-			phoneNumbers,
-			reasonForContacts);
+			eMail,
+			phoneNumber,
+			reasonForContact);
 	}
 
 	protected Customer mapCustomerToDomain(CustomerDto customerDto) {
 
 		Address address = mapAddressToDomain(customerDto.getAddress());
 		List<ContactPerson> contactPersons =
-			customerDto.getContactPersons().stream().map(this::mapContactPersonToDomain)
+			Optional.ofNullable(customerDto.getContactPersons()).orElse(List.of()).stream().map(this::mapContactPersonToDomain)
 				.filter(Objects::nonNull).collect(Collectors.toList());
 		Long id = customerDto.getCustomerId();
 		if (id != null) {
@@ -168,23 +161,22 @@ class CustomerManagementInteractor implements CustomerManagementPort {
 		}
 
 		ContactPersonDto contactPersonDto = new ContactPersonDto();
-		if (contactPerson.getPosition() != null) {
-			ContactPersonPositionDto position = new ContactPersonPositionDto();
-			position.setPosition(contactPerson.getPosition().getPosition());
-			position.setDescription(contactPerson.getPosition().getDescription());
-			contactPersonDto.setPosition(position);
-		}
 		contactPersonDto.setFirstName(contactPerson.getFirstName());
 		contactPersonDto.setLastName(contactPerson.getLastName());
-		contactPersonDto.setEmails(contactPerson.getEmails().stream().map(EMail::getEmail).toList());
-		contactPersonDto.setPhoneNumbers(contactPerson.getPhoneNumbers().stream().map(PhoneNumber::getPhoneNumber).toList());
-		contactPersonDto.setReasonsForContact(contactPerson.getReasonsForContact().stream()
-			.map(reason -> {
-				ReasonForContactDto reasonForCantact = new ReasonForContactDto();
-				reasonForCantact.setReason(reason.getReason());
-				reasonForCantact.setDescription(reason.getDescription());
-				return reasonForCantact;
-			}).toList());
+		contactPersonDto.setEmail(Optional.ofNullable(contactPerson.getEmail()).map(EMail::getEmail).orElse(null));
+		contactPersonDto.setPhoneNumber(Optional.ofNullable(contactPerson.getPhoneNumber()).map(PhoneNumber::getPhoneNumber).orElse(null));
+		contactPersonDto.setReasonForContact(Optional.ofNullable(contactPerson.getReasonForContact()).map(reason -> {
+			ReasonForContactDto reasonForContactDto = new ReasonForContactDto();
+			reasonForContactDto.setReason(reason.getReason());
+			reasonForContactDto.setDescription(reason.getDescription());
+			return reasonForContactDto;
+		}).orElse(null));
+		contactPersonDto.setPosition(Optional.ofNullable(contactPerson.getPosition()).map(position -> {
+			ContactPersonPositionDto contactPersonPositionDto = new ContactPersonPositionDto();
+			contactPersonPositionDto.setPosition(position.getPosition());
+			contactPersonPositionDto.setDescription(position.getDescription());
+			return contactPersonPositionDto;
+		}).orElse(null));
 		contactPersonDto.setId(contactPerson.getContactPersonId().map(ContactPersonId::getContactPersonId).orElse(null));
 
 		return contactPersonDto;

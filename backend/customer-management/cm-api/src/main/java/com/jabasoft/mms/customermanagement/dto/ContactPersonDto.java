@@ -9,9 +9,9 @@ public class ContactPersonDto {
 	private ContactPersonPositionDto position;
 	private String firstName;
 	private String lastName;
-	private List<String> emails;
-	private List<String> phoneNumbers;
-	private List<ReasonForContactDto> reasonsForContact;
+	private String email;
+	private String phoneNumber;
+	private ReasonForContactDto reasonForContact;
 
 	public Long getId() {
 
@@ -53,34 +53,34 @@ public class ContactPersonDto {
 		this.lastName = lastName;
 	}
 
-	public List<String> getEmails() {
+	public String getEmail() {
 
-		return emails == null ? List.of() : emails;
+		return email;
 	}
 
-	public void setEmails(List<String> emails) {
+	public void setEmail(String email) {
 
-		this.emails = emails;
+		this.email = email;
 	}
 
-	public List<String> getPhoneNumbers() {
+	public String getPhoneNumber() {
 
-		return phoneNumbers == null ? List.of() : phoneNumbers;
+		return phoneNumber;
 	}
 
-	public void setPhoneNumbers(List<String> phoneNumbers) {
+	public void setPhoneNumber(String phoneNumber) {
 
-		this.phoneNumbers = phoneNumbers;
+		this.phoneNumber = phoneNumber;
 	}
 
-	public List<ReasonForContactDto> getReasonsForContact() {
+	public ReasonForContactDto getReasonForContact() {
 
-		return reasonsForContact == null ? List.of() : reasonsForContact;
+		return reasonForContact;
 	}
 
-	public void setReasonsForContact(List<ReasonForContactDto> reasonsForContact) {
+	public void setReasonForContact(ReasonForContactDto reasonForContact) {
 
-		this.reasonsForContact = reasonsForContact;
+		this.reasonForContact = reasonForContact;
 	}
 
 	@Override
@@ -97,15 +97,15 @@ public class ContactPersonDto {
 			firstName,
 			that.firstName)
 			&& Objects.equals(lastName, that.lastName)
-			&& Objects.equals(emails, that.emails)
-			&& Objects.equals(phoneNumbers, that.phoneNumbers)
-			&& Objects.equals(reasonsForContact, that.reasonsForContact);
+			&& Objects.equals(email, that.email)
+			&& Objects.equals(phoneNumber, that.phoneNumber)
+			&& Objects.equals(reasonForContact, that.reasonForContact);
 	}
 
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, position, firstName, lastName, emails, phoneNumbers, reasonsForContact);
+		return Objects.hash(id, position, firstName, lastName, email, phoneNumber, reasonForContact);
 	}
 
 }

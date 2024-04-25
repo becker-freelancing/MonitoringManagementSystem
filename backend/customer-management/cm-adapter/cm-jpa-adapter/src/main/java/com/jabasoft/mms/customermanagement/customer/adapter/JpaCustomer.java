@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.jabasoft.mms.customermanagement.customer.address.adapter.JpaAddress;
 import com.jabasoft.mms.customermanagement.customer.contactperson.adapter.JpaContactPerson;
-import com.jabasoft.mms.customermanagement.customer.contactperson.phonenumber.adapter.JpaPhoneNumber;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

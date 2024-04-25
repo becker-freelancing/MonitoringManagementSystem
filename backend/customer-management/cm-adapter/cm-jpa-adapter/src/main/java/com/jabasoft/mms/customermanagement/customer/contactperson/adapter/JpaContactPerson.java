@@ -1,24 +1,15 @@
 package com.jabasoft.mms.customermanagement.customer.contactperson.adapter;
 
-import java.math.BigInteger;
-import java.util.List;
-
-import com.jabasoft.mms.customermanagement.customer.contactperson.emails.adapter.JpaEmail;
-import com.jabasoft.mms.customermanagement.customer.contactperson.phonenumber.adapter.JpaPhoneNumber;
 import com.jabasoft.mms.customermanagement.customer.contactperson.position.adapter.JpaContactPersonPosition;
 import com.jabasoft.mms.customermanagement.customer.contactperson.reasonforcontact.adapter.JpaReasonForContact;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -42,19 +33,15 @@ public class JpaContactPerson {
 	@Column(name = "LAST_NAME")
 	private String lastName;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "CONTACT_PERSON_ID", referencedColumnName = "CONTACT_PERSON_ID")
-	private List<JpaEmail> emails;
+	@Column(name = "E_MAIL")
+	private String emails;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "CONTACT_PERSON_ID", referencedColumnName = "CONTACT_PERSON_ID")
-	private List<JpaPhoneNumber> phoneNumbers;
+	@Column(name = "PHONE_NUMBER")
+	private String phoneNumbers;
 
-	@ManyToMany
-	@JoinTable(name = "CONTACT_PERSON_TO_REASON_FOR_CONTACT",
-	joinColumns = @JoinColumn(name = "REASON_FOR_CONTACT"),
-	inverseJoinColumns = @JoinColumn(name = "REASON"))
-	private List<JpaReasonForContact> reasonForContacts;
+	@ManyToOne
+	@JoinColumn(name = "REASON_FOR_CONTACT_ID")
+	private JpaReasonForContact reasonForContacts;
 
 	public JpaContactPersonPosition getPosition() {
 
@@ -86,22 +73,22 @@ public class JpaContactPerson {
 		this.lastName = lastName;
 	}
 
-	public List<JpaEmail> getEmails() {
+	public String getEmail() {
 
 		return emails;
 	}
 
-	public void setEmails(List<JpaEmail> emails) {
+	public void setEmail(String emails) {
 
 		this.emails = emails;
 	}
 
-	public List<JpaPhoneNumber> getPhoneNumbers() {
+	public String getPhoneNumber() {
 
 		return phoneNumbers;
 	}
 
-	public void setPhoneNumbers(List<JpaPhoneNumber> phoneNumbers) {
+	public void setPhoneNumbers(String phoneNumbers) {
 
 		this.phoneNumbers = phoneNumbers;
 	}
@@ -116,12 +103,12 @@ public class JpaContactPerson {
 		this.contactPersonId = contactPersonId;
 	}
 
-	public List<JpaReasonForContact> getReasonForContacts() {
+	public JpaReasonForContact getReasonForContacts() {
 
 		return reasonForContacts;
 	}
 
-	public void setReasonForContacts(List<JpaReasonForContact> reasonForContacts) {
+	public void setReasonForContact(JpaReasonForContact reasonForContacts) {
 
 		this.reasonForContacts = reasonForContacts;
 	}
