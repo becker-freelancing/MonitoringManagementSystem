@@ -62,8 +62,8 @@ export class AddCustomerDialogComponent implements OnInit{
 
       let contactPeron: ContactPerson[]  = [];
       if(formValues['contactPersonFirstName'] != '' && formValues['contactPersonLastName'] != ''){
-        let email: string[] = formValues['contactPersonEMail'] == '' ? [] : [formValues['contactPersonEMail']]
-        let phoneNumber: string[] = formValues['contactPersonPhoneNumber'] == '' ? [] : [formValues['contactPersonPhoneNumber']]
+        let email: string = formValues['contactPersonEMail'] == '' ? null : formValues['contactPersonEMail'];
+        let phoneNumber: string = formValues['contactPersonPhoneNumber'] == '' ? null : formValues['contactPersonPhoneNumber'];
         contactPeron.push(new ContactPerson(formValues['contactPersonFirstName'], formValues['contactPersonLastName'], email, phoneNumber));
       }
 

@@ -9,17 +9,17 @@ export class ContactPerson{
   position?: ContactPersonPosition;
   firstName: string;
   lastName: string;
-  emails: EMail[];
-  phoneNumbers: PhoneNumber[];
-  reasonsForContact: ReasonForContact[]
+  email: EMail | null;
+  phoneNumber: PhoneNumber | null;
+  reasonForContact: ReasonForContact | null;
 
-  constructor(firstName: string, lastName: string, emails?: EMail[], phoneNumbers?: PhoneNumber[], reasonsForContact?: ReasonForContact[], position?: ContactPersonPosition, id?: number) {
+  constructor(firstName: string, lastName: string, email?: EMail, phoneNumber?: PhoneNumber, reasonForContact?: ReasonForContact, position?: ContactPersonPosition, id?: number) {
     this.id = id;
     this.position = position;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.emails = emails ?? [];
-    this.phoneNumbers = phoneNumbers ?? [];
-    this.reasonsForContact = reasonsForContact ?? [];
+    this.email = email ?? null;
+    this.phoneNumber = phoneNumber ?? null;
+    this.reasonForContact = reasonForContact ?? null;
   }
 }

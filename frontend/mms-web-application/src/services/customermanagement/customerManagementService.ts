@@ -87,7 +87,7 @@ export class CustomerManagementService {
     let compName: string = data['companyName'];
     let address: Address | undefined = this.mapAddress(data['address'] as AddressResponseData);
     let logo: Object[] | null = data['logo'];
-    let contactPersons: ContactPerson[] = this.mapContactPersons(data['contactPersons']);
+    let contactPersons: ContactPerson[] = this.mapContactPersons(data['contactPersons'] as ContactPersonResponseData[]);
 
     return new Customer(compName, address, contactPersons, id);
   }
