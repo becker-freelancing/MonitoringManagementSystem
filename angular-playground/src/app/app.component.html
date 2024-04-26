@@ -1,1 +1,12 @@
-<app-autocomplete></app-autocomplete>
+<!--<app-autocomplete></app-autocomplete>-->
+
+<form>
+  <mat-form-field>
+    <input type="text" matInput [matAutocomplete]="auto"> <!--Hier kommt eine Refernez zum Tag eins weiter unten hin (einfach den Namen "auto"-->
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFun" [formControl]="myControl" ngDefaultControl>
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
