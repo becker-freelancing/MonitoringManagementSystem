@@ -123,8 +123,10 @@ class JpaCustomerDao implements CustomerRepository {
 		}
 
 		JpaReasonForContact jpaReasonForContact = jpaContactPerson.getReasonForContacts();
-		ReasonForContact reasonForContact =
-			new ReasonForContact(jpaReasonForContact.getReason(), jpaReasonForContact.getDescription());
+		ReasonForContact reasonForContact = null;
+		if (jpaReasonForContact != null) {
+			reasonForContact = new ReasonForContact(jpaReasonForContact.getReason(), jpaReasonForContact.getDescription());
+		}
 
 		String firstName = jpaContactPerson.getFirstName();
 		String lastName = jpaContactPerson.getLastName();
@@ -191,8 +193,8 @@ class JpaCustomerDao implements CustomerRepository {
 		jpaContactPerson.setPhoneNumbers(Optional.ofNullable(contactPerson.getPhoneNumber()).map(PhoneNumber::getPhoneNumber).orElse(null));
 
 		JpaReasonForContact jpaReasonForContact = new JpaReasonForContact();
-		jpaReasonForContact.setReason(contactPerson.getReasonForContact().getReason());
-		jpaReasonForContact.setDescription(contactPerson.getReasonForContact().getDescription());
+		jpaReasonForContact.setReason(Optional.ofNullable(contactPerson.getReasonForContact()).map(ReasonForContact::getReason).orElse(null));
+		jpaReasonForContact.setDescription(Optional.ofNullable(contactPerson.getReasonForContact()).map(ReasonForContact::getDescription).orElse(null));
 		jpaContactPerson.setReasonForContact(jpaReasonForContact);
 
 		jpaContactPerson.setContactPersonId(contactPerson.getContactPersonId().map(ContactPersonId::getContactPersonId).orElse(null));

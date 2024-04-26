@@ -1,10 +1,14 @@
 import {Injectable} from "@angular/core";
 import {Address} from "../../model/cutomer/address";
 import {ContactPerson} from "../../model/cutomer/contactPerson";
+import {ContactPersonPosition} from "../../model/cutomer/contactPersonPosition";
 import {CountryUtil} from "../../model/cutomer/country";
 import {Customer} from "../../model/cutomer/customer";
+import {ReasonForContact} from "../../model/cutomer/reasonForContact";
 import {DefaultErrorDialog} from "../http/defaultErrorDialog";
 import {HttpClient} from "../http/httpClient";
+import {ContactPersonPositionResponseData} from "./contactpersonposition/contactPersonPositionService";
+import {ReasonForContactResponseData} from "./reasonsforcontact/reasonForContactService";
 
 @Injectable({
     providedIn: 'root',
@@ -19,13 +23,7 @@ export class CustomerManagementService {
 
   saveCustomer(customer: Customer, onSuccess?: (customer: Customer) => void, onError?: (status: number) => void): Customer | null {
 
-    this.httpClient.post('customers/save', customer).then(r => {
-      if (r.status == 200){
-        return null;
-      }
-
-      return r.data;
-    }).then(r =>{
+    this.httpClient.post('customers/save', customer).then(r =>{
       if (r.status != 200){
         if (onError) {
           onError(r.status);
@@ -100,8 +98,33 @@ export class CustomerManagementService {
     return new Address(data.street ?? undefined, data.houseNumber ?? undefined, data.city ?? undefined, CountryUtil.fromValue(data.country), data.zipCode ?? undefined, data.id ?? undefined);
   }
 
-  private mapContactPersons(datum: ContactPersonResponseData[]) {
-    return [];
+  private mapContactPersons(responseData: ContactPersonResponseData[]): ContactPerson[] {
+    let contactPersons: ContactPerson[] = [];
+
+    for (let data of responseData){
+
+      contactPersons.push(
+        new ContactPerson(data.firstName, data.lastName, data.email, data.phoneNumber, this.mapReasonForContact(data.reasonForContact), this.mapPosition(data.position))
+      );
+    }
+
+    return contactPersons;
+  }
+
+  private mapReasonForContact(data: ReasonForContactResponseData | undefined): ReasonForContact | undefined{
+    if (!data){
+      return undefined;
+    }
+
+    return new ReasonForContact(data.reason, data.description ?? undefined);
+  }
+
+  private mapPosition(data: ContactPersonPositionResponseData | undefined): ContactPersonPosition | undefined{
+    if (!data){
+      return undefined;
+    }
+
+    return new ContactPersonPosition(data.position, data.description ?? undefined);
   }
 }
 
@@ -123,5 +146,11 @@ export interface AddressResponseData {
 }
 
 export interface ContactPersonResponseData {
-
+  id?: number;
+  position?: ContactPersonPositionResponseData;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phoneNumber?: string;
+  reasonForContact?: ReasonForContactResponseData;
 }

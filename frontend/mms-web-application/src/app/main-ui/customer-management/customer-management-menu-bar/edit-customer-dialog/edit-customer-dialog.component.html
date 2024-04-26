@@ -20,12 +20,12 @@
           </mat-form-field>
         </div>
         <div class="form-input-horizontal">
-                <mat-form-field class="form-input-field">
-                  <mat-select formControlName="addressCountry" [(value)]="country">
-                    <mat-option>----</mat-option>
-                    <mat-option *ngFor="let country of countryValues" value="{{country}}">{{country}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
+          <mat-form-field class="form-input-field">
+            <mat-select formControlName="addressCountry" [(value)]="country">
+              <mat-option>----</mat-option>
+              <mat-option *ngFor="let country of countryValues" value="{{country}}">{{ country }}</mat-option>
+            </mat-select>
+          </mat-form-field>
           <mat-form-field class="form-input-field">
             <input matInput type="text" formControlName="addressZipCode" placeholder="PLZ">
           </mat-form-field>
@@ -41,7 +41,36 @@
     <ng-template matTabContent>
       <div>
         <div>
-          <button><img src="assets/shared/add-person.png" alt="Edit" height="12px" width="12px">Hinzufügen</button>
+          <button class="primary-button" (click)="addContactPerson()"><img ngSrc="assets/shared/add-person.png" alt="Edit" height="12" width="12">Hinzufügen</button>
+        </div>
+        <div>
+          <div *ngFor="let contactPerson of contactPersons" class="form-input-horizontal">
+            <mat-form-field>
+              <mat-select placeholder="Position" [value]="contactPerson.position ? contactPerson.position.position : undefined" (selectionChange)="contactPersonPositionInput($event, contactPerson)">
+                <mat-option [value]="undefined">----</mat-option>
+                <mat-option *ngFor="let position of positionValues" [value]="position" [matTooltip]="position.description">{{ position.position }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="text" placeholder="Vorname" value="{{contactPerson.firstName}}" (input)="contactPersonFirstNameInput($event, contactPerson)">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="text" placeholder="Nachname" value="{{contactPerson.lastName}}" (input)="contactPersonLastNameInput($event, contactPerson)">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="email" placeholder="E-Mail" value="{{contactPerson.email}}" (input)="contactPersonEMailInput($event, contactPerson)">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="tel" placeholder="Telefonnummer" value="{{contactPerson.phoneNumber}}" (input)="contactPersonPhoneNumberInput($event, contactPerson)">
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Kontaktgrund" [value]="contactPerson.reasonForContact ? contactPerson.reasonForContact.reason : undefined" (selectionChange)="contactPersonReasonForContactInput($event, contactPerson)">
+                <mat-option [value]="undefined">----</mat-option>
+                <mat-option *ngFor="let reason of reasonValues" [value]="reason" [matTooltip]="reason.description">{{ reason.reason }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button [ngClass]="deleteButtonClass" (click)="deleteContactPerson(contactPerson)"><img ngSrc="assets/shared/delete-trash-bin.png" alt="Delete" height="30" width="30"></button>
+          </div>
         </div>
       </div>
     </ng-template>

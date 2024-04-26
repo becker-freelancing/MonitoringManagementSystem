@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ class ContactPersonPositionRestAdapter {
 		this.personPositionPort = personPositionPort;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/save")
 	public ResponseEntity<ContactPersonPositionDto> savePosition(@RequestBody ContactPersonPositionDto position){
 
@@ -40,6 +42,7 @@ class ContactPersonPositionRestAdapter {
 		}
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@DeleteMapping("/delete/{position}")
 	public ResponseEntity<Boolean> deletePosition(@PathVariable("position") String position){
 		try {
@@ -55,6 +58,7 @@ class ContactPersonPositionRestAdapter {
 		}
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/get/{position}")
 	public ResponseEntity<ContactPersonPositionDto> getPosition(@PathVariable("position") String position){
 
@@ -67,6 +71,7 @@ class ContactPersonPositionRestAdapter {
 		}
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/get")
 	public ResponseEntity<List<ContactPersonPositionDto>> findAll(){
 		try{

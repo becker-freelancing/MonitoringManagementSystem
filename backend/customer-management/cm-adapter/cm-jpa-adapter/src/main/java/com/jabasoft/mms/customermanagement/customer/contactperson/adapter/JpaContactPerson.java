@@ -23,8 +23,8 @@ public class JpaContactPerson {
 	private Long contactPersonId;
 
 	//@Column(name = "CONTACT_PERSON_POSITION")
-	@OneToOne
-	@JoinColumn(name = "POSITION", referencedColumnName = "POSITION")
+	@ManyToOne
+	@JoinColumn(name = "POSITION", referencedColumnName = "POSITION", unique = false)
 	private JpaContactPersonPosition position;
 
 	@Column(name = "FIRST_NAME")

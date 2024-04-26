@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ class ReasonForContactRestAdapter {
 		this.reasonForContactPort = reasonForContactPort;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/save")
 	public ResponseEntity<ReasonForContactDto> saveReason(@RequestBody ReasonForContactDto reason){
 
@@ -40,6 +42,7 @@ class ReasonForContactRestAdapter {
 		}
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@DeleteMapping("/delete/{reason}")
 	public ResponseEntity<Boolean> deleteReason(@PathVariable("reason") String reason){
 		try {
@@ -55,6 +58,7 @@ class ReasonForContactRestAdapter {
 		}
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/get/{reason}")
 	public ResponseEntity<ReasonForContactDto> getReason(@PathVariable("reason") String reason){
 
@@ -67,6 +71,7 @@ class ReasonForContactRestAdapter {
 		}
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/get")
 	public ResponseEntity<List<ReasonForContactDto>> findAll(){
 		try{

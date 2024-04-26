@@ -27,9 +27,15 @@ public class JpaContactPersonDao {
 	}
 
 	public void save(JpaContactPerson contactPerson){
-		reasonForContactRepository.save(contactPerson.getReasonForContacts());
-		if (contactPerson.getPosition() != null) {
+		if(contactPerson.getReasonForContacts() != null && contactPerson.getReasonForContacts().getReason() != null) {
+			reasonForContactRepository.save(contactPerson.getReasonForContacts());
+		} else {
+			contactPerson.setReasonForContact(null);
+		}
+		if (contactPerson.getPosition() != null && contactPerson.getPosition().getPosition() != null) {
 			positionRepository.save(contactPerson.getPosition());
+		} else {
+			contactPerson.setPosition(null);
 		}
 		contactPersonRepository.save(contactPerson);
 	}
