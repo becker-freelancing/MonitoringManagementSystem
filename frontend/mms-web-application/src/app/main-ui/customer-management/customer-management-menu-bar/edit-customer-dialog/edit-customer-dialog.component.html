@@ -4,7 +4,7 @@
       <div>
         <h2>Firmen-Daten</h2>
         <mat-form-field class="form-input-field">
-          <input matInput type="text" formControlName="customerName" placeholder="Firmen-Name">
+          <input matInput type="text" formControlName="customerName" placeholder="Firmen-Name*">
           <div class="form-input-not-valid-label" *ngIf="customerNameNotValid">Firmen-Name erforderlich</div>
         </mat-form-field>
       </div>
@@ -52,10 +52,10 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <input matInput type="text" placeholder="Vorname" value="{{contactPerson.firstName}}" (input)="contactPersonFirstNameInput($event, contactPerson)">
+              <input matInput type="text" placeholder="Vorname*" value="{{contactPerson.firstName}}" (input)="contactPersonFirstNameInput($event, contactPerson)">
             </mat-form-field>
             <mat-form-field>
-              <input matInput type="text" placeholder="Nachname" value="{{contactPerson.lastName}}" (input)="contactPersonLastNameInput($event, contactPerson)">
+              <input matInput type="text" placeholder="Nachname*" value="{{contactPerson.lastName}}" (input)="contactPersonLastNameInput($event, contactPerson)">
             </mat-form-field>
             <mat-form-field>
               <input matInput type="email" placeholder="E-Mail" value="{{contactPerson.email}}" (input)="contactPersonEMailInput($event, contactPerson)">

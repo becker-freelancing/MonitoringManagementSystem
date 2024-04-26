@@ -172,6 +172,4 @@ export class EditCustomerDialogComponent implements OnInit, AfterViewChecked {
     }
     contactPerson.reasonForContact = $event.value as ReasonForContact;
   }
-
-  protected readonly console = console;
 }
