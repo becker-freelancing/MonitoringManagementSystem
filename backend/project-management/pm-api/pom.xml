@@ -12,4 +12,13 @@
     <groupId>com.jabasoft.mms.projectmanagement</groupId>
     <artifactId>pm-api</artifactId>
 
+
+    <dependencies>
+        <dependency>
+            <groupId>com.jabasoft.mms.libs</groupId>
+            <artifactId>junit-test-commons</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
