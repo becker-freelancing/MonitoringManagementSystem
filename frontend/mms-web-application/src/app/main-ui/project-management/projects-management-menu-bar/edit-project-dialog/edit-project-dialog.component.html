@@ -4,10 +4,10 @@
       <div>
         <h2>Projekt-Daten</h2>
         <div class="form-input">
-        <mat-form-field class="form-input-field">
-          <input matInput type="text" formControlName="title" placeholder="Projekt-Name*">
-          <div class="form-input-not-valid-label" *ngIf="projectNameNotValid">Projekt-Name erforderlich</div>
-        </mat-form-field>
+          <mat-form-field class="form-input-field">
+            <input matInput type="text" formControlName="title" placeholder="Projekt-Name*">
+            <div class="form-input-not-valid-label" *ngIf="projectNameNotValid">Projekt-Name erforderlich</div>
+          </mat-form-field>
         </div>
         <div class="form-input-horizontal">
           <mat-form-field>
@@ -41,16 +41,40 @@
           </mat-form-field>
         </div>
       </div>
-
-      <div>
-        <h2></h2>
-      </div>
     </ng-template>
   </mat-tab>
 
-  <mat-tab label="Verknüpfte Kunden">
+  <mat-tab label="Verknüpfter Kunde">
     <ng-template matTabContent>
-      <p>TODO</p>
+      <div>
+        <h2>Kunde verknüpfen</h2>
+
+        <div class="form-input">
+          <div>
+            <button class="secondary-button" *ngIf="projectCustomerLocked" (click)="changeProjectCustomer()">Verknüpfung ändern</button>
+          </div>
+          <div *ngIf="!projectCustomerLocked" class="form-input-horizontal">
+            <mat-form-field class="form-input-field">
+              <mat-select (selectionChange)="customerChanges($event)">
+                <mat-option *ngFor="let customer of customers" [value]="customer">{{ customer.companyName }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button (click)="connectCustomer()">Verknüpfen</button>
+          </div>
+          <div>
+          @if (project.project.customerId === undefined && projectCustomerLocked) {
+            <p>Es ist noch kein Kunde verknüpft.</p>
+          } @else if (projectCustomerLocked) {
+            <div>
+              <p>Kunde: {{ customer?.companyName }}</p>
+            </div>
+            <div>
+              <button class="primary-button" (click)="goToCustomer()">Zum Kunde gehen</button>
+            </div>
+          }
+          </div>
+        </div>
+      </div>
     </ng-template>
   </mat-tab>
   <mat-tab label="TODO's">

@@ -57,14 +57,27 @@ export class CustomerManagementService {
       }).catch(error => {onError(error.status)})
   }
 
-  getCustomer(customer: Customer): Customer | null {
-    return null;
+  getCustomer(customerId: number, onSuccess: (customer: Customer) => void, onError?: (status: number) => void): void {
+    this.httpClient.get('customers/get/' + customerId).then(r =>{
+      if (r.status != 200){
+        if (onError) {
+          onError(r.status);
+        }
+        return;
+      }
+      onSuccess(this.mapToCustomer(r.data))
+    }).catch(error => {
+      if (onError) {
+        onError(error.status)
+      }})
   }
 
-  getAllCustomers(accept: (customers: Customer[]) => void, onError: (status: number) => void): void{
+  getAllCustomers(accept: (customers: Customer[]) => void, onError?: (status: number) => void): void{
     this.httpClient.get('customers/get').then(r => {
       if (r.status != 200){
-        onError(r.status);
+        if (onError) {
+          onError(r.status);
+        }
         return;
       }
 
@@ -75,7 +88,9 @@ export class CustomerManagementService {
       }
       accept(responseCustomers)
     }).catch((reason: any) => {
-      onError(reason.status)
+      if (onError) {
+        onError(reason.status)
+      }
     })
   }
 

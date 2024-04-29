@@ -26,7 +26,7 @@ import {
 import {MatFormField, MatHint, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {MatOption, MatSelect} from "@angular/material/select";
+import {MatOption, MatSelect, MatSelectChange} from "@angular/material/select";
 import {
   MatCell,
   MatCellDef,
@@ -41,6 +41,8 @@ import {
 } from "@angular/material/table";
 import {MatTab, MatTabContent, MatTabGroup} from "@angular/material/tabs";
 import {MatTooltip} from "@angular/material/tooltip";
+import {Customer} from "../../../../../model/cutomer/customer";
+import {CustomerManagementService} from "../../../../../services/customermanagement/customerManagementService";
 import {DeepCloneService} from "../../../../../services/util/deepCloneService";
 import {ConfirmDialogService} from "../../../../util/confirm-dialog/confirm-dialog.service";
 import {ProjectManagementProject} from "../../projectManagementProject";
@@ -70,14 +72,23 @@ export const MY_CUSTOM_DATE_FORMATS = {
 })
 export class EditProjectDialogComponent implements OnInit {
 
+  customers: Customer[] = [];
+
   project: ProjectManagementProject;
 
   editProjectDataForm: FormGroup;
   projectNameNotValid: boolean = false;
 
+  projectCustomerLocked: boolean = true;
+  currentlySelectedCustomer: Customer | undefined;
+
+  customer: Customer | undefined;
+
+
   constructor(public dialogRef: MatDialogRef<EditProjectDialogComponent, ProjectManagementProject>,
               public confirmDialogService: ConfirmDialogService,
               editProjectDataFormBuilder: FormBuilder,
+              public customerManagementService: CustomerManagementService,
               @Inject(MAT_DIALOG_DATA) data: ProjectManagementProject) {
 
     this.project = new DeepCloneService().deepCopy(data);
@@ -88,7 +99,10 @@ export class EditProjectDialogComponent implements OnInit {
       longDescription: [this.project.project.longDescription],
       startTime: [this.project.project.startTime],
       endTime: [this.project.project.endTime]
-    })
+    });
+
+    this.getCustomerName();
+    this.getAllCustomers();
   }
 
   ngOnInit(): void {
@@ -115,4 +129,33 @@ export class EditProjectDialogComponent implements OnInit {
     this.dialogRef.close(this.project)
   }
 
+  changeProjectCustomer() {
+    this.projectCustomerLocked = false;
+  }
+
+  getCustomerName() {
+    if (this.project.project.customerId === undefined){
+      return;
+    }
+
+    this.customerManagementService.getCustomer(this.project.project.customerId, (customer: Customer) => {this.customer = customer})
+  }
+
+  goToCustomer() {
+    //TODO
+  }
+
+  customerChanges($event: MatSelectChange) {
+    this.currentlySelectedCustomer = $event.value;
+  }
+
+  getAllCustomers() {
+    this.customerManagementService.getAllCustomers((customers: Customer[]) => {this.customers = customers})
+  }
+
+  connectCustomer() {
+    this.project.project.customerId = this.currentlySelectedCustomer?.customerId;
+    this.getCustomerName();
+    this.projectCustomerLocked = true;
+  }
 }
