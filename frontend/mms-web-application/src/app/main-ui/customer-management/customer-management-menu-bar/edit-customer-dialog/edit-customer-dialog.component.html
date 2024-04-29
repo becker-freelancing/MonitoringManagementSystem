@@ -46,25 +46,25 @@
         <div>
           <div *ngFor="let contactPerson of contactPersons" class="form-input-horizontal">
             <mat-form-field>
-              <mat-select placeholder="Position" [value]="contactPerson.position ? contactPerson.position.position : undefined" (selectionChange)="contactPersonPositionInput($event, contactPerson)">
+              <mat-select placeholder="Position" [value]="contactPerson.contactPerson.position ? contactPerson.contactPerson.position.position : undefined" (selectionChange)="contactPersonPositionInput($event, contactPerson.contactPerson)">
                 <mat-option [value]="undefined">----</mat-option>
                 <mat-option *ngFor="let position of positionValues" [value]="position" [matTooltip]="position.description">{{ position.position }}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <input matInput type="text" placeholder="Vorname*" value="{{contactPerson.firstName}}" (input)="contactPersonFirstNameInput($event, contactPerson)">
+              <input matInput type="text" placeholder="Vorname*" value="{{contactPerson.contactPerson.firstName}}" (input)="contactPersonFirstNameInput($event, contactPerson.contactPerson)">
             </mat-form-field>
             <mat-form-field>
-              <input matInput type="text" placeholder="Nachname*" value="{{contactPerson.lastName}}" (input)="contactPersonLastNameInput($event, contactPerson)">
+              <input matInput type="text" placeholder="Nachname*" value="{{contactPerson.contactPerson.lastName}}" (input)="contactPersonLastNameInput($event, contactPerson.contactPerson)">
             </mat-form-field>
             <mat-form-field>
-              <input matInput type="email" placeholder="E-Mail" value="{{contactPerson.email}}" (input)="contactPersonEMailInput($event, contactPerson)">
+              <input matInput type="email" placeholder="E-Mail" value="{{contactPerson.contactPerson.email}}" (input)="contactPersonEMailInput($event, contactPerson.contactPerson)">
             </mat-form-field>
             <mat-form-field>
-              <input matInput type="tel" placeholder="Telefonnummer" value="{{contactPerson.phoneNumber}}" (input)="contactPersonPhoneNumberInput($event, contactPerson)">
+              <input matInput type="tel" placeholder="Telefonnummer" value="{{contactPerson.contactPerson.phoneNumber}}" (input)="contactPersonPhoneNumberInput($event, contactPerson.contactPerson)">
             </mat-form-field>
             <mat-form-field>
-              <mat-select placeholder="Kontaktgrund" [value]="contactPerson.reasonForContact ? contactPerson.reasonForContact.reason : undefined" (selectionChange)="contactPersonReasonForContactInput($event, contactPerson)">
+              <mat-select placeholder="Kontaktgrund" [value]="contactPerson.contactPerson.reasonForContact ? contactPerson.contactPerson.reasonForContact.reason : undefined" (selectionChange)="contactPersonReasonForContactInput($event, contactPerson.contactPerson)">
                 <mat-option [value]="undefined">----</mat-option>
                 <mat-option *ngFor="let reason of reasonValues" [value]="reason" [matTooltip]="reason.description">{{ reason.reason }}</mat-option>
               </mat-select>
@@ -80,6 +80,6 @@
 </mat-tab-group>
 
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close (click)="close()">Abbrechen</button>
+  <button mat-button (click)="close()">Abbrechen</button>
   <button mat-button cdkFocusInitial (click)="save()">Speichern</button>
 </mat-dialog-actions>

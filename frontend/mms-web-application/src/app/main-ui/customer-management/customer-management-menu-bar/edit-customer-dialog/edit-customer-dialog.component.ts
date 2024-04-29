@@ -27,7 +27,6 @@ import {
 } from "@angular/material/table";
 import {MatTab, MatTabContent, MatTabGroup} from "@angular/material/tabs";
 import {MatTooltip} from "@angular/material/tooltip";
-import {Event} from "@angular/router";
 import {Address} from "../../../../../model/cutomer/address";
 import {ContactPerson} from "../../../../../model/cutomer/contactPerson";
 import {ContactPersonPosition} from "../../../../../model/cutomer/contactPersonPosition";
@@ -40,6 +39,7 @@ import {
   ReasonForContactService
 } from "../../../../../services/customermanagement/reasonsforcontact/reasonForContactService";
 import {DeepCloneService} from "../../../../../services/util/deepCloneService";
+import {ConfirmDialogService} from "../../../../util/confirm-dialog/confirm-dialog.service";
 import {CustomerManagementCustomer} from "../../customerManagementCustomer";
 
 
@@ -50,11 +50,7 @@ import {CustomerManagementCustomer} from "../../customerManagementCustomer";
   templateUrl: './edit-customer-dialog.component.html',
   styleUrl: './edit-customer-dialog.component.css'
 })
-export class EditCustomerDialogComponent implements OnInit, AfterViewChecked {
-
-  ngAfterViewChecked(): void {
-    console.log(this.contactPersons[0].reasonForContact?.reason);
-  }
+export class EditCustomerDialogComponent implements OnInit {
 
   countryValues: string[] = CountryUtil.values();
   positionValues: ContactPersonPosition[] = [];
@@ -70,11 +66,12 @@ export class EditCustomerDialogComponent implements OnInit, AfterViewChecked {
 
 
 
-  contactPersons: ContactPerson[];
+  contactPersons: ContactPersonWithUiId[] = [];
 
   deleteButtonClass: string = 'secondary-button';
 
   constructor(public dialogRef: MatDialogRef<EditCustomerDialogComponent, CustomerManagementCustomer>,
+              public confirmDialogService: ConfirmDialogService,
               editCustomerDataFormBuilder: FormBuilder,
               positionService: ContactPersonPositionService,
               reasonForContactService: ReasonForContactService,
@@ -97,17 +94,24 @@ export class EditCustomerDialogComponent implements OnInit, AfterViewChecked {
       addressCountry: [this.country]
     })
 
-    this.contactPersons = this.customer.customer.contactPersons;
+    let id = 0;
+    for(let pers of this.customer.customer.contactPersons){
+      let contactPersonWithUiId = new ContactPersonWithUiId(id, pers);
+      this.contactPersons.push(contactPersonWithUiId);
+      id++;
+    }
     if(this.contactPersons.length == 0){
       this.addContactPerson();
     }
+
+    dialogRef.beforeClosed().subscribe(() => this.close())
   }
 
   ngOnInit(): void {
   }
 
   close() {
-    //TODO Confirm Close Dialog
+    this.confirmDialogService.showConfirmCancelDialog(() => this.dialogRef.close(), () => {});
   }
 
   save() {
@@ -121,7 +125,9 @@ export class EditCustomerDialogComponent implements OnInit, AfterViewChecked {
     this.customer.customer.companyName = editCustomerDataValues.customerName;
     this.customer.customer.address = new Address(editCustomerDataValues.addressStreet, editCustomerDataValues.addressHouseNumber, editCustomerDataValues.addressCity, CountryUtil.fromValue(editCustomerDataValues.addressCountry), editCustomerDataValues.addressZipCode, this.addressId);
 
-    this.customer.customer.contactPersons = this.contactPersons.filter(pers => pers.firstName != null || pers.lastName != null);
+    this.customer.customer.contactPersons = this.contactPersons
+      .filter(pers => pers.contactPerson.firstName != null || pers.contactPerson.lastName != null)
+      .map(pers => pers.contactPerson);
     this.dialogRef.close(this.customer)
   }
 
@@ -131,12 +137,14 @@ export class EditCustomerDialogComponent implements OnInit, AfterViewChecked {
     this.customerNameNotValid = editCustomerDataFormValues.customerName === undefined;
   }
 
-  deleteContactPerson(contactPerson: ContactPerson) {
-    //TODO
+  deleteContactPerson(contactPerson: ContactPersonWithUiId) {
+    this.confirmDialogService.showConfirmDeleteDialog(() => {
+      this.contactPersons.splice(contactPerson.uiId, 1)
+    }, () => {});
   }
 
   addContactPerson() {
-    this.contactPersons.push(new ContactPerson('', ''));
+    this.contactPersons.push(new ContactPersonWithUiId(this.contactPersons.length + 1, new ContactPerson('', '')));
   }
 
   contactPersonFirstNameInput($event: any, contactPerson: ContactPerson) {
@@ -171,5 +179,18 @@ export class EditCustomerDialogComponent implements OnInit, AfterViewChecked {
       return;
     }
     contactPerson.reasonForContact = $event.value as ReasonForContact;
+  }
+}
+
+
+class ContactPersonWithUiId {
+
+  uiId: number;
+  contactPerson: ContactPerson;
+
+
+  constructor(uiId: number, contactPerson: ContactPerson) {
+    this.uiId = uiId;
+    this.contactPerson = contactPerson;
   }
 }
