@@ -1,14 +1,29 @@
 export class Project{
 
-  id: number;
-  name: string;
-  description: string;
-  active: boolean;
+  id?: number;
+  title: string;
+  shortDescription?: string;
+  longDescription?: string;
 
-  constructor(id: number, name:string, description:string, active:boolean) {
+  creationTime: Date;
+  startTime?: Date;
+  endTime?: Date;
+
+  customerId?: number;
+
+
+  constructor(title: string, creationTime: Date, id?: number, shortDescription?: string, longDescription?: string, startTime?: Date, endTime?: Date, customerId?: number) {
     this.id = id;
-    this.name = name;
-    this.description = description;
-    this.active = active;
+    this.title = title;
+    this.shortDescription = shortDescription;
+    this.longDescription = longDescription;
+    this.creationTime = creationTime;
+    this.startTime = startTime;
+    this.endTime = endTime;
+    this.customerId = customerId;
+  }
+
+  isActive() {
+    return false;
   }
 }

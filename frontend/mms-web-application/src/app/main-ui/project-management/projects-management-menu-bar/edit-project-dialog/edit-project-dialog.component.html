@@ -1,0 +1,34 @@
+<mat-tab-group>
+  <mat-tab label="Projekt-Daten" [formGroup]="editProjectDataForm" [ngClass]="">
+    <ng-template matTabContent>
+      <div>
+        <h2>Projekt-Daten</h2>
+        <mat-form-field class="form-input-field">
+          <input matInput type="text" formControlName="title" placeholder="Projekt-Name*">
+          <div class="form-input-not-valid-label" *ngIf="projectNameNotValid">Projekt-Name erforderlich</div>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <h2>Beschreibung</h2>
+        <p>TODO</p>
+      </div>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab label="Verknüpfte Kunden">
+    <ng-template matTabContent>
+     <p>TODO</p>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="TODO's">
+    <ng-template matTabContent>
+      <p>TODO</p>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+
+<mat-dialog-actions>
+  <button mat-button (click)="close()">Abbrechen</button>
+  <button mat-button cdkFocusInitial (click)="save()">Speichern</button>
+</mat-dialog-actions>

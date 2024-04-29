@@ -1,0 +1,5 @@
+<div class="menu-bar">
+  <button (click)="openAddProjectDialog()" class="primary-button">Hinzufügen</button>
+  <button (click)="openEditProjectDialog(currentlySelectedProject)" [ngClass]="editButtonClass">Bearbeiten</button>
+  <button (click)="openDeleteProjectDialog(currentlySelectedProject)" [ngClass]="editButtonClass">Löschen</button>
+</div>

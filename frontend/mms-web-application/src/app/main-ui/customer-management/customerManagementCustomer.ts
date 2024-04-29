@@ -23,7 +23,7 @@ export class CustomerManagementCustomer{
     let activeProjects = 0;
 
     for (const project of this.projects){
-      activeProjects += project.active ? 1 : 0;
+      activeProjects += project.isActive() ? 1 : 0;
     }
 
     return activeProjects;

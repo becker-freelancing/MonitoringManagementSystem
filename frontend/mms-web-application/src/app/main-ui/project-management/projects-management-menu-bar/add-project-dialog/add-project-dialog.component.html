@@ -1,0 +1,20 @@
+<mat-dialog-content [formGroup]="form">
+  <header>
+    <h2>Projekt hinzufügen</h2>
+  </header>
+
+  <div class="form-division">
+    <h3>Projekt-Daten</h3>
+    <div class="form-input">
+      <mat-form-field class="form-input-field">
+        <input matInput placeholder="Projekt-Name*" type="text" id="name" required formControlName="projectName">
+      </mat-form-field>
+      <div class="form-input-not-valid-label" *ngIf="projectNameNotValid">Projekt-Name erforderlich</div>
+    </div>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Abbrechen</button>
+  <button mat-button cdkFocusInitial (click)="saveProject()">Speichern</button>
+</mat-dialog-actions>

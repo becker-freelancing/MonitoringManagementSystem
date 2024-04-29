@@ -1,0 +1,41 @@
+
+.mat-mdc-table {
+  border-spacing: 0 15px;
+  background-color: transparent;
+}
+
+.mat-mdc-header-row {
+  background-color: transparent;
+  color: black;
+  width: 100%;
+  height: 0;
+}
+
+.mat-mdc-row{
+  width: 95%;
+  color: black;
+  background-color: #dcdcdc;
+  height: 30px;
+  vertical-align: middle;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px #6094b4;
+}
+
+.mat-mdc-row-selected {
+  background-color: #c7c5c5;
+}
+
+.mat-mdc-cell {
+  border-bottom: 1px solid black;
+}
+
+#mat-table-wrapper{
+  height: 80%;
+  overflow-y: auto;
+}
+
+.all-customers-table-id-column{
+  width: 5%;
+  text-align: center;
+}

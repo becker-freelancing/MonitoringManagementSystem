@@ -1,1 +1,3 @@
-<p>project-management works!</p>
+<app-project-management-menu-bar #projectManagementMenuBar [currentlySelectedProject]="currentlySelectedProject"></app-project-management-menu-bar>
+<app-all-projects-table (dblClickedProject)="onDoubleClickedProject($event)" (selectedProject)="changeSelectedProjectProperty($event)"></app-all-projects-table>
+
