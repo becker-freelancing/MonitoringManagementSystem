@@ -1,24 +1,56 @@
 <mat-tab-group>
-  <mat-tab label="Projekt-Daten" [formGroup]="editProjectDataForm" [ngClass]="">
+  <mat-tab label="Projekt-Daten" [formGroup]="editProjectDataForm">
     <ng-template matTabContent>
       <div>
         <h2>Projekt-Daten</h2>
+        <div class="form-input">
         <mat-form-field class="form-input-field">
           <input matInput type="text" formControlName="title" placeholder="Projekt-Name*">
           <div class="form-input-not-valid-label" *ngIf="projectNameNotValid">Projekt-Name erforderlich</div>
         </mat-form-field>
+        </div>
+        <div class="form-input-horizontal">
+          <mat-form-field>
+            <mat-label>Projekt Beginn</mat-label>
+            <input matInput [matDatepicker]="startTimePicker" formControlName="startTime">
+            <mat-datepicker-toggle matIconSuffix [for]="startTimePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startTimePicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Projekt Ende</mat-label>
+            <input matInput [matDatepicker]="endTimePicker" formControlName="endTime">
+            <mat-datepicker-toggle matIconSuffix [for]="endTimePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endTimePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
       </div>
 
       <div>
         <h2>Beschreibung</h2>
-        <p>TODO</p>
+
+        <div class="form-input">
+          <mat-form-field class="form-input-field">
+            <textarea matInput type="" formControlName="shortDescription" placeholder="Kurze Projekt-Beschreibung"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="form-input">
+          <mat-form-field class="form-input-field">
+            <textarea matInput type="" formControlName="longDescription" placeholder="Lange Projekt-Beschreibung"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div>
+        <h2></h2>
       </div>
     </ng-template>
   </mat-tab>
 
   <mat-tab label="Verknüpfte Kunden">
     <ng-template matTabContent>
-     <p>TODO</p>
+      <p>TODO</p>
     </ng-template>
   </mat-tab>
   <mat-tab label="TODO's">

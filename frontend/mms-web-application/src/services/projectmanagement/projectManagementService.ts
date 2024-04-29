@@ -19,10 +19,10 @@ export class ProjectManagementService {
   }
 
   deleteProject(project: Project, onSuccess: (project: Project) => void, onError?: (status: number) => void) {
-    if(project.id == undefined){
+    if(project.projectId == undefined){
       return;
     }
-    this.httpClient.delete('projects/delete', project.id).then(r =>{
+    this.httpClient.delete('projects/delete', project.projectId).then(r =>{
       if (r.status != 200){
         if (onError) {
           onError(r.status);

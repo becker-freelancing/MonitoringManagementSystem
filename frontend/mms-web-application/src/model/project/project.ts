@@ -1,6 +1,6 @@
 export class Project{
 
-  id?: number;
+  projectId?: number;
   title: string;
   shortDescription?: string;
   longDescription?: string;
@@ -12,8 +12,8 @@ export class Project{
   customerId?: number;
 
 
-  constructor(title: string, creationTime: Date, id?: number, shortDescription?: string, longDescription?: string, startTime?: Date, endTime?: Date, customerId?: number) {
-    this.id = id;
+  constructor(title: string, creationTime: Date, projectId?: number, shortDescription?: string, longDescription?: string, startTime?: Date, endTime?: Date, customerId?: number) {
+    this.projectId = projectId;
     this.title = title;
     this.shortDescription = shortDescription;
     this.longDescription = longDescription;

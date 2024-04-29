@@ -2,6 +2,7 @@ import {NgClass} from "@angular/common";
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
+import {Project} from "../../../../model/project/project";
 import {Updatable} from "../../../../model/util/updatable";
 import {ProjectManagementService} from "../../../../services/projectmanagement/projectManagementService";
 import {ProjectManagementProject} from "../projectManagementProject";
@@ -41,7 +42,7 @@ export class ProjectManagementMenuBarComponent implements Updatable, OnChanges{
   openAddProjectDialog(): void {
     let dialogRef = this.dialog.open(AddProjectDialogComponent, {
       width: '400px',
-      height: '85%'
+      height: '300px'
     });
 
     dialogRef.afterClosed().subscribe(project => {
@@ -61,8 +62,8 @@ export class ProjectManagementMenuBarComponent implements Updatable, OnChanges{
       height: '90%',
       data: project
     }).afterClosed().subscribe(project => {
-      this.projectManagementService.saveProject(project.project);
-      window.location.reload();
+      this.projectManagementService.saveProject(project.project,
+        (project: Project) => this.update());
     });
   }
 
