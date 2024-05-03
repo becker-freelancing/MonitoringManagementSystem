@@ -1,6 +1,6 @@
 import {CdkScrollable} from "@angular/cdk/overlay";
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Output} from '@angular/core';
 import {
   MatCell,
   MatCellDef,
@@ -57,7 +57,8 @@ export class AllCustomerTableComponent implements AfterViewInit, Updatable {
   selectedTableCell: string = 'mat-mdc-row-selected';
 
   constructor(customerService: CustomerManagementService,
-              public projectManagementService: ProjectManagementService) {
+              public projectManagementService: ProjectManagementService,
+              private changeDetectorRef: ChangeDetectorRef) {
     this.customers = [];
     this.customerService = customerService;
   }
@@ -82,6 +83,8 @@ export class AllCustomerTableComponent implements AfterViewInit, Updatable {
           customer.projects = projects;
         });
       }
+
+      this.changeDetectorRef.detectChanges();
     }, (status: number) => alert(status));
 
   }

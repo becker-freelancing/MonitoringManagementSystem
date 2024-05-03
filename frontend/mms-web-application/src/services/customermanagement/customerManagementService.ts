@@ -7,6 +7,7 @@ import {Customer} from "../../model/cutomer/customer";
 import {ReasonForContact} from "../../model/cutomer/reasonForContact";
 import {DefaultErrorDialog} from "../http/defaultErrorDialog";
 import {HttpClient} from "../http/httpClient";
+import {HttpServiceCache} from "../http/httpServiceCache";
 import {ContactPersonPositionResponseData} from "./contactpersonposition/contactPersonPositionService";
 import {ReasonForContactResponseData} from "./reasonsforcontact/reasonForContactService";
 
@@ -16,8 +17,10 @@ import {ReasonForContactResponseData} from "./reasonsforcontact/reasonForContact
 export class CustomerManagementService {
 
   httpClient: HttpClient;
+  cache: HttpServiceCache<Customer>;
 
   constructor() {
+    this.cache = HttpServiceCache.getInstance<Customer>(Customer);
     this.httpClient = new HttpClient();
   }
 
@@ -31,6 +34,7 @@ export class CustomerManagementService {
         return;
       }
       if (onSuccess) {
+        this.cache.clearCache();
         onSuccess(this.mapToCustomer(r.data))
       }
     }).catch(error => {
@@ -53,6 +57,7 @@ export class CustomerManagementService {
         onError(r.status);
         return;
       }
+      this.cache.clearCache();
       onSuccess(this.mapToCustomer(r.data))
       }).catch(error => {onError(error.status)})
   }
@@ -73,6 +78,11 @@ export class CustomerManagementService {
   }
 
   getAllCustomers(accept: (customers: Customer[]) => void, onError?: (status: number) => void): void{
+    if (this.cache.isCacheFilled()){
+      accept(this.cache.getItems());
+      return;
+    }
+
     this.httpClient.get('customers/get').then(r => {
       if (r.status != 200){
         if (onError) {
@@ -86,7 +96,8 @@ export class CustomerManagementService {
       for (let dataItem of r.data){
         responseCustomers.push(this.mapToCustomer(dataItem));
       }
-      accept(responseCustomers)
+      this.cache.setItems(responseCustomers);
+      accept(responseCustomers);
     }).catch((reason: any) => {
       if (onError) {
         onError(reason.status)
