@@ -104,7 +104,6 @@ export class EditCustomerDialogComponent implements OnInit {
       this.addContactPerson();
     }
 
-    dialogRef.beforeClosed().subscribe(() => this.close())
   }
 
   ngOnInit(): void {

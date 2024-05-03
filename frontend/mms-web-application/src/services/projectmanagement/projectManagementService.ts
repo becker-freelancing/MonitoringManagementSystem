@@ -14,8 +14,44 @@ export class ProjectManagementService {
     this.httpClient = new HttpClient();
   }
 
-  closeProjectsForCustomer(customer: Customer, onSuccess: (projects: Project[]) => void, onError: (status: number) => void) : void {
+  getAllProjectsForCustomer(customer: Customer, onSuccess: (projects: Project[]) => void, onError?: (status: number) => void){
+    this.httpClient.get('projects/customer/get/' + customer.customerId).then(r =>{
+      if (r.status != 200){
+        if (onError) {
+          onError(r.status);
+        }
+        return;
+      }
+      let responseProjects: Project[] = [];
 
+      for (let dataItem of r.data){
+        responseProjects.push(this.mapToProject(dataItem));
+      }
+      onSuccess(responseProjects);
+    }).catch(error => {
+      if (onError) {
+        onError(error.status)
+      }})
+  }
+
+  closeProjectsForCustomer(customer: Customer, onSuccess: (projects: Project[]) => void, onError?: (status: number) => void) : void {
+    this.httpClient.get('projects/customer/close/' + customer.customerId).then(r =>{
+      if (r.status != 200){
+        if (onError) {
+          onError(r.status);
+        }
+        return;
+      }
+      let responseProjects: Project[] = [];
+
+      for (let dataItem of r.data){
+        responseProjects.push(this.mapToProject(dataItem));
+      }
+      onSuccess(responseProjects);
+    }).catch(error => {
+      if (onError) {
+        onError(error.status)
+      }})
   }
 
   deleteProject(project: Project, onSuccess: (project: Project) => void, onError?: (status: number) => void) {
@@ -75,12 +111,13 @@ export class ProjectManagementService {
 
     return new Project(
       data.title,
-      data.creationTime,
+      new Date(data.creationTime),
       data.projectId,
       data.shortDescription === null ? undefined : data.shortDescription,
       data.longDescription === null ? undefined : data.longDescription,
-      data.startTime === null ? undefined : data.startTime,
-      data.endTime === null ? undefined : data.endTime,
+      data.startTime === null ? undefined : new Date(data.startTime),
+      data.endTime === null ? undefined : new Date(data.endTime),
+      data.closedTime === null ? undefined : new Date(data.closedTime),
       data.customerId === null ? undefined : data.customerId
     )
   }
@@ -95,5 +132,6 @@ interface ProjectResponseData {
   creationTime: Date;
   startTime: Date | null;
   endTime: Date | null;
+  closedTime: Date | null;
   customerId: number | null;
 }

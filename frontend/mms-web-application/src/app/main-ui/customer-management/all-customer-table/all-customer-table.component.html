@@ -24,11 +24,7 @@
     <ng-container matColumnDef="activeProjects">
       <th mat-header-cell *matHeaderCellDef>Projekte</th>
       <ng-container *matCellDef="let customer">
-        @if (customer.activeProjects() > 0) {
-          <td mat-cell><img ngSrc="assets/customer-management/check.png" alt="Check" height="15" width="15">{{ customer.activeProjects() }}</td>
-        } @else {
-          <td mat-cell class="all-customers-table-projects-columns"></td>
-        }
+        <td mat-cell>Offene Projekte: {{customer.activeProjects()}}    Abgeschlossene Projekte: {{customer.closedProjects()}}</td>
       </ng-container>
     </ng-container>
 

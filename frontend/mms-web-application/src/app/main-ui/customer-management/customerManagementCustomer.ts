@@ -29,6 +29,16 @@ export class CustomerManagementCustomer{
     return activeProjects;
   }
 
+  closedProjects(): number {
+    let activeProjects = 0;
+
+    for (const project of this.projects){
+      activeProjects += project.isActive() ? 0 : 1;
+    }
+
+    return activeProjects;
+  }
+
   activeTodos(): number{
 
     let activeTodos = 0;

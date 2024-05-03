@@ -14,8 +14,10 @@ import {
   MatTable
 } from "@angular/material/table";
 import {Customer} from "../../../../model/cutomer/customer";
+import {Project} from "../../../../model/project/project";
 import {Updatable} from "../../../../model/util/updatable";
 import {CustomerManagementService} from "../../../../services/customermanagement/customerManagementService";
+import {ProjectManagementService} from "../../../../services/projectmanagement/projectManagementService";
 import {CustomerManagementCustomer} from "../customerManagementCustomer";
 
 @Component({
@@ -54,7 +56,8 @@ export class AllCustomerTableComponent implements AfterViewInit, Updatable {
   currentlySelectedCustomerUiId: number = -1;
   selectedTableCell: string = 'mat-mdc-row-selected';
 
-  constructor(customerService: CustomerManagementService) {
+  constructor(customerService: CustomerManagementService,
+              public projectManagementService: ProjectManagementService) {
     this.customers = [];
     this.customerService = customerService;
   }
@@ -73,7 +76,14 @@ export class AllCustomerTableComponent implements AfterViewInit, Updatable {
         let customerManagementCustomer = new CustomerManagementCustomer(uiId, customer);
         this.customers.push(customerManagementCustomer);
       }
-    }, (status: number) => alert(status))
+
+      for (let customer of this.customers) {
+        this.projectManagementService.getAllProjectsForCustomer(customer.customer, (projects: Project[]) => {
+          customer.projects = projects;
+        });
+      }
+    }, (status: number) => alert(status));
+
   }
 
   onCustomerSingleClicked(customer: CustomerManagementCustomer) {
