@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Customer} from "../../model/cutomer/customer";
 import {Project} from "../../model/project/project";
 import {HttpClient} from "../http/httpClient";
+import {HttpServiceCache} from "../http/httpServiceCache";
 
 @Injectable({
   providedIn: 'root',
@@ -9,9 +10,11 @@ import {HttpClient} from "../http/httpClient";
 export class ProjectManagementService {
 
   httpClient: HttpClient;
+  cache: HttpServiceCache<Project>;
 
   constructor() {
     this.httpClient = new HttpClient();
+    this.cache = HttpServiceCache.getInstance(Project);
   }
 
   getAllProjectsForCustomer(customer: Customer, onSuccess: (projects: Project[]) => void, onError?: (status: number) => void){
@@ -65,6 +68,7 @@ export class ProjectManagementService {
         }
         return;
       }
+      this.cache.clearCache();
       onSuccess(this.mapToProject(r.data))
     }).catch(error => {
       if (onError) {
@@ -80,6 +84,7 @@ export class ProjectManagementService {
         }
         return;
       }
+      this.cache.clearCache();
       if (onSuccess) {
         onSuccess(this.mapToProject(r.data))
       }
@@ -90,6 +95,11 @@ export class ProjectManagementService {
   }
 
   getAllProjects(onSuccess: (projects: Project[]) => void, onError: (status: number) => void) {
+    if (this.cache.isCacheFilled()){
+      onSuccess(this.cache.getItems());
+      return;
+    }
+
     this.httpClient.get('projects/get').then(r => {
       if (r.status != 200){
         onError(r.status);
@@ -101,6 +111,7 @@ export class ProjectManagementService {
       for (let dataItem of r.data){
         responseProjects.push(this.mapToProject(dataItem));
       }
+      this.cache.setItems(responseProjects);
       onSuccess(responseProjects)
     }).catch((reason: any) => {
       onError(reason.status)
