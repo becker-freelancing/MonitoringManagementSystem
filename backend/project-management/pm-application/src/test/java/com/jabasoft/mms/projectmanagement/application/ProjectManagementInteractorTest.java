@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +51,7 @@ class ProjectManagementInteractorTest {
 		assertEquals(expected.getCreationTime(), actual.getCreationTime(), "CreationTime");
 		assertEquals(expected.getStartTime(), actual.getStartTime(), "StartTime");
 		assertEquals(expected.getEndTime(), actual.getEndTime(), "EndTime");
+		assertEquals(expected.getClosedTime(), actual.getClosedTime(), "ClosedTime");
 		assertEquals(expected.getCustomerId(), actual.getCustomerId(), "CustomerId");
 	}
 
@@ -85,6 +87,7 @@ class ProjectManagementInteractorTest {
 		assertEquals(expected1.getCreationTime(), actual1.getCreationTime(), "CreationTime");
 		assertEquals(expected1.getStartTime(), actual1.getStartTime(), "StartTime");
 		assertEquals(expected1.getEndTime(), actual1.getEndTime(), "EndTime");
+		assertEquals(expected1.getClosedTime(), actual1.getClosedTime(), "ClosedTime");
 		assertEquals(expected1.getCustomerId(), actual1.getCustomerId(), "CustomerId");
 
 		ProjectDto actual2 = find.get(1);
@@ -96,6 +99,7 @@ class ProjectManagementInteractorTest {
 		assertEquals(expected2.getCreationTime(), actual2.getCreationTime(), "CreationTime");
 		assertEquals(expected2.getStartTime(), actual2.getStartTime(), "StartTime");
 		assertEquals(expected2.getEndTime(), actual2.getEndTime(), "EndTime");
+		assertEquals(expected2.getClosedTime(), actual2.getClosedTime(), "ClosedTime");
 		assertEquals(expected2.getCustomerId(), actual2.getCustomerId(), "CustomerId");
 	}
 
@@ -127,6 +131,7 @@ class ProjectManagementInteractorTest {
 		assertEquals(expected.getCreationTime(), actual.getCreationTime(), "CreationTime");
 		assertEquals(expected.getStartTime(), actual.getStartTime(), "StartTime");
 		assertEquals(expected.getEndTime(), actual.getEndTime(), "EndTime");
+		assertEquals(expected.getClosedTime(), actual.getClosedTime(), "ClosedTime");
 		assertEquals(expected.getCustomerId(), actual.getCustomerId(), "CustomerId");
 	}
 
@@ -158,6 +163,7 @@ class ProjectManagementInteractorTest {
 		assertEquals(expected.getCreationTime(), actual.getCreationTime(), "CreationTime");
 		assertEquals(expected.getStartTime(), actual.getStartTime(), "StartTime");
 		assertEquals(expected.getEndTime(), actual.getEndTime(), "EndTime");
+		assertEquals(expected.getClosedTime(), actual.getClosedTime(), "ClosedTime");
 		assertEquals(expected.getCustomerId(), actual.getCustomerId(), "CustomerId");
 	}
 
@@ -170,6 +176,53 @@ class ProjectManagementInteractorTest {
 		assertTrue(find.isEmpty());
 	}
 
+	@Test
+	void testFindAllForCustomerReturnsListWithMultipleProjectsWhenProjectsForCustomersExists() {
+
+		Project expected1 = createProjectAsDomain();
+		Project expected2 = createProjectAsDomain();
+		expected2.setTitle("Titel 2");
+
+		when(projectRepository.findAllForCustomer(1234L)).thenReturn(List.of(expected1, expected2));
+
+		List<ProjectDto> find = interactor.findAllForCustomer(1234L);
+
+		assertEquals(2, find.size());
+
+		ProjectDto actual1 = find.get(0);
+
+		assertEquals(expected1.getProjectId(), actual1.getProjectId(), "ProjectId");
+		assertEquals(expected1.getTitle(), actual1.getTitle(), "Title");
+		assertEquals(expected1.getShortDescription(), actual1.getShortDescription(), "ShortDescription");
+		assertEquals(expected1.getLongDescription(), actual1.getLongDescription(), "LongDescription");
+		assertEquals(expected1.getCreationTime(), actual1.getCreationTime(), "CreationTime");
+		assertEquals(expected1.getStartTime(), actual1.getStartTime(), "StartTime");
+		assertEquals(expected1.getEndTime(), actual1.getEndTime(), "EndTime");
+		assertEquals(expected1.getClosedTime(), actual1.getClosedTime(), "ClosedTime");
+		assertEquals(expected1.getCustomerId(), actual1.getCustomerId(), "CustomerId");
+
+		ProjectDto actual2 = find.get(1);
+
+		assertEquals(expected2.getProjectId(), actual2.getProjectId(), "ProjectId");
+		assertEquals(expected2.getTitle(), actual2.getTitle(), "Title");
+		assertEquals(expected2.getShortDescription(), actual2.getShortDescription(), "ShortDescription");
+		assertEquals(expected2.getLongDescription(), actual2.getLongDescription(), "LongDescription");
+		assertEquals(expected2.getCreationTime(), actual2.getCreationTime(), "CreationTime");
+		assertEquals(expected2.getStartTime(), actual2.getStartTime(), "StartTime");
+		assertEquals(expected2.getEndTime(), actual2.getEndTime(), "EndTime");
+		assertEquals(expected2.getClosedTime(), actual2.getClosedTime(), "ClosedTime");
+		assertEquals(expected2.getCustomerId(), actual2.getCustomerId(), "CustomerId");
+	}
+
+	@Test
+	void testFindAllForCustomerReturnsEmptyListWhenNoProjectExistsForCustomer() {
+		when(projectRepository.findAllForCustomer(1234L)).thenReturn(List.of());
+
+		List<ProjectDto> find = interactor.findAllForCustomer(1234L);
+
+		assertEquals(0, find.size());
+	}
+
 	private Project createProjectAsDomain() {
 
 		Project project = new Project();
@@ -178,9 +231,10 @@ class ProjectManagementInteractorTest {
 		project.setTitle("Titel");
 		project.setShortDescription("Kurzbeschreibung");
 		project.setLongDescription("Lange Beschreibung");
-		project.setCreationTime(LocalDateTime.MIN);
-		project.setStartTime(LocalDateTime.of(2024, 4, 29, 12, 0, 0));
-		project.setEndTime(LocalDateTime.MAX);
+		project.setCreationTime(LocalDate.MIN);
+		project.setStartTime(LocalDate.of(2024, 4, 29));
+		project.setClosedTime(LocalDate.of(2025, 4, 29));
+		project.setEndTime(LocalDate.MAX);
 		project.setCustomerId(18L);
 
 		return project;
@@ -194,9 +248,10 @@ class ProjectManagementInteractorTest {
 		project.setTitle("Titel");
 		project.setShortDescription("Kurzbeschreibung");
 		project.setLongDescription("Lange Beschreibung");
-		project.setCreationTime(LocalDateTime.MIN);
-		project.setStartTime(LocalDateTime.of(2024, 4, 29, 12, 0, 0));
-		project.setEndTime(LocalDateTime.MAX);
+		project.setCreationTime(LocalDate.MIN);
+		project.setStartTime(LocalDate.of(2024, 4, 29));
+		project.setClosedTime(LocalDate.of(2025, 4, 29));
+		project.setEndTime(LocalDate.MAX);
 		project.setCustomerId(18L);
 
 		return project;

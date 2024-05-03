@@ -1,6 +1,6 @@
 package com.jabasoft.mms.projectmanagement.domain.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Project {
 
@@ -10,9 +10,10 @@ public class Project {
 	private String shortDescription;
 	private String longDescription;
 
-	private LocalDateTime creationTime;
-	private LocalDateTime startTime;
-	private LocalDateTime endTime;
+	private LocalDate creationTime;
+	private LocalDate startTime;
+	private LocalDate endTime;
+	private LocalDate closedTime;
 
 	private Long customerId;
 
@@ -56,34 +57,44 @@ public class Project {
 		this.longDescription = longDescription;
 	}
 
-	public LocalDateTime getCreationTime() {
+	public LocalDate getCreationTime() {
 
 		return creationTime;
 	}
 
-	public void setCreationTime(LocalDateTime creationTime) {
+	public void setCreationTime(LocalDate creationTime) {
 
 		this.creationTime = creationTime;
 	}
 
-	public LocalDateTime getStartTime() {
+	public LocalDate getStartTime() {
 
 		return startTime;
 	}
 
-	public void setStartTime(LocalDateTime startTime) {
+	public void setStartTime(LocalDate startTime) {
 
 		this.startTime = startTime;
 	}
 
-	public LocalDateTime getEndTime() {
+	public LocalDate getEndTime() {
 
 		return endTime;
 	}
 
-	public void setEndTime(LocalDateTime endTime) {
+	public void setEndTime(LocalDate endTime) {
 
 		this.endTime = endTime;
+	}
+
+	public LocalDate getClosedTime() {
+
+		return closedTime;
+	}
+
+	public void setClosedTime(LocalDate closedTime) {
+
+		this.closedTime = closedTime;
 	}
 
 	public Long getCustomerId() {

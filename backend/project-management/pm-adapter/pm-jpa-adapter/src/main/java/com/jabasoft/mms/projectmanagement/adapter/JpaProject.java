@@ -1,6 +1,7 @@
 package com.jabasoft.mms.projectmanagement.adapter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,11 +28,13 @@ public class JpaProject {
 	private String longDescription;
 
 	@Column(name = "CREATION_TIME")
-	private LocalDateTime creationTime;
+	private LocalDate creationTime;
 	@Column(name = "START_TIME")
-	private LocalDateTime startTime;
+	private LocalDate startTime;
 	@Column(name = "END_TIME")
-	private LocalDateTime endTime;
+	private LocalDate endTime;
+	@Column(name = "CLOSED_TIME")
+	private LocalDate closedTime;
 
 	@Column(name = "CUSTOMER")
 	private Long customerId;
@@ -76,34 +79,44 @@ public class JpaProject {
 		this.longDescription = longDescription;
 	}
 
-	public LocalDateTime getCreationTime() {
+	public LocalDate getCreationTime() {
 
 		return creationTime;
 	}
 
-	public void setCreationTime(LocalDateTime creationTime) {
+	public void setCreationTime(LocalDate creationTime) {
 
 		this.creationTime = creationTime;
 	}
 
-	public LocalDateTime getStartTime() {
+	public LocalDate getStartTime() {
 
 		return startTime;
 	}
 
-	public void setStartTime(LocalDateTime startTime) {
+	public void setStartTime(LocalDate startTime) {
 
 		this.startTime = startTime;
 	}
 
-	public LocalDateTime getEndTime() {
+	public LocalDate getEndTime() {
 
 		return endTime;
 	}
 
-	public void setEndTime(LocalDateTime endTime) {
+	public void setEndTime(LocalDate endTime) {
 
 		this.endTime = endTime;
+	}
+
+	public LocalDate getClosedTime() {
+
+		return closedTime;
+	}
+
+	public void setClosedTime(LocalDate closedTime) {
+
+		this.closedTime = closedTime;
 	}
 
 	public Long getCustomerId() {

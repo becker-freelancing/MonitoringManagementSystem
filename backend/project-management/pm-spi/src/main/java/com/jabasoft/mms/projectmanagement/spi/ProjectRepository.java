@@ -9,6 +9,7 @@ public interface ProjectRepository {
 
 	public Optional<Project> deleteById(Long projectId);
 	public List<Project> findAll();
+	public List<Project> findAllForCustomer(Long customerId);
 	public Optional<Project> findById(Long projectId);
 	public Optional<Project> save(Project project);
 

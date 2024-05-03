@@ -23,6 +23,14 @@ class ProjectManagementInteractor implements ProjectManagementPort {
 	}
 
 	@Override
+	public List<ProjectDto> findAllForCustomer(Long customerId) {
+
+		List<Project> allProjects = projectRepository.findAllForCustomer(customerId);
+
+		return allProjects.stream().map(this::mapToDto).toList();
+	}
+
+	@Override
 	public Optional<ProjectDto> saveProject(ProjectDto dto) {
 
 		Project project = mapToDomain(dto);
@@ -67,6 +75,7 @@ class ProjectManagementInteractor implements ProjectManagementPort {
 		project.setCreationTime(projectDto.getCreationTime());
 		project.setStartTime(projectDto.getStartTime());
 		project.setEndTime(projectDto.getEndTime());
+		project.setClosedTime(project.getClosedTime());
 		project.setCustomerId(projectDto.getCustomerId());
 
 		return project;
@@ -83,6 +92,7 @@ class ProjectManagementInteractor implements ProjectManagementPort {
 		projectDto.setCreationTime(project.getCreationTime());
 		projectDto.setStartTime(project.getStartTime());
 		projectDto.setEndTime(project.getEndTime());
+		projectDto.setClosedTime(project.getClosedTime());
 		projectDto.setCustomerId(project.getCustomerId());
 
 		return projectDto;

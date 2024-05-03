@@ -7,6 +7,7 @@ import com.jabasoft.mms.projectmanagement.dto.ProjectDto;
 
 public interface ProjectManagementPort {
 
+	public List<ProjectDto> findAllForCustomer(Long customerId);
 	public Optional<ProjectDto> saveProject(ProjectDto project);
 	public List<ProjectDto> findAll();
 	public Optional<ProjectDto> deleteProject(Long projectId);

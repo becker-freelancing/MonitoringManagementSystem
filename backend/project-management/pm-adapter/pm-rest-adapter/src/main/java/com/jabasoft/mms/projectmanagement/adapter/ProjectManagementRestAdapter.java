@@ -90,4 +90,17 @@ class ProjectManagementRestAdapter {
 		}
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping("/customer/get/{id}")
+	public ResponseEntity<List<ProjectDto>> findAllForCustomer(@PathVariable Long id){
+		try{
+			List<ProjectDto> all = projectManagementPort.findAllForCustomer(id);
+
+			return ResponseEntity.ok(all);
+		} catch (Exception e){
+			LOGGER.error("Exception in findAllProjects-Request", e);
+			return ResponseEntity.internalServerError().build();
+		}
+	}
+
 }

@@ -46,6 +46,14 @@ class JpaProjectDao implements ProjectRepository {
 	}
 
 	@Override
+	public List<Project> findAllForCustomer(Long customerId) {
+
+		List<JpaProject> all = projectRepository.findAllByCustomerId(customerId);
+
+		return all.stream().map(this::mapToDomain).toList();
+	}
+
+	@Override
 	public Optional<Project> findById(Long projectId) {
 
 		Optional<JpaProject> find = projectRepository.findById(projectId);
@@ -74,6 +82,7 @@ class JpaProjectDao implements ProjectRepository {
 		jpaProject.setCreationTime(project.getCreationTime());
 		jpaProject.setStartTime(project.getStartTime());
 		jpaProject.setEndTime(project.getEndTime());
+		jpaProject.setClosedTime(project.getClosedTime());
 		jpaProject.setCustomerId(project.getCustomerId());
 
 		return jpaProject;
@@ -90,6 +99,7 @@ class JpaProjectDao implements ProjectRepository {
 		project.setCreationTime(jpaProject.getCreationTime());
 		project.setStartTime(jpaProject.getStartTime());
 		project.setEndTime(jpaProject.getEndTime());
+		project.setClosedTime(jpaProject.getClosedTime());
 		project.setCustomerId(jpaProject.getCustomerId());
 
 		return project;
