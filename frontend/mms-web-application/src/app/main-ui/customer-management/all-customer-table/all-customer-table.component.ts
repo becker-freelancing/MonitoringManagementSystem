@@ -13,12 +13,12 @@ import {
   MatRowDef,
   MatTable
 } from "@angular/material/table";
+import {CustomerManagementCustomer} from "../../../../model/customerManagementCustomer";
 import {Customer} from "../../../../model/cutomer/customer";
 import {Project} from "../../../../model/project/project";
 import {Updatable} from "../../../../model/util/updatable";
 import {CustomerManagementService} from "../../../../services/customermanagement/customerManagementService";
 import {ProjectManagementService} from "../../../../services/projectmanagement/projectManagementService";
-import {CustomerManagementCustomer} from "../customerManagementCustomer";
 
 @Component({
   selector: 'app-all-customer-table',

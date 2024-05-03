@@ -1,8 +1,4 @@
 import {Component, ViewChild} from '@angular/core';
-import {
-  CustomerManagementMenuBarComponent
-} from "../customer-management/customer-management-menu-bar/customer-management-menu-bar.component";
-import {CustomerManagementCustomer} from "../customer-management/customerManagementCustomer";
 import {AllProjectsTableComponent} from "./all-projects-table/all-projects-table.component";
 import {ProjectManagementProject} from "./projectManagementProject";
 import {ProjectManagementMenuBarComponent} from "./projects-management-menu-bar/project-management-menu-bar.component";

@@ -12,13 +12,13 @@ import {
 } from "@angular/material/dialog";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
+import {CustomerManagementCustomer} from "../../../../../model/customerManagementCustomer";
 import {Customer} from "../../../../../model/cutomer/customer";
 import {Project} from "../../../../../model/project/project";
 import {Todo} from "../../../../../model/todo/todo";
 import {CustomerManagementService} from "../../../../../services/customermanagement/customerManagementService";
 import {ProjectManagementService} from "../../../../../services/projectmanagement/projectManagementService";
 import {TodoService} from "../../../../../services/todo/todoService";
-import {CustomerManagementCustomer} from "../../customerManagementCustomer";
 
 @Component({
   selector: 'app-delete-customer-dialog',

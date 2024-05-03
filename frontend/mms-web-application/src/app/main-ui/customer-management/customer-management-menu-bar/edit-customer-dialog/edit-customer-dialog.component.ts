@@ -27,6 +27,7 @@ import {
 } from "@angular/material/table";
 import {MatTab, MatTabContent, MatTabGroup} from "@angular/material/tabs";
 import {MatTooltip} from "@angular/material/tooltip";
+import {CustomerManagementCustomer} from "../../../../../model/customerManagementCustomer";
 import {Address} from "../../../../../model/cutomer/address";
 import {ContactPerson} from "../../../../../model/cutomer/contactPerson";
 import {ContactPersonPosition} from "../../../../../model/cutomer/contactPersonPosition";
@@ -40,7 +41,6 @@ import {
 } from "../../../../../services/customermanagement/reasonsforcontact/reasonForContactService";
 import {DeepCloneService} from "../../../../../services/util/deepCloneService";
 import {ConfirmDialogService} from "../../../../util/confirm-dialog/confirm-dialog.service";
-import {CustomerManagementCustomer} from "../../customerManagementCustomer";
 
 
 @Component({

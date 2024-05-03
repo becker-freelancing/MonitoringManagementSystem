@@ -1,9 +1,9 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
+import {CustomerManagementCustomer} from "../../../model/customerManagementCustomer";
 import {AllCustomerTableComponent} from "./all-customer-table/all-customer-table.component";
 import {
   CustomerManagementMenuBarComponent
 } from "./customer-management-menu-bar/customer-management-menu-bar.component";
-import {CustomerManagementCustomer} from "./customerManagementCustomer";
 
 @Component({
   selector: 'app-customer-management',

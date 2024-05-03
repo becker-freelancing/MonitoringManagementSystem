@@ -1,6 +1,6 @@
-import {Customer} from "../../../model/cutomer/customer";
-import {Project} from "../../../model/project/project";
-import {Todo} from "../../../model/todo/todo";
+import {Customer} from "./cutomer/customer";
+import {Project} from "./project/project";
+import {Todo} from "./todo/todo";
 
 
 export class CustomerManagementCustomer{
