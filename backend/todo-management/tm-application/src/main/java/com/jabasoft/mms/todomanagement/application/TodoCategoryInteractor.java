@@ -66,6 +66,7 @@ class TodoCategoryInteractor implements TodoCategoryPort {
 
 		todoCategoryDto.setCategory(category.getCategory());
 		todoCategoryDto.setDescription(category.getDescription());
+		todoCategoryDto.setColor(category.getColor());
 
 		return todoCategoryDto;
 	}
@@ -80,6 +81,7 @@ class TodoCategoryInteractor implements TodoCategoryPort {
 
 		todoCategory.setCategory(categoryDto.getCategory());
 		todoCategory.setDescription(categoryDto.getDescription());
+		todoCategory.setColor(categoryDto.getColor());
 
 		return todoCategory;
 	}

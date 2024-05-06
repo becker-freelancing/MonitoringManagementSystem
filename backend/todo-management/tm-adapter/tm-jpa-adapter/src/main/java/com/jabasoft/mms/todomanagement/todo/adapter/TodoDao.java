@@ -83,8 +83,8 @@ class TodoDao implements TodoRepository {
 		if(todo.getCategory() != null) {
 			JpaTodoCategory jpaTodoCategory = new JpaTodoCategory();
 			jpaTodoCategory.setCategory(Optional.ofNullable(todo.getCategory()).map(TodoCategory::getCategory).orElse(null));
-			jpaTodoCategory.setDescription(Optional.ofNullable(todo.getCategory()).map(TodoCategory::getDescription)
-				.orElse(null));
+			jpaTodoCategory.setDescription(Optional.ofNullable(todo.getCategory()).map(TodoCategory::getDescription).orElse(null));
+			jpaTodoCategory.setColor(todo.getCategory().getColor());
 			jpaTodo.setCategory(jpaTodoCategory);
 		}
 
@@ -109,6 +109,7 @@ class TodoDao implements TodoRepository {
 				.orElse(null));
 			todoCategory.setDescription(Optional.ofNullable(jpaTodo.getCategory()).map(JpaTodoCategory::getDescription)
 				.orElse(null));
+			todoCategory.setColor(jpaTodo.getCategory().getColor());
 			todo.setCategory(todoCategory);
 		}
 

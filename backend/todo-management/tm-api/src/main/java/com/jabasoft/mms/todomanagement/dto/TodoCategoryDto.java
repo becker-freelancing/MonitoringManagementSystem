@@ -6,10 +6,16 @@ public class TodoCategoryDto {
 
 	private String category;
 	private String description;
+	private String color;
 
 	public String getCategory() {
 
 		return category;
+	}
+
+	public String getColor() {
+
+		return color;
 	}
 
 	public void setCategory(String category) {
@@ -20,6 +26,11 @@ public class TodoCategoryDto {
 	public String getDescription() {
 
 		return description;
+	}
+
+	public void setColor(String color) {
+
+		this.color = color;
 	}
 
 	public void setDescription(String description) {
@@ -35,13 +46,15 @@ public class TodoCategoryDto {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		TodoCategoryDto that = (TodoCategoryDto) o;
-		return Objects.equals(category, that.category) && Objects.equals(description, that.description);
+		return Objects.equals(category, that.category)
+			&& Objects.equals(description, that.description)
+			&& Objects.equals(color, that.color);
 	}
 
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(category, description);
+		return Objects.hash(category, description, color);
 	}
 
 	@Override
@@ -50,6 +63,7 @@ public class TodoCategoryDto {
 		return "TodoCategoryDto{" +
 			"category='" + category + '\'' +
 			", description='" + description + '\'' +
+			", color='" + color + '\'' +
 			'}';
 	}
 

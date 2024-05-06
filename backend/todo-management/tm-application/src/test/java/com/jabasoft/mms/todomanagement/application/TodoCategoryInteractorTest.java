@@ -145,7 +145,8 @@ class TodoCategoryInteractorTest {
 		
 		todoCategoryDto.setCategory("1179cfb8-e40a-4e74-b9cf-b8e40a5e7405");
 		todoCategoryDto.setDescription("f0825118-0ffe-4b3e-8251-180ffe1b3e08");
-		
+		todoCategoryDto.setColor("04a711a3-0c84-4791-a711-a30c84e79129");
+
 		return todoCategoryDto;
 	}
 
@@ -155,7 +156,8 @@ class TodoCategoryInteractorTest {
 		
 		todoCategoryDto.setCategory("844a9481-cdbb-4806-8a94-81cdbb380635");
 		todoCategoryDto.setDescription("34c02905-d786-4501-8029-05d78675012b");
-		
+		todoCategoryDto.setColor("9268afa8-f347-4f13-a8af-a8f3479f139f");
+
 		return todoCategoryDto;
 	}
 }

@@ -110,7 +110,8 @@ class TodoCategoryDaoTest {
 		TodoCategory todoCategory1 = new TodoCategory();
 		todoCategory1.setCategory("f1df8f06-02ae-4932-9f8f-0602aea9322a");
 		todoCategory1.setDescription("1740f4df-7807-4c47-80f4-df78073c4744");
-		
+		todoCategory1.setColor("7c95e2c1-5174-42e7-95e2-c1517402e76d");
+
 		return List.of(todoCategory, todoCategory1);
 	}
 }

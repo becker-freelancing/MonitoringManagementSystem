@@ -71,6 +71,7 @@ class TodoCategoryDao implements TodoCategoryRepository {
 
 		jpaTodoCategory.setCategory(category.getCategory());
 		jpaTodoCategory.setDescription(category.getDescription());
+		jpaTodoCategory.setColor(category.getColor());
 
 		return jpaTodoCategory;
 	}
@@ -81,6 +82,7 @@ class TodoCategoryDao implements TodoCategoryRepository {
 
 		todoCategory.setCategory(jpaTodoCategory.getCategory());
 		todoCategory.setDescription(jpaTodoCategory.getDescription());
+		todoCategory.setColor(jpaTodoCategory.getColor());
 
 		return todoCategory;
 	}
