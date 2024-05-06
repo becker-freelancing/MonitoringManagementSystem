@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
+import {CustomerManagementCustomer} from "../../model/customerManagementCustomer";
 import {Customer} from "../../model/cutomer/customer";
 import {Project} from "../../model/project/project";
+import {CustomerManagementService} from "../customermanagement/customerManagementService";
 import {HttpClient} from "../http/httpClient";
 import {HttpServiceCache} from "../http/httpServiceCache";
 
@@ -15,6 +17,26 @@ export class ProjectManagementService {
   constructor() {
     this.httpClient = new HttpClient();
     this.cache = HttpServiceCache.getInstance(Project);
+  }
+
+  getAllCustomersWithOpenProjects(onSuccess: (customers: CustomerManagementCustomer[]) => void, onError?: (status: number) => void){
+    this.getAllProjects((projects: Project[]) => {
+      let openProjects = projects.filter(project => project.isActive());
+      let customerManagementService = new CustomerManagementService();
+      let customers: CustomerManagementCustomer[] = [];
+
+      let uiId = 1;
+      for (let project of openProjects){
+        customerManagementService.getCustomer(project.customerId ?? -1, (customer: Customer) => {
+          let customerManagementCustomer = new CustomerManagementCustomer(uiId, customer);
+          customerManagementCustomer.projects = [project];
+          customers.push(customerManagementCustomer);
+          uiId++;
+        });
+      }
+
+      onSuccess(customers);
+    }, onError);
   }
 
   getAllProjectsForCustomer(customer: Customer, onSuccess: (projects: Project[]) => void, onError?: (status: number) => void){
@@ -94,7 +116,7 @@ export class ProjectManagementService {
       }})
   }
 
-  getAllProjects(onSuccess: (projects: Project[]) => void, onError: (status: number) => void) {
+  getAllProjects(onSuccess: (projects: Project[]) => void, onError?: (status: number) => void) {
     if (this.cache.isCacheFilled()){
       onSuccess(this.cache.getItems());
       return;
@@ -102,7 +124,9 @@ export class ProjectManagementService {
 
     this.httpClient.get('projects/get').then(r => {
       if (r.status != 200){
-        onError(r.status);
+        if (onError) {
+          onError(r.status);
+        }
         return;
       }
 
@@ -114,7 +138,9 @@ export class ProjectManagementService {
       this.cache.setItems(responseProjects);
       onSuccess(responseProjects)
     }).catch((reason: any) => {
-      onError(reason.status)
+      if (onError) {
+        onError(reason.status)
+      }
     })
   }
 

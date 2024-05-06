@@ -1,6 +1,8 @@
 #dashboardCustomerOverview{
-  background-color: #6094b4;
   height: 100%;
   width: 100%;
-  margin: 5px;
+
+  display: flex;
+  justify-content: start;
+  margin: 0 5px;
 }

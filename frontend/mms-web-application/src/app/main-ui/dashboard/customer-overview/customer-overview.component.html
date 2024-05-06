@@ -1,3 +1,5 @@
 <div id="dashboardCustomerOverview">
-  <p>Customer Overview</p>
+  @for (customer of customersWithOpenProjects; track customer.uiId){
+    <app-customer-card [customer]="customer"></app-customer-card>
+  }
 </div>

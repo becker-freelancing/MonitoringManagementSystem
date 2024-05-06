@@ -1,0 +1,13 @@
+<div class="customer-management-card">
+  <div class="customer-management-card-logo-banner">
+    <img src="assets/logo.png" alt="Logo" width="25" height="25">
+  </div>
+
+  <div class="customer-management-card-data-banner">
+    <h2>{{customer?.companyName}}</h2>
+    <p class="overflow-hidden">Projekt: {{project?.title}}</p>
+    <p>Von: {{project?.startTime | date:'dd.MM.yyyy'}}</p>
+    <p>Bis: {{project?.endTime | date:'dd.MM.yyyy'}}</p>
+    <p>Offene Todo's: {{customerManagementCustomer.todos.length}}</p>
+  </div>
+</div>
