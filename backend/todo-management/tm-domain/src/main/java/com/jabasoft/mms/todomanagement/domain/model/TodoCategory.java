@@ -44,4 +44,13 @@ public class TodoCategory {
 		return Objects.hash(category, description);
 	}
 
+	@Override
+	public String toString() {
+
+		return "TodoCategory{" +
+			"category='" + category + '\'' +
+			", description='" + description + '\'' +
+			'}';
+	}
+
 }

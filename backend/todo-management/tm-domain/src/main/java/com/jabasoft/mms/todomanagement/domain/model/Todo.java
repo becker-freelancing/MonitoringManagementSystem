@@ -1,6 +1,6 @@
 package com.jabasoft.mms.todomanagement.domain.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Todo {
@@ -11,9 +11,9 @@ public class Todo {
 	private String shortDescription;
 	private String longDescription;
 
-	private LocalDate creationTime;
-	private LocalDate endTime;
-	private LocalDate closedTime;
+	private LocalDateTime creationTime;
+	private LocalDateTime endTime;
+	private LocalDateTime closedTime;
 
 	private Long customerId;
 
@@ -59,32 +59,32 @@ public class Todo {
 		this.longDescription = longDescription;
 	}
 
-	public LocalDate getCreationTime() {
+	public LocalDateTime getCreationTime() {
 
 		return creationTime;
 	}
 
-	public void setCreationTime(LocalDate creationTime) {
+	public void setCreationTime(LocalDateTime creationTime) {
 
 		this.creationTime = creationTime;
 	}
 
-	public LocalDate getEndTime() {
+	public LocalDateTime getEndTime() {
 
 		return endTime;
 	}
 
-	public void setEndTime(LocalDate endTime) {
+	public void setEndTime(LocalDateTime endTime) {
 
 		this.endTime = endTime;
 	}
 
-	public LocalDate getClosedTime() {
+	public LocalDateTime getClosedTime() {
 
 		return closedTime;
 	}
 
-	public void setClosedTime(LocalDate closedTime) {
+	public void setClosedTime(LocalDateTime closedTime) {
 
 		this.closedTime = closedTime;
 	}
@@ -141,6 +141,22 @@ public class Todo {
 			closedTime,
 			customerId,
 			category);
+	}
+
+	@Override
+	public String toString() {
+
+		return "Todo{" +
+			"todoId=" + todoId +
+			", title='" + title + '\'' +
+			", shortDescription='" + shortDescription + '\'' +
+			", longDescription='" + longDescription + '\'' +
+			", creationTime=" + creationTime +
+			", endTime=" + endTime +
+			", closedTime=" + closedTime +
+			", customerId=" + customerId +
+			", category=" + category +
+			'}';
 	}
 
 }

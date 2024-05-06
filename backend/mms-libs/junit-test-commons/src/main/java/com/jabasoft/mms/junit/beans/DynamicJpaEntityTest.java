@@ -15,6 +15,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -39,6 +40,10 @@ public abstract class DynamicJpaEntityTest extends DynamicBeanTest {
 
 	protected Class<? extends Annotation> oneToManyAnnotation(){
 		return OneToMany.class;
+	}
+
+	protected Class<? extends Annotation> manyToOneAnnotation(){
+		return ManyToOne.class;
 	}
 
 	protected Class<? extends Annotation> joinTableAnnotation(){
@@ -72,6 +77,9 @@ public abstract class DynamicJpaEntityTest extends DynamicBeanTest {
 			} else if(field.isAnnotationPresent(oneToManyAnnotation())){
 				expectedAnnotations.add(oneToManyAnnotation());
 				expectedAnnotations.add(joinTableAnnotation());
+			} else if (field.isAnnotationPresent(manyToOneAnnotation())) {
+				expectedAnnotations.add(manyToOneAnnotation());
+				expectedAnnotations.add(joinColumnAnnotation());
 			}
 
 			assertFalse(expectedAnnotations.isEmpty(), "Min one Annotation needed for Field " + field.getName());

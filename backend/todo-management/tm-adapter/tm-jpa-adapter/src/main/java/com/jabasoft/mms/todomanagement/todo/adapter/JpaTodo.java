@@ -1,23 +1,49 @@
-package com.jabasoft.mms.todomanagement.dto;
+package com.jabasoft.mms.todomanagement.todo.adapter;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-public class TodoDto {
+import com.jabasoft.mms.todomanagement.category.adapter.JpaTodoCategory;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "TODOS")
+public class JpaTodo {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "TODO_ID")
 	private Long todoId;
 
+	@Column(name = "TITLE")
 	private String title;
+	@Column(name = "SHORT_DESCRIPTION")
 	private String shortDescription;
+	@Column(name = "LONG_DESCRIPTION")
 	private String longDescription;
 
+	@Column(name = "CREATION_TIME")
 	private LocalDateTime creationTime;
+	@Column(name = "END_TIME")
 	private LocalDateTime endTime;
+	@Column(name = "CLOSED_TIME")
 	private LocalDateTime closedTime;
 
+	@Column(name = "CUSTOMER_ID")
 	private Long customerId;
 
-	private TodoCategoryDto category;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "CATEGORY", referencedColumnName = "CATEGORY")
+	private JpaTodoCategory category;
 
 	public Long getTodoId() {
 
@@ -99,64 +125,14 @@ public class TodoDto {
 		this.customerId = customerId;
 	}
 
-	public TodoCategoryDto getCategory() {
+	public JpaTodoCategory getCategory() {
 
 		return category;
 	}
 
-	public void setCategory(TodoCategoryDto category) {
+	public void setCategory(JpaTodoCategory category) {
 
 		this.category = category;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		TodoDto todoDto = (TodoDto) o;
-		return Objects.equals(todoId, todoDto.todoId)
-			&& Objects.equals(title, todoDto.title)
-			&& Objects.equals(shortDescription, todoDto.shortDescription)
-			&& Objects.equals(longDescription, todoDto.longDescription)
-			&& Objects.equals(creationTime, todoDto.creationTime)
-			&& Objects.equals(endTime, todoDto.endTime)
-			&& Objects.equals(closedTime, todoDto.closedTime)
-			&& Objects.equals(customerId, todoDto.customerId)
-			&& Objects.equals(category, todoDto.category);
-	}
-
-	@Override
-	public int hashCode() {
-
-		return Objects.hash(
-			todoId,
-			title,
-			shortDescription,
-			longDescription,
-			creationTime,
-			endTime,
-			closedTime,
-			customerId,
-			category);
-	}
-
-	@Override
-	public String toString() {
-
-		return "TodoDto{" +
-			"todoId=" + todoId +
-			", title='" + title + '\'' +
-			", shortDescription='" + shortDescription + '\'' +
-			", longDescription='" + longDescription + '\'' +
-			", creationTime=" + creationTime +
-			", endTime=" + endTime +
-			", closedTime=" + closedTime +
-			", customerId=" + customerId +
-			", category=" + category +
-			'}';
 	}
 
 }
