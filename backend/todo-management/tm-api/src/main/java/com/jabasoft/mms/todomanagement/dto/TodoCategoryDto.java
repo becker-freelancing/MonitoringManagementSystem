@@ -1,6 +1,6 @@
 package com.jabasoft.mms.todomanagement.dto;
 
-public class TodoCategory {
+public class TodoCategoryDto {
 
 	private String category;
 	private String description;

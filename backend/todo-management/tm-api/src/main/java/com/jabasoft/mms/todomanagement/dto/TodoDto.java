@@ -16,7 +16,7 @@ public class TodoDto {
 
 	private Long customerId;
 
-	private TodoCategory category;
+	private TodoCategoryDto category;
 
 	public Long getTodoId() {
 
@@ -98,12 +98,12 @@ public class TodoDto {
 		this.customerId = customerId;
 	}
 
-	public TodoCategory getCategory() {
+	public TodoCategoryDto getCategory() {
 
 		return category;
 	}
 
-	public void setCategory(TodoCategory category) {
+	public void setCategory(TodoCategoryDto category) {
 
 		this.category = category;
 	}
