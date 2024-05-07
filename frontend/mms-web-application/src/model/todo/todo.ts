@@ -3,7 +3,7 @@ import {TodoCategory} from "./todoCategory";
 
 export class Todo{
 
-  todoId: number;
+  todoId?: number;
   title: string;
   creationTime: Date;
 
@@ -15,7 +15,7 @@ export class Todo{
   category?: TodoCategory;
 
 
-  constructor(todoId: number, title: string, creationTime: Date, shortDescription: string, longDescription: string, endTime: Date, closedTime: Date, customerId: number, category: TodoCategory) {
+  constructor(title: string, creationTime: Date, shortDescription?: string, longDescription?: string, endTime?: Date, closedTime?: Date, customerId?: number, category?: TodoCategory, todoId?: number) {
     this.todoId = todoId;
     this.title = title;
     this.creationTime = creationTime;

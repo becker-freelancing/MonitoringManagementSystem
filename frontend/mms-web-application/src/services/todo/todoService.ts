@@ -94,7 +94,6 @@ export class TodoService {
   private mapToTodo(dataItem: TodoResponseData): Todo {
 
     return new Todo(
-      dataItem.todoId,
       dataItem.title,
       dataItem.creationTime,
       dataItem.shortDescription,
@@ -102,7 +101,8 @@ export class TodoService {
       dataItem.endTime,
       dataItem.closedTime,
       dataItem.customerId,
-      TodoCategoryService.mapCategory(dataItem.category)
+      TodoCategoryService.mapCategory(dataItem.category),
+      dataItem.todoId
     )
   }
 

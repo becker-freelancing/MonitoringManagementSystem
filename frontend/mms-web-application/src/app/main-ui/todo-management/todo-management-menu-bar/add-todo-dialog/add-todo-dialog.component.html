@@ -1,17 +1,31 @@
-<mat-dialog-content> <!--[formGroup]="form"-->
-<!--  <header>-->
-<!--    <h2>Projekt hinzufügen</h2>-->
-<!--  </header>-->
+<mat-dialog-content [formGroup]="form">
+  <header>
+    <h2>Todo hinzufügen</h2>
+  </header>
 
-<!--  <div class="form-division">-->
-<!--    <h3>Projekt-Daten</h3>-->
-<!--    <div class="form-input">-->
-<!--      <mat-form-field class="form-input-field">-->
-<!--        <input matInput placeholder="Projekt-Name*" type="text" id="name" required formControlName="projectName">-->
-<!--      </mat-form-field>-->
-<!--      <div class="form-input-not-valid-label" *ngIf="projectNameNotValid">Projekt-Name erforderlich</div>-->
-<!--    </div>-->
-<!--  </div>-->
+  <div class="form-division">
+    <h3>Überschrift????</h3>
+
+    <div class="form-input">
+      <mat-form-field class="form-input-field">
+        <input matInput placeholder="Titel*" type="text" id="todoTitle" required formControlName="todoTitle">
+      </mat-form-field>
+      <div class="form-input-not-valid-label" *ngIf="todoTitleNotValid">Projekt-Name erforderlich</div>
+    </div>
+
+    <div class="form-input">
+      <mat-form-field class="form-input-field">
+        <mat-label>Fälligkeit</mat-label>
+        <input matInput [matDatepicker]="endTimePicker" formControlName="endTime">
+        <mat-datepicker-toggle matIconSuffix [for]="endTimePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endTimePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field>
+      <input matInput type="datetime-local" placeholder="start date">
+    </mat-form-field>
+  </div>
 
 </mat-dialog-content>
 <mat-dialog-actions>

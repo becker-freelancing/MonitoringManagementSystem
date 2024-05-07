@@ -44,8 +44,8 @@ export class TodoManagementMenuBarComponent implements OnChanges{
 
   openAddTodoDialog(): void {
     let dialogRef = this.dialog.open(AddTodoDialogComponent, {
-      width: '400px',
-      height: '300px'
+      width: '90%',
+      height: '90%'
     });
 
     dialogRef.afterClosed().subscribe(todo => {
