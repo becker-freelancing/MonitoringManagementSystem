@@ -16,7 +16,7 @@ export class HttpClient {
     return axios.post(this.baseUrl + '/' + endpoint, data)
   }
 
-  public delete(endpoint: string, id: number): Promise<AxiosResponse<any>>{
+  public delete(endpoint: string, id: any): Promise<AxiosResponse<any>>{
     return axios.delete(this.baseUrl + '/' + endpoint + '/' + id)
   }
 
