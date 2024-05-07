@@ -16,7 +16,7 @@ export class TodoService {
   }
 
   deleteTodosForCustomer(customer: Customer, onSuccess: (todos: Todo[]) => void, onError: (status: number) => void) : void {
-    this.httpClient.delete('todo/delete/customer', customer.customerId, new Date()).then(r =>{
+    this.httpClient.delete('todo/delete/customer', customer.customerId).then(r =>{
       if (r.status != 200){
         if (onError) {
           onError(r.status);
