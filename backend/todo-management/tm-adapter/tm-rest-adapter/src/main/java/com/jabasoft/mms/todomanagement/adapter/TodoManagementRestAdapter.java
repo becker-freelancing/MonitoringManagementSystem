@@ -2,7 +2,6 @@ package com.jabasoft.mms.todomanagement.adapter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -85,5 +84,15 @@ class TodoManagementRestAdapter {
 		}
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
+	@DeleteMapping("/delete/customer/{customerId}")
+	public ResponseEntity<List<TodoDto>> closeTodoForCustomer(@PathVariable("customerId") Long customerId){
+		try {
+
+			return ResponseEntity.ok(todoManagementPort.deleteTodoForCustomer(customerId));
+		} catch (Exception e){
+			return ResponseEntity.internalServerError().build();
+		}
+	}
 
 }

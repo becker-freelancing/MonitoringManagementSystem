@@ -8,6 +8,7 @@ import com.jabasoft.mms.todomanagement.domain.model.Todo;
 public interface TodoRepository {
 
 	public Optional<Todo> deleteTodo(Long id);
+	public List<Todo> deleteTodosForCustomer(Long customerId);
 	public List<Todo> findAllTodos();
 	public Optional<Todo> findTodo(Long id);
 	public Optional<Todo> saveTodo(Todo todo);

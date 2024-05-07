@@ -39,6 +39,14 @@ class TodoDao implements TodoRepository {
 	}
 
 	@Override
+	public List<Todo> deleteTodosForCustomer(Long customerId) {
+
+		List<JpaTodo> deleted = repository.deleteJpaTodoByCustomerId(customerId);
+
+		return deleted.stream().map(this::mapTodo).toList();
+	}
+
+	@Override
 	public List<Todo> findAllTodos() {
 
 		List<Todo> all = new ArrayList<>();

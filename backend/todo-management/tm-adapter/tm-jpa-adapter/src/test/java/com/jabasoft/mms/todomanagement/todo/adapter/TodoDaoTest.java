@@ -3,6 +3,7 @@ package com.jabasoft.mms.todomanagement.todo.adapter;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,14 +39,14 @@ class TodoDaoTest {
 	@Test
 	void testFindAllReturnsAllEntitiesFromDb(){
 
-		List<Todo> expected = createBeans();
+		List<Todo> beans = createBeans();
 
-		expected.forEach(todoDao::saveTodo);
+		List<Todo> expected = new ArrayList<>();
+		beans.forEach(todo -> todoDao.saveTodo(todo).ifPresent(expected::add));
 
 		List<Todo> actual = todoDao.findAllTodos();
 
-		assertEquals(2, expected.size());
-		expected.get(1).setTodoId(2L);
+		assertEquals(2, beans.size());
 		assertEquals(expected, actual);
 	}
 
@@ -102,7 +103,32 @@ class TodoDaoTest {
 		assertTrue(actual.isEmpty());
 	}
 
-	static List<Todo> createBeans(){
+	@Test
+	void testDeleteByCustomerIdReturnsEmptyListWhenNoTodoWithCustomerIdExists(){
+		List<Todo> beans = createBeans();
+
+		beans.forEach(todoDao::saveTodo);
+
+		List<Todo> actual = todoDao.deleteTodosForCustomer(123456L);
+
+		assertTrue(actual.isEmpty());
+	}
+
+
+	@Test
+	void testDeleteByCustomerIdReturnsListWhenTodoWithCustomerIdExists() {
+
+		List<Todo> beans = createBeans();
+
+		beans.forEach(todoDao::saveTodo);
+
+		List<Todo> actual = todoDao.deleteTodosForCustomer(12L);
+
+		assertEquals(1, actual.size());
+
+	}
+
+		static List<Todo> createBeans(){
 
 		Todo todo = new Todo();
 		todo.setTodoId(1L);

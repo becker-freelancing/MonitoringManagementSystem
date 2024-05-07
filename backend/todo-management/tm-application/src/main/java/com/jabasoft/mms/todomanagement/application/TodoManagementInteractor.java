@@ -3,6 +3,7 @@ package com.jabasoft.mms.todomanagement.application;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,14 @@ class TodoManagementInteractor implements TodoManagementPort {
 	public TodoManagementInteractor(TodoRepository todoRepository) {
 
 		this.todoRepository = todoRepository;
+	}
+
+	@Override
+	public List<TodoDto> deleteTodoForCustomer(Long customerId) {
+
+		List<Todo> deleted = todoRepository.deleteTodosForCustomer(customerId);
+
+		return deleted.stream().map(this::mapTodo).toList();
 	}
 
 	@Override

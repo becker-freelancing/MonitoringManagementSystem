@@ -163,6 +163,30 @@ class TodoManagementInteractorTest {
 		assertEquals(LocalDateTime.MAX, closedTodo.get().getClosedTime());
 	}
 
+
+	@Test
+	void testDeleteByCustomerIdReturnsEmptyListWhenNoTodoWithCustomerIdExists(){
+		when(repository.deleteTodosForCustomer(any())).thenReturn(List.of());
+
+		List<TodoDto> actual = interactor.deleteTodoForCustomer(123456L);
+
+		assertTrue(actual.isEmpty());
+	}
+
+
+	@Test
+	void testDeleteByCustomerIdReturnsListWhenTodoWithCustomerIdExists() {
+
+		when(repository.deleteTodosForCustomer(any())).thenReturn(List.of(
+			interactor.mapTodo(createTodo1()),
+			interactor.mapTodo(createTodo2())));
+
+		List<TodoDto> actual = interactor.deleteTodoForCustomer(123456L);
+
+		assertEquals(2, actual.size());
+
+	}
+
 	private static TodoDto createTodo1() {
 
 		TodoDto todo = new TodoDto();

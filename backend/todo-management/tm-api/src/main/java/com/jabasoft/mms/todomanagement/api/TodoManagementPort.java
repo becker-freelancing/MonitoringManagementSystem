@@ -8,6 +8,7 @@ import com.jabasoft.mms.todomanagement.dto.TodoDto;
 
 public interface TodoManagementPort {
 
+	public List<TodoDto> deleteTodoForCustomer(Long customerId);
 	public Optional<TodoDto> saveTodo(TodoDto todoDto);
 	public Optional<TodoDto> deleteTodo(Long id);
 	public Optional<TodoDto> getTodo(Long id);
