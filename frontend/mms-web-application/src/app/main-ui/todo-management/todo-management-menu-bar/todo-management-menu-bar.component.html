@@ -1,1 +1,5 @@
-<p>todo-management-menu-bar works!</p>
+<div class="menu-bar">
+  <button (click)="openAddTodoDialog()" class="primary-button">Hinzufügen</button>
+  <button (click)="openEditTodoDialog(currentlySelectedTodo)" [ngClass]="editButtonClass">Bearbeiten</button>
+  <button (click)="openDeleteTodoDialog(currentlySelectedTodo)" [ngClass]="editButtonClass">Löschen</button>
+</div>

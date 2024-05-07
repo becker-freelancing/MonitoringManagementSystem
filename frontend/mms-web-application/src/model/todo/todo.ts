@@ -26,4 +26,12 @@ export class Todo{
     this.customerId = customerId;
     this.category = category;
   }
+
+  isClosed() {
+    if(!this.closedTime){
+      return false;
+    }
+
+    return this.closedTime < new Date();
+  }
 }

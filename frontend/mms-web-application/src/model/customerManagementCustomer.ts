@@ -44,7 +44,7 @@ export class CustomerManagementCustomer{
     let activeTodos = 0;
 
     for (const todo of this.todos){
-      activeTodos += todo.finished ? 0 : 1;
+      activeTodos += todo.isClosed() ? 0 : 1;
     }
 
     return activeTodos;
