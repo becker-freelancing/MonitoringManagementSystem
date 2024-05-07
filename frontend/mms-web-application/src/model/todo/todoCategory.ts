@@ -1,11 +1,11 @@
 export class TodoCategory {
 
-  category: String;
-  color: String;
-  description?: String;
+  category: string;
+  color: string;
+  description?: string;
 
 
-  constructor(category: String, color: String, description?: String) {
+  constructor(category: string, color: string, description?: string) {
     this.category = category;
     this.color = color;
     this.description = description;

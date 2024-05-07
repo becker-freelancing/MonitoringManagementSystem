@@ -1,6 +1,10 @@
+import {Inject, Injectable} from "@angular/core";
 import {TodoCategory} from "../../model/todo/todoCategory";
 import {HttpClient} from "../http/httpClient";
 
+@Injectable({
+  providedIn: 'root'
+})
 export class TodoCategoryService {
 
   httpClient: HttpClient;
