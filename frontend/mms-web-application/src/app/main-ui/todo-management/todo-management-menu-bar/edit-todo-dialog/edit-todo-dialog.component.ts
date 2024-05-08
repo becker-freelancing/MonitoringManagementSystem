@@ -45,6 +45,7 @@ import {CustomerManagementCustomer} from "../../../../../model/customerManagemen
 import {Customer} from "../../../../../model/cutomer/customer";
 import {Todo} from "../../../../../model/todo/todo";
 import {TodoCategory} from "../../../../../model/todo/todoCategory";
+import {DateTime} from "../../../../../model/util/DateTime";
 import {CustomerManagementService} from "../../../../../services/customermanagement/customerManagementService";
 import {TodoCategoryService} from "../../../../../services/todo/todoCategoryService";
 import {TodoManagementTodo} from "../../todoManagementTodo";
@@ -131,7 +132,7 @@ export class EditTodoDialogComponent implements OnInit {
 
       let todo = new Todo(
         formValues.todoTitle,
-        new Date(),
+        new DateTime(),
         formValues.shortDescription,
         formValues.longDescription,
         formValues.endTime,

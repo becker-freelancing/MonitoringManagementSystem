@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {CustomerManagementCustomer} from "../../model/customerManagementCustomer";
 import {Customer} from "../../model/cutomer/customer";
 import {Project} from "../../model/project/project";
+import {DateTime} from "../../model/util/DateTime";
 import {CustomerManagementService} from "../customermanagement/customerManagementService";
 import {HttpClient} from "../http/httpClient";
 import {HttpServiceCache} from "../http/httpServiceCache";
@@ -148,13 +149,13 @@ export class ProjectManagementService {
 
     return new Project(
       data.title,
-      new Date(data.creationTime),
+      new DateTime(data.creationTime),
       data.projectId,
       data.shortDescription === null ? undefined : data.shortDescription,
       data.longDescription === null ? undefined : data.longDescription,
-      data.startTime === null ? undefined : new Date(data.startTime),
-      data.endTime === null ? undefined : new Date(data.endTime),
-      data.closedTime === null ? undefined : new Date(data.closedTime),
+      DateTime.fromDate(data.startTime),
+      DateTime.fromDate(data.endTime),
+      DateTime.fromDate(data.closedTime),
       data.customerId === null ? undefined : data.customerId
     )
   }

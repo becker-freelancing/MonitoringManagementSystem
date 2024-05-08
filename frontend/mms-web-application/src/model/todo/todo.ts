@@ -1,21 +1,22 @@
 import {Customer} from "../cutomer/customer";
+import {DateTime} from "../util/DateTime";
 import {TodoCategory} from "./todoCategory";
 
 export class Todo{
 
   todoId?: number;
   title: string;
-  creationTime: Date;
+  creationTime: DateTime;
 
   shortDescription?: string;
   longDescription?: string;
-  endTime?: Date;
-  closedTime?: Date;
+  endTime?: DateTime;
+  closedTime?: DateTime;
   customerId?: number;
   category?: TodoCategory;
 
 
-  constructor(title: string, creationTime: Date, shortDescription?: string, longDescription?: string, endTime?: Date, closedTime?: Date, customerId?: number, category?: TodoCategory, todoId?: number) {
+  constructor(title: string, creationTime: DateTime, shortDescription?: string, longDescription?: string, endTime?: DateTime, closedTime?: DateTime, customerId?: number, category?: TodoCategory, todoId?: number) {
     this.todoId = todoId;
     this.title = title;
     this.creationTime = creationTime;

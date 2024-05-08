@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Customer} from "../../model/cutomer/customer";
 import {Todo} from "../../model/todo/todo";
+import {DateTime} from "../../model/util/DateTime";
 import {HttpClient} from "../http/httpClient";
 import {TodoCategoryResponseData, TodoCategoryService} from "./todoCategoryService";
 
@@ -95,11 +96,11 @@ export class TodoService {
 
     return new Todo(
       dataItem.title,
-      dataItem.creationTime,
+      new DateTime(dataItem.creationTime),
       dataItem.shortDescription,
       dataItem.longDescription,
-      dataItem.endTime,
-      dataItem.closedTime,
+      DateTime.fromDate(dataItem.endTime),
+      DateTime.fromDate(dataItem.closedTime),
       dataItem.customerId,
       TodoCategoryService.mapCategoryOrNull(dataItem.category),
       dataItem.todoId

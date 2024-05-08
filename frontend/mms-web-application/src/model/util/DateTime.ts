@@ -1,6 +1,6 @@
 export class DateTime extends Date{
 
-  public static fromDate(date: Date): DateTime | undefined {
+  public static fromDate(date: Date | null | undefined): DateTime | undefined {
     if(date === undefined || date === null){
       return undefined;
     }

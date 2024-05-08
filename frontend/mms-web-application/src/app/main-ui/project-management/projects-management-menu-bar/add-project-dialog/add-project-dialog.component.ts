@@ -13,6 +13,7 @@ import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {Project} from "../../../../../model/project/project";
+import {DateTime} from "../../../../../model/util/DateTime";
 import {ProjectManagementService} from "../../../../../services/projectmanagement/projectManagementService";
 
 @Component({
@@ -50,7 +51,7 @@ export class AddProjectDialogComponent implements OnInit{
     if(this.form.valid) {
       let formValues = this.form.value;
 
-      let project = new Project(formValues['projectName'], new Date());
+      let project = new Project(formValues['projectName'], new DateTime());
       this.dialogRef.close(project);
     } else {
       this.projectNameNotValid = true;

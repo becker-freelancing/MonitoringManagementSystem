@@ -1,3 +1,5 @@
+import {DateTime} from "../util/DateTime";
+
 export class Project{
 
   projectId?: number;
@@ -5,15 +7,15 @@ export class Project{
   shortDescription?: string;
   longDescription?: string;
 
-  creationTime: Date;
-  startTime?: Date;
-  endTime?: Date;
-  closedTime?: Date;
+  creationTime: DateTime;
+  startTime?: DateTime;
+  endTime?: DateTime;
+  closedTime?: DateTime;
 
   customerId?: number;
 
 
-  constructor(title: string, creationTime: Date, projectId?: number, shortDescription?: string, longDescription?: string, startTime?: Date, endTime?: Date, closedTime?: Date, customerId?: number) {
+  constructor(title: string, creationTime: DateTime, projectId?: number, shortDescription?: string, longDescription?: string, startTime?: DateTime, endTime?: DateTime, closedTime?: DateTime, customerId?: number) {
     this.projectId = projectId;
     this.title = title;
     this.shortDescription = shortDescription;
@@ -26,7 +28,7 @@ export class Project{
   }
 
   isActive() {
-    let now = new Date;
+    let now = new DateTime();
     if(this.startTime && this.closedTime){
       return this.startTime < now && now < this.closedTime;
     }
