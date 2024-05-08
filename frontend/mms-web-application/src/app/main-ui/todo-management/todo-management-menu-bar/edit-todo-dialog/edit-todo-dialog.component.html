@@ -1,8 +1,56 @@
-<mat-tab-group>
+<mat-dialog-content [formGroup]="form">
+  <header>
+    <h2>Todo hinzufügen</h2>
+  </header>
 
-</mat-tab-group>
+  <div class="form-division">
 
+    <div class="form-input">
+      <mat-form-field class="form-input-field">
+        <mat-label>Titel</mat-label>
+        <input matInput type="text" id="todoTitle" required formControlName="todoTitle">
+      </mat-form-field>
+      <div class="form-input-not-valid-label" *ngIf="todoTitleNotValid">Todo-Titel erforderlich</div>
+    </div>
+
+    <div class="form-input-horizontal">
+      <mat-form-field class="form-input-field">
+        <mat-label>Fälligkeit</mat-label>
+        <input matInput [matDatepicker]="endTimePicker" formControlName="endTime">
+        <mat-datepicker-toggle matIconSuffix [for]="endTimePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endTimePicker></mat-datepicker>
+      </mat-form-field>
+      <p>Hier noch einen Time-Picker einfügen</p>
+    </div>
+
+    <div class="form-input">
+      <mat-form-field class="form-input-field">
+        <mat-label>Beschreibung</mat-label>
+        <textarea matInput type="" formControlName="shortDescription"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="form-input-horizontal">
+    <mat-form-field class="form-input-field">
+      <mat-label>Kunde</mat-label>
+      <mat-select formControlName="customer">
+        <mat-option [value]="undefined">----</mat-option>
+        <mat-option *ngFor="let customer of customers" [value]="customer">{{ customer.companyName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="form-input-field">
+      <mat-label>Kategorie</mat-label>
+      <mat-select formControlName="category" [(value)]="category">
+        <mat-option [value]="undefined">----</mat-option>
+        <mat-option *ngFor="let category of categories" [value]="category" [matTooltip]="category.description ?? ''">{{ category.category }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+</mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="close()">Abbrechen</button>
-  <button mat-button cdkFocusInitial (click)="save()">Speichern</button>
+  <button mat-button mat-dialog-close (click)="close()">Abbrechen</button>
+  <button mat-button cdkFocusInitial (click)="saveTodo()">Speichern</button>
 </mat-dialog-actions>

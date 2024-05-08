@@ -49,7 +49,9 @@ export class TodoManagementMenuBarComponent implements OnChanges{
     });
 
     dialogRef.afterClosed().subscribe(todo => {
-      this.todoService.saveTodo(todo, (todo: Todo) => this.todoAdded.emit(todo));
+      this.todoService.saveTodo(todo, (todo: Todo) => {
+        this.todoAdded.emit(todo)
+      });
     })
 
   }
@@ -63,8 +65,11 @@ export class TodoManagementMenuBarComponent implements OnChanges{
       width: '90%',
       height: '90%',
       data: todo
-    }).afterClosed().subscribe(project => {
-      this.todoService.saveTodo(project.project,
+    }).afterClosed().subscribe(todo => {
+      if(todo === undefined){
+        return;
+      }
+      this.todoService.saveTodo(todo.todo,
         (saved: Todo) => {
           todo.todo = saved;
           this.todoEdited.emit(todo);

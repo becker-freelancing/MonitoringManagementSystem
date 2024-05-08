@@ -91,7 +91,6 @@ export class AddTodoDialogComponent implements OnInit{
     } else {
       let formValues = this.form.value;
 
-      console.log(formValues)
       let todo = new Todo(
         formValues.todoTitle,
         new Date(),
@@ -106,11 +105,4 @@ export class AddTodoDialogComponent implements OnInit{
     }
   }
 
-  customerChanges($event: MatSelectChange) {
-
-  }
-
-  categoryChanges($event: MatSelectChange) {
-
-  }
 }

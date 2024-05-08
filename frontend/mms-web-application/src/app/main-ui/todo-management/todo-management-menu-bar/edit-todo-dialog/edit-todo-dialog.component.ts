@@ -1,5 +1,5 @@
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {
@@ -41,6 +41,13 @@ import {
 } from "@angular/material/table";
 import {MatTab, MatTabContent, MatTabGroup} from "@angular/material/tabs";
 import {MatTooltip} from "@angular/material/tooltip";
+import {CustomerManagementCustomer} from "../../../../../model/customerManagementCustomer";
+import {Customer} from "../../../../../model/cutomer/customer";
+import {Todo} from "../../../../../model/todo/todo";
+import {TodoCategory} from "../../../../../model/todo/todoCategory";
+import {CustomerManagementService} from "../../../../../services/customermanagement/customerManagementService";
+import {TodoCategoryService} from "../../../../../services/todo/todoCategoryService";
+import {TodoManagementTodo} from "../../todoManagementTodo";
 
 export const MY_CUSTOM_DATE_FORMATS = {
   parse: {
@@ -66,93 +73,79 @@ export const MY_CUSTOM_DATE_FORMATS = {
   ]
 })
 export class EditTodoDialogComponent implements OnInit {
-  //
-  // customers: Customer[] = [];
-  //
-  // project: ProjectManagementProject;
-  //
-  // editProjectDataForm: FormGroup;
-  // projectNameNotValid: boolean = false;
-  //
-  // projectCustomerLocked: boolean = true;
-  // currentlySelectedCustomer: Customer | undefined;
-  //
-  // customer: Customer | undefined;
+
+  form: FormGroup;
+
+  uiId: number;
+  todoId?: number;
+  todoTitle: string = '';
+  shortDescription?: string;
+  longDescription?: string;
+  endTime?: Date;
+  customer?: Customer;
+  category?: TodoCategory;
+
+  todoTitleNotValid: boolean = false;
+  customers: Customer[] = [];
+  categories: TodoCategory[] = [];
 
 
   constructor(
-    // public dialogRef: MatDialogRef<EditProjectDialogComponent, ProjectManagementProject>,
-    //           public confirmDialogService: ConfirmDialogService,
-    //           editProjectDataFormBuilder: FormBuilder,
-    //           public customerManagementService: CustomerManagementService,
-    //           @Inject(MAT_DIALOG_DATA) data: ProjectManagementProject
-  ) {
+    fb: FormBuilder,
+    private dialogRef: MatDialogRef<EditTodoDialogComponent>,
+    private customerService: CustomerManagementService,
+    private categoryService: TodoCategoryService,
+    @Inject(MAT_DIALOG_DATA) public data: TodoManagementTodo) {
 
-    // this.project = new DeepCloneService().deepCopy(data);
-    //
-    // this.editProjectDataForm = editProjectDataFormBuilder.group({
-    //   title: [this.project.project.title, Validators.required],
-    //   shortDescription: [this.project.project.shortDescription],
-    //   longDescription: [this.project.project.longDescription],
-    //   startTime: [this.project.project.startTime],
-    //   endTime: [this.project.project.endTime]
-    // });
-    //
-    // this.getCustomerName();
-    // this.getAllCustomers();
+    this.uiId = data.uiId;
+    this.todoId = data.todo.todoId;
+    this.todoTitle = data.todo.title;
+    this.shortDescription = data.todo.shortDescription;
+    this.longDescription = data.todo.longDescription;
+    this.endTime = data.todo.endTime;
+    this.customer = data.customer;
+    this.category = data.todo.category;
+
+    this.form = fb.group({
+      todoTitle: [this.todoTitle, Validators.required],
+      shortDescription: [this.shortDescription],
+      longDescription: [this.longDescription],
+      endTime: [this.endTime],
+      customer: [this.customer],
+      category: [this.category]
+    });
+
+    customerService.getAllCustomers((customers) => this.customers = customers);
+    categoryService.getAllCategories((categories) => this.categories = categories);
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+
+  }
+
+  saveTodo() {
+    if (!this.form.valid) {
+      this.todoTitleNotValid = true;
+    } else {
+      let formValues = this.form.value;
+
+      let todo = new Todo(
+        formValues.todoTitle,
+        new Date(),
+        formValues.shortDescription,
+        formValues.longDescription,
+        formValues.endTime,
+        undefined,
+        formValues.customer?.customerId,
+        formValues.category,
+        this.todoId
+      );
+      let todoManagementTodo = new TodoManagementTodo(this.uiId, todo);
+      this.dialogRef.close(todoManagementTodo);
+    }
   }
 
   close() {
-    // this.confirmDialogService.showConfirmCancelDialog(() => this.dialogRef.close(), () => {});
-  }
-
-  save() {
-    // if (!this.editProjectDataForm.valid) {
-    //   this.projectNameNotValid = this.editProjectDataForm.value.title === undefined;
-    //   return;
-    // }
-    //
-    // let editProjectDataValues = this.editProjectDataForm.value;
-    //
-    // this.project.project.title = editProjectDataValues.title;
-    // this.project.project.shortDescription = editProjectDataValues.shortDescription;
-    // this.project.project.longDescription = editProjectDataValues.longDescription;
-    // this.project.project.startTime = editProjectDataValues.startTime;
-    // this.project.project.endTime = editProjectDataValues.endTime;
-    //
-    // this.dialogRef.close(this.project)
-  }
-
-  changeProjectCustomer() {
-    // this.projectCustomerLocked = false;
-  }
-
-  getCustomerName() {
-    // if (this.project.project.customerId === undefined){
-    //   return;
-    // }
-    //
-    // this.customerManagementService.getCustomer(this.project.project.customerId, (customer: Customer) => {this.customer = customer})
-  }
-
-  goToCustomer() {
-    //TODO
-  }
-
-  customerChanges($event: MatSelectChange) {
-    // this.currentlySelectedCustomer = $event.value;
-  }
-
-  getAllCustomers() {
-    // this.customerManagementService.getAllCustomers((customers: Customer[]) => {this.customers = customers})
-  }
-
-  connectCustomer() {
-    // this.project.project.customerId = this.currentlySelectedCustomer?.customerId;
-    // this.getCustomerName();
-    // this.projectCustomerLocked = true;
+    this.dialogRef.close(undefined)
   }
 }
