@@ -101,7 +101,7 @@ export class TodoService {
       dataItem.endTime,
       dataItem.closedTime,
       dataItem.customerId,
-      TodoCategoryService.mapCategory(dataItem.category),
+      TodoCategoryService.mapCategoryOrNull(dataItem.category),
       dataItem.todoId
     )
   }

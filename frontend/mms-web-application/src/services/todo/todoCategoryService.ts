@@ -68,7 +68,16 @@ export class TodoCategoryService {
     })
   }
 
+  static mapCategoryOrNull(data: TodoCategoryResponseData): TodoCategory | undefined{
+    if(data === null){
+      return undefined;
+    }
+
+    return TodoCategoryService.mapCategory(data);
+  }
+
   static mapCategory(data: TodoCategoryResponseData): TodoCategory {
+
     return new TodoCategory(
       data.category,
       data.color,

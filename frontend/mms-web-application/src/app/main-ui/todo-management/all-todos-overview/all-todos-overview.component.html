@@ -1,1 +1,21 @@
-<p>all-todos-overview works!</p>
+<div class="all-todo-overview">
+@for (todo of todos; track todo.uiId){
+  <div class="all-todo-overview-card">
+    <div class="all-todo-overview-card-check-button-container">
+      <button class="todo-close-button-unclosed"></button>
+    </div>
+    <div class="all-todo-overview-card-title-container">
+      <p>{{todo.todo.title}}</p>
+    </div>
+    <div class="all-todo-overview-card-date-container">
+      <p>Erstellt: {{todo.todo.creationTime | date:'dd.MM.yyyy hh:mm'}}</p>
+      <p>Fällig: {{todo.todo.endTime | date:'dd.MM.yyyy hh:mm'}}</p>
+      <p *ngIf="todo.todo.closedTime">Geschlossen: {{todo.todo.closedTime | date:'dd.MM.yyyy hh:mm'}}</p>
+    </div>
+    <div>
+      <p>Kunde: {{todo.customer?.companyName}}</p>
+      <p>Kategorie: {{todo.todo.category?.category}}</p>
+    </div>
+  </div>
+}
+</div>

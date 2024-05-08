@@ -1,0 +1,69 @@
+.all-todo-overview{
+  overflow-y: auto;
+  height: 100%;
+}
+
+.all-todo-overview-card{
+  display: flex;
+  flex-direction: row;
+  width: calc(100% - 30px);
+  margin: 10px;
+  background-color: #f3f3f3;
+  border: 2px solid #6392b0;
+  box-shadow: 2px -1px rgba(26, 26, 26, 0.3);
+  border-radius: 5px;
+}
+
+.todo-close-button-unclosed {
+  width: 25px;
+  height: 25px;
+  border: 2px solid gray;
+  border-radius: 50%;
+}
+
+.todo-close-button-unclosed:hover {
+  background-size: cover;
+  background-position: center;
+  background-image: url("../../../../assets/todo/todo-check-hover.png");
+}
+
+.todo-close-button-closed {
+  width: 25px;
+  height: 25px;
+  border: 2px solid gray;
+  border-radius: 50%;
+  background-image: url("../../../../assets/todo/todo-check-checked.png");
+}
+
+.todo-close-button-closed:hover {
+  background-size: cover;
+  background-position: center;
+  background-image: url("../../../../assets/todo/todo-check-hover.png");
+}
+
+.all-todo-overview-card-check-button-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+}
+
+.all-todo-overview-card-title-container{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 50%;
+  margin-right: 10px;
+}
+
+.all-todo-overview-card-title-container p{
+  margin: 0;
+  font-weight: 570;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.all-todo-overview-card-date-container{
+  width: 20%;
+}
