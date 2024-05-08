@@ -8,9 +8,9 @@
       <p>{{todo.todo.title}}</p>
     </div>
     <div class="all-todo-overview-card-date-container">
-      <p>Erstellt: {{todo.todo.creationTime | date:'dd.MM.yyyy hh:mm'}}</p>
-      <p>Fällig: {{todo.todo.endTime | date:'dd.MM.yyyy hh:mm'}}</p>
-      <p *ngIf="todo.todo.closedTime">Geschlossen: {{todo.todo.closedTime | date:'dd.MM.yyyy hh:mm'}}</p>
+      <p>Erstellt: {{todo.todo.creationTime | date:'dd.MM.yyyy HH:mm'}}</p>
+      <p>Fällig: {{todo.todo.endTime | date:'dd.MM.yyyy HH:mm'}}</p>
+      <p *ngIf="todo.todo.closedTime">Geschlossen: {{todo.todo.closedTime | date:'dd.MM.yyyy HH:mm'}}</p>
     </div>
     <div>
       <p>Kunde: {{todo.customer?.companyName}}</p>

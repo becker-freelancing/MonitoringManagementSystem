@@ -19,6 +19,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {Customer} from "../../../../../model/cutomer/customer";
 import {Todo} from "../../../../../model/todo/todo";
 import {TodoCategory} from "../../../../../model/todo/todoCategory";
+import {DateTime} from "../../../../../model/util/DateTime";
 import {CustomerManagementService} from "../../../../../services/customermanagement/customerManagementService";
 import {TodoCategoryService} from "../../../../../services/todo/todoCategoryService";
 
@@ -93,10 +94,10 @@ export class AddTodoDialogComponent implements OnInit{
 
       let todo = new Todo(
         formValues.todoTitle,
-        new Date(),
+        new DateTime(),
         formValues.shortDescription,
         formValues.longDescription,
-        formValues.endTime,
+        DateTime.fromDate(formValues.endTime),
         undefined,
         formValues.customer?.customerId,
         formValues.category
