@@ -19,6 +19,8 @@ import {TodoManagementTodo} from "./todoManagementTodo";
 export class TodoManagementComponent {
 
   @ViewChild("allTodosOverview") allTodosOverview?: AllTodosOverviewComponent;
+  @ViewChild("todoMenuBar") todoMenuBar?: TodoManagementMenuBarComponent;
+  currentlySelectedTodo: TodoManagementTodo | null = null;
 
   onTodoAdded($event: Todo) {
     this.allTodosOverview?.onTodoAdded($event);
@@ -30,5 +32,13 @@ export class TodoManagementComponent {
 
   onTodoDeleted($event: TodoManagementTodo) {
     this.allTodosOverview?.onTodoDeleted($event);
+  }
+
+  onTodoSelectionChanged(todo: TodoManagementTodo) {
+    this.currentlySelectedTodo = todo;
+  }
+
+  onTodoDblClicked($event: TodoManagementTodo) {
+    this.todoMenuBar?.openEditTodoDialog($event);
   }
 }

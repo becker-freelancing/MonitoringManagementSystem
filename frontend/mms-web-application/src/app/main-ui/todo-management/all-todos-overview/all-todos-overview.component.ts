@@ -1,5 +1,5 @@
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
-import { Component } from '@angular/core';
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {Component, EventEmitter, Output} from '@angular/core';
 import {Todo} from "../../../../model/todo/todo";
 import {TodoService} from "../../../../services/todo/todoService";
 import {TodoManagementTodo} from "../todoManagementTodo";
@@ -10,14 +10,20 @@ import {TodoManagementTodo} from "../todoManagementTodo";
   imports: [
     NgForOf,
     NgIf,
-    DatePipe
+    DatePipe,
+    NgClass
   ],
   templateUrl: './all-todos-overview.component.html',
   styleUrl: './all-todos-overview.component.css'
 })
 export class AllTodosOverviewComponent {
 
+  @Output('todoChanged') todoChangeEventEmitter = new EventEmitter<TodoManagementTodo>();
+  @Output('todoDblClicked') todoDblChangeEventEmitter = new EventEmitter<TodoManagementTodo>();
+
   todos: TodoManagementTodo[] = [];
+
+  currentlySelectedUiId: number = -1;
 
   constructor(todoManagementService: TodoService) {
     todoManagementService.getAllTodos((recTodos: Todo[]) => {
@@ -41,5 +47,14 @@ export class AllTodosOverviewComponent {
   public onTodoAdded(added: Todo){
     let todoManagementTodo = new TodoManagementTodo(this.todos.length + 1, added);
     this.todos.push(todoManagementTodo);
+  }
+
+  onTodoClicked(todo: TodoManagementTodo) {
+    this.currentlySelectedUiId = todo.uiId;
+    this.todoChangeEventEmitter.emit(todo);
+  }
+
+  onTodoDblClicked(todo: TodoManagementTodo) {
+    this.todoDblChangeEventEmitter.emit(todo);
   }
 }

@@ -1,6 +1,6 @@
 <div class="all-todo-overview">
 @for (todo of todos; track todo.uiId){
-  <div class="all-todo-overview-card">
+  <div [ngClass]="currentlySelectedUiId === todo.uiId ? 'all-todo-overview-card all-todo-overview-card-selected' : 'all-todo-overview-card'" (click)="onTodoClicked(todo)" (dblclick)="onTodoDblClicked(todo)">
     <div class="all-todo-overview-card-check-button-container">
       <button class="todo-close-button-unclosed"></button>
     </div>
