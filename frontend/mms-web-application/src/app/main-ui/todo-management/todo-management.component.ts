@@ -41,4 +41,8 @@ export class TodoManagementComponent {
   onTodoDblClicked($event: TodoManagementTodo) {
     this.todoMenuBar?.openEditTodoDialog($event);
   }
+
+  onCloseTodo($event: TodoManagementTodo) {
+    this.todoMenuBar?.closeTodo($event);
+  }
 }

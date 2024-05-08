@@ -75,9 +75,9 @@ class TodoManagementRestAdapter {
 
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/close/{id}/{time}")
-	public ResponseEntity<TodoDto> closeTodo(@PathVariable("id") Long id, @PathVariable("time") LocalDateTime closeTime){
+	public ResponseEntity<TodoDto> closeTodo(@PathVariable("id") Long id, @PathVariable("time") String closeTimeAsString){
 		try {
-
+			LocalDateTime closeTime = LocalDateTime.parse(closeTimeAsString.replace("\"", "").replace("Z", ""));
 			return todoManagementPort.closeTodo(id, closeTime).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(810).build());
 		} catch (Exception e){
 			return ResponseEntity.internalServerError().build();

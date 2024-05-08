@@ -36,6 +36,8 @@
   height: 25px;
   border: 2px solid gray;
   border-radius: 50%;
+  background-size: cover;
+  background-position: center;
   background-image: url("../../../../assets/todo/todo-check-checked.png");
 }
 
@@ -70,4 +72,9 @@
 
 .all-todo-overview-card-date-container{
   width: 20%;
+}
+
+.all-todo-overview-card-closed{
+  border-color: gray;
+  background-color: #bbbbbb;
 }

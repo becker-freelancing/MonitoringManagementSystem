@@ -89,4 +89,8 @@ export class TodoManagementMenuBarComponent implements OnChanges{
       this.todoDeleted.emit(todo);
     }), () => {});
   }
+
+  closeTodo(todo: TodoManagementTodo) {
+    this.todoService.closeTodo(todo.todo, (closedTodo: Todo) => {todo.todo = closedTodo})
+  }
 }

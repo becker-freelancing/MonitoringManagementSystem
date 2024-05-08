@@ -1,7 +1,6 @@
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {Component, EventEmitter, Output} from '@angular/core';
 import {Todo} from "../../../../model/todo/todo";
-import {DateTime} from "../../../../model/util/DateTime";
 import {TodoService} from "../../../../services/todo/todoService";
 import {TodoManagementTodo} from "../todoManagementTodo";
 
@@ -21,6 +20,7 @@ export class AllTodosOverviewComponent {
 
   @Output('todoChanged') todoChangeEventEmitter = new EventEmitter<TodoManagementTodo>();
   @Output('todoDblClicked') todoDblChangeEventEmitter = new EventEmitter<TodoManagementTodo>();
+  @Output('closeTodo') closeTodoEventEmitter = new EventEmitter<TodoManagementTodo>();
 
   todos: TodoManagementTodo[] = [];
 
@@ -30,38 +30,57 @@ export class AllTodosOverviewComponent {
     todoManagementService.getAllTodos((recTodos: Todo[]) => {
       let uiId = 1;
 
-      for(let todo of recTodos){
+      for (let todo of recTodos) {
         this.todos.push(new TodoManagementTodo(uiId, todo));
         uiId++;
       }
     })
   }
 
-  public onTodoDeleted(deleted: TodoManagementTodo){
+  public onTodoDeleted(deleted: TodoManagementTodo) {
     this.currentlySelectedUiId = -1;
     this.todos.splice(deleted.uiId - 1, 1);
     let uiId = 1;
-    for(let todo of this.todos){
+    for (let todo of this.todos) {
       todo.uiId = uiId;
       uiId++;
     }
   }
 
-  public onTodoEdited(edited: TodoManagementTodo){
+  public onTodoEdited(edited: TodoManagementTodo) {
     this.todos[edited.uiId - 1] = edited;
   }
 
-  public onTodoAdded(added: Todo){
+  public onTodoAdded(added: Todo) {
     let todoManagementTodo = new TodoManagementTodo(this.todos.length + 1, added);
     this.todos.push(todoManagementTodo);
   }
 
   onTodoClicked(todo: TodoManagementTodo) {
+    if (todo.todo.closedTime) {
+      return;
+    }
     this.currentlySelectedUiId = todo.uiId;
     this.todoChangeEventEmitter.emit(todo);
   }
 
   onTodoDblClicked(todo: TodoManagementTodo) {
     this.todoDblChangeEventEmitter.emit(todo);
+  }
+
+  closeTodo(todo: TodoManagementTodo) {
+    this.closeTodoEventEmitter.emit(todo);
+  }
+
+  getTodoCardStyle(todo: TodoManagementTodo) {
+    let styles: string[] = ['all-todo-overview-card'];
+    if(this.currentlySelectedUiId === todo.uiId){
+      styles.push('all-todo-overview-card-selected');
+    }
+
+    if(todo.todo.isClosed()){
+      styles.push('all-todo-overview-card-closed')
+    }
+    return styles;
   }
 }

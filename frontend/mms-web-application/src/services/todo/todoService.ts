@@ -16,6 +16,22 @@ export class TodoService {
     this.httpClient = new HttpClient();
   }
 
+  closeTodo(todo: Todo, onSuccess: (todo: Todo) => void, onError?:(status: number) => void){
+    this.httpClient.get('todo/close/' + todo.todoId + '/' + JSON.stringify(new DateTime())).then(r =>{
+      if (r.status != 200){
+        if (onError) {
+          onError(r.status);
+        }
+        return;
+      }
+
+      onSuccess(this.mapToTodo(r.data));
+    }).catch(error => {
+      if (onError) {
+        onError(error.status)
+      }})
+  }
+
   deleteTodosForCustomer(customer: Customer, onSuccess: (todos: Todo[]) => void, onError: (status: number) => void) : void {
     this.httpClient.delete('todo/delete/customer', customer.customerId).then(r =>{
       if (r.status != 200){
