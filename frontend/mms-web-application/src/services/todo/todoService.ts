@@ -36,7 +36,7 @@ export class TodoService {
   }
 
   deleteTodo(todo: Todo, onSuccess: (todo: Todo) => void, onError?: (status: number) => void) {
-    this.httpClient.delete('todo/delete', todo.todoId, new Date()).then(r =>{
+    this.httpClient.delete('todo/delete', todo.todoId).then(r =>{
       if (r.status != 200){
         if (onError) {
           onError(r.status);

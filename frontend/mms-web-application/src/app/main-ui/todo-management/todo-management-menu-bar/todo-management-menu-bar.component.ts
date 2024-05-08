@@ -3,9 +3,9 @@ import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '
 import {MatDialog} from "@angular/material/dialog";
 import {Todo} from "../../../../model/todo/todo";
 import {TodoService} from "../../../../services/todo/todoService";
+import {ConfirmDialogService} from "../../../util/confirm-dialog/confirm-dialog.service";
 import {TodoManagementTodo} from "../todoManagementTodo";
 import {AddTodoDialogComponent} from "./add-todo-dialog/add-todo-dialog.component";
-import {DeleteTodoDialogComponent} from "./delete-todo-dialog/delete-todo-dialog.component";
 import {EditTodoDialogComponent} from "./edit-todo-dialog/edit-todo-dialog.component";
 
 @Component({
@@ -29,6 +29,7 @@ export class TodoManagementMenuBarComponent implements OnChanges{
 
   constructor(
     public dialog: MatDialog,
+    public confirmDialogService: ConfirmDialogService,
     projectManagementService: TodoService) {
     this.todoService = projectManagementService;
   }
@@ -82,15 +83,10 @@ export class TodoManagementMenuBarComponent implements OnChanges{
       return;
     }
 
-    this.dialog.open(DeleteTodoDialogComponent, {
-      data: todo
-    }).afterClosed().subscribe(shouldBeDeleted => {
-      if (shouldBeDeleted) {
-        this.todoService.deleteTodo(todo.todo, (deleted: Todo) => {
-          todo.todo = deleted;
-          this.todoDeleted.emit(todo);
-        })
-      }
-    })
+    this.confirmDialogService.showConfirmDeleteDialog(() => this.todoService.deleteTodo(todo.todo, (deleted: Todo) => {
+      todo.todo = deleted;
+      this.editButtonClass = 'disabled-button';
+      this.todoDeleted.emit(todo);
+    }), () => {});
   }
 }

@@ -37,7 +37,13 @@ export class AllTodosOverviewComponent {
   }
 
   public onTodoDeleted(deleted: TodoManagementTodo){
+    this.currentlySelectedUiId = -1;
     this.todos.splice(deleted.uiId - 1, 1);
+    let uiId = 1;
+    for(let todo of this.todos){
+      todo.uiId = uiId;
+      uiId++;
+    }
   }
 
   public onTodoEdited(edited: TodoManagementTodo){
