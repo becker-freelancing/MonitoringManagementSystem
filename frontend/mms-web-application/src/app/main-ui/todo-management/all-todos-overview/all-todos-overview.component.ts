@@ -1,6 +1,7 @@
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {Component, EventEmitter, Output} from '@angular/core';
 import {Todo} from "../../../../model/todo/todo";
+import {DateTime} from "../../../../model/util/DateTime";
 import {TodoService} from "../../../../services/todo/todoService";
 import {TodoManagementTodo} from "../todoManagementTodo";
 
@@ -115,5 +116,29 @@ export class AllTodosOverviewComponent {
 
     this.todos = unclosedTodosWithEndTime.concat(unclosedTodosWithoutEndTime).concat(closedTodos);
     this.rearrangeTodos();
+  }
+
+  getTodoEndTimeStyle(todo: TodoManagementTodo): string {
+      let endTime = todo.todo.endTime;
+
+      if(!endTime || todo.todo.isClosed()){
+        return '';
+      }
+
+      let now = new DateTime();
+
+      let date = now.getDate();
+      let month = now.getMonth();
+      let year = now.getUTCFullYear();
+
+      if(endTime.getMonth() == month && endTime.getUTCFullYear() === year){
+        if(endTime.getDate() <= date){
+          return 'all-todo-overview-card-end-time-high-priority';
+        } else if(endTime.getDate() - 1 == date) {
+          return 'all-todo-overview-card-end-time-moderate-priority';
+        }
+      }
+
+      return 'all-todo-overview-card-end-time-low-priority';
   }
 }

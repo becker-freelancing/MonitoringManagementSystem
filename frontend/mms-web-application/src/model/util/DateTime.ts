@@ -11,7 +11,7 @@ export class DateTime extends Date{
   override toJSON(key?: any): string {
     return this.getFullYear() + '-' +
       this.fillZero(this.getMonth() + 1) + '-' +
-      this.fillZero(this.getDay()) + 'T' +
+      this.fillZero(this.getDate()) + 'T' +
       this.fillZero(this.getHours()) + ':' +
       this.fillZero(this.getMinutes()) + ':' +
       this.fillZero(this.getSeconds()) + '.' +

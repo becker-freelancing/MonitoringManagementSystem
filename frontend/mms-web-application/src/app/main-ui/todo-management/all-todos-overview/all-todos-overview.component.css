@@ -82,3 +82,15 @@
 .all-todo-overview-card-closed p{
   text-decoration: line-through;
 }
+
+.all-todo-overview-card-end-time-low-priority {
+  color: green;
+}
+
+.all-todo-overview-card-end-time-moderate-priority {
+  color: #b0b039;
+}
+
+.all-todo-overview-card-end-time-high-priority {
+  color: red;
+}
