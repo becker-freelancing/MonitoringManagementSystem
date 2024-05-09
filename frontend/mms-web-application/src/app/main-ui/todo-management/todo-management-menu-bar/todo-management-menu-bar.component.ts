@@ -91,6 +91,9 @@ export class TodoManagementMenuBarComponent implements OnChanges{
   }
 
   closeTodo(todo: TodoManagementTodo) {
-    this.todoService.closeTodo(todo.todo, (closedTodo: Todo) => {todo.todo = closedTodo})
+    this.todoService.closeTodo(todo.todo, (closedTodo: Todo) => {
+      todo.todo = closedTodo;
+      this.todoEdited.emit(todo);
+    })
   }
 }
