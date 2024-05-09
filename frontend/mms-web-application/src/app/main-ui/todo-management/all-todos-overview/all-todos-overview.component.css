@@ -78,3 +78,7 @@
   border-color: gray;
   background-color: #bbbbbb;
 }
+
+.all-todo-overview-card-closed p{
+  text-decoration: line-through;
+}
