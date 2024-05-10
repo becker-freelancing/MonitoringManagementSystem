@@ -1,3 +1,23 @@
 <div id="dashboardTodoOverview">
-  <p>Todo Overview</p>
+  <div class="all-todo-overview">
+    @for (todo of todos; track todo.uiId){
+      <div [ngClass]="getTodoCardStyle(todo)" (click)="onTodoClicked(todo)" (dblclick)="onTodoDblClicked(todo)">
+        <div class="all-todo-overview-card-check-button-container">
+          <button [ngClass]="todo.todo.isClosed() ? 'todo-close-button-closed' : 'todo-close-button-unclosed'" (click)="closeTodo(todo)"></button>
+        </div>
+        <div class="all-todo-overview-card-title-container">
+          <p>{{todo.todo.title}}</p>
+        </div>
+        <div class="all-todo-overview-card-date-container">
+          <p>Erstellt: {{todo.todo.creationTime | date:'dd.MM.yyyy HH:mm'}}</p>
+          <p [ngClass]="getTodoEndTimeStyle(todo)">Fällig: {{todo.todo.endTime | date:'dd.MM.yyyy HH:mm'}}</p>
+          <p *ngIf="todo.todo.closedTime">Geschlossen: {{todo.todo.closedTime | date:'dd.MM.yyyy HH:mm'}}</p>
+        </div>
+        <div>
+          <p>Kunde: {{todo.customer?.companyName}}</p>
+          <p>Kategorie: {{todo.todo.category?.category}}</p>
+        </div>
+      </div>
+    }
+  </div>
 </div>

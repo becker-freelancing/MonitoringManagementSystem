@@ -25,6 +25,10 @@ export class TodoSyncService {
     TodoSyncService.deleteTodoObserver.push(subscriber);
   }
 
+  clearTodos(){
+    TodoSyncService.todos = [];
+  }
+
   addTodo(todo: Todo){
     TodoSyncService.todos.push(new TodoManagementTodo(TodoSyncService.todos.length + 1, todo));
     this.sortTodos();
