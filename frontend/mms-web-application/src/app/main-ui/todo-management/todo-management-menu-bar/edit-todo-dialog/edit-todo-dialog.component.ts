@@ -26,7 +26,7 @@ import {
 import {MatFormField, MatHint, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {MatOption, MatSelect, MatSelectChange} from "@angular/material/select";
+import {MatOption, MatSelect} from "@angular/material/select";
 import {
   MatCell,
   MatCellDef,
@@ -41,14 +41,13 @@ import {
 } from "@angular/material/table";
 import {MatTab, MatTabContent, MatTabGroup} from "@angular/material/tabs";
 import {MatTooltip} from "@angular/material/tooltip";
-import {CustomerManagementCustomer} from "../../../../../model/customerManagementCustomer";
 import {Customer} from "../../../../../model/cutomer/customer";
 import {Todo} from "../../../../../model/todo/todo";
 import {TodoCategory} from "../../../../../model/todo/todoCategory";
+import {TodoManagementTodo} from "../../../../../model/todo/todoManagementTodo";
 import {DateTime} from "../../../../../model/util/DateTime";
 import {CustomerManagementService} from "../../../../../services/customermanagement/customerManagementService";
 import {TodoCategoryService} from "../../../../../services/todo/todoCategoryService";
-import {TodoManagementTodo} from "../../todoManagementTodo";
 
 export const MY_CUSTOM_DATE_FORMATS = {
   parse: {

@@ -1,6 +1,7 @@
-import {Customer} from "../../../model/cutomer/customer";
-import {Todo} from "../../../model/todo/todo";
-import {CustomerManagementService} from "../../../services/customermanagement/customerManagementService";
+import {Customer} from "../cutomer/customer";
+
+import {CustomerManagementService} from "../../services/customermanagement/customerManagementService";
+import {Todo} from "./todo";
 
 export class TodoManagementTodo {
 

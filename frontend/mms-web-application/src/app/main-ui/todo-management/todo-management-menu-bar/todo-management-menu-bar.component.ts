@@ -2,9 +2,9 @@ import {NgClass} from "@angular/common";
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {Todo} from "../../../../model/todo/todo";
+import {TodoManagementTodo} from "../../../../model/todo/todoManagementTodo";
 import {TodoService} from "../../../../services/todo/todoService";
 import {ConfirmDialogService} from "../../../util/confirm-dialog/confirm-dialog.service";
-import {TodoManagementTodo} from "../todoManagementTodo";
 import {AddTodoDialogComponent} from "./add-todo-dialog/add-todo-dialog.component";
 import {EditTodoDialogComponent} from "./edit-todo-dialog/edit-todo-dialog.component";
 

@@ -1,9 +1,9 @@
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {Component, EventEmitter, Output} from '@angular/core';
 import {Todo} from "../../../../model/todo/todo";
+import {TodoManagementTodo} from "../../../../model/todo/todoManagementTodo";
 import {DateTime} from "../../../../model/util/DateTime";
 import {TodoService} from "../../../../services/todo/todoService";
-import {TodoManagementTodo} from "../todoManagementTodo";
 
 @Component({
   selector: 'app-all-todos-overview',
