@@ -22,6 +22,7 @@ import {TodoCategory} from "../../../../../model/todo/todoCategory";
 import {DateTime} from "../../../../../model/util/DateTime";
 import {CustomerManagementService} from "../../../../../services/customermanagement/customerManagementService";
 import {TodoCategoryService} from "../../../../../services/todo/todoCategoryService";
+import {TodoSyncService} from "../../../../../services/todo/todoSyncService";
 
 export const MY_CUSTOM_DATE_FORMATS = {
   parse: {
@@ -47,8 +48,6 @@ export const MY_CUSTOM_DATE_FORMATS = {
   ]
 })
 export class AddTodoDialogComponent implements OnInit{
-
-  @Output('addedTodo') savedTodoOutput = new EventEmitter<Todo>();
 
   form: FormGroup;
 

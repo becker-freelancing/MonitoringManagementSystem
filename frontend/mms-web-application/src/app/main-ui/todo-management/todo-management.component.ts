@@ -22,18 +22,6 @@ export class TodoManagementComponent {
   @ViewChild("todoMenuBar") todoMenuBar?: TodoManagementMenuBarComponent;
   currentlySelectedTodo: TodoManagementTodo | null = null;
 
-  onTodoAdded($event: Todo) {
-    this.allTodosOverview?.onTodoAdded($event);
-  }
-
-  onTodoEdited($event: TodoManagementTodo) {
-    this.allTodosOverview?.onTodoEdited($event);
-  }
-
-  onTodoDeleted($event: TodoManagementTodo) {
-    this.allTodosOverview?.onTodoDeleted($event);
-  }
-
   onTodoSelectionChanged(todo: TodoManagementTodo) {
     this.currentlySelectedTodo = todo;
   }

@@ -4,6 +4,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {Todo} from "../../../../model/todo/todo";
 import {TodoManagementTodo} from "../../../../model/todo/todoManagementTodo";
 import {TodoService} from "../../../../services/todo/todoService";
+import {TodoSyncService} from "../../../../services/todo/todoSyncService";
 import {ConfirmDialogService} from "../../../util/confirm-dialog/confirm-dialog.service";
 import {AddTodoDialogComponent} from "./add-todo-dialog/add-todo-dialog.component";
 import {EditTodoDialogComponent} from "./edit-todo-dialog/edit-todo-dialog.component";
@@ -20,9 +21,6 @@ import {EditTodoDialogComponent} from "./edit-todo-dialog/edit-todo-dialog.compo
 export class TodoManagementMenuBarComponent implements OnChanges{
 
   @Input('currentlySelectedTodo') currentlySelectedTodo: TodoManagementTodo | null = null;
-  @Output('todoAdded') todoAdded = new EventEmitter<Todo>();
-  @Output('todoEdited') todoEdited = new EventEmitter<TodoManagementTodo>();
-  @Output('todoDeleted') todoDeleted = new EventEmitter<TodoManagementTodo>();
 
   todoService: TodoService;
   editButtonClass: string = 'disabled-button';
@@ -30,7 +28,8 @@ export class TodoManagementMenuBarComponent implements OnChanges{
   constructor(
     public dialog: MatDialog,
     public confirmDialogService: ConfirmDialogService,
-    projectManagementService: TodoService) {
+    projectManagementService: TodoService,
+    public todoSyncService: TodoSyncService) {
     this.todoService = projectManagementService;
   }
 
@@ -39,6 +38,8 @@ export class TodoManagementMenuBarComponent implements OnChanges{
       let newProject = changes['currentlySelectedTodo'].currentValue;
       if(newProject != null){
         this.editButtonClass = 'secondary-button';
+      } else {
+        this.editButtonClass = 'disabled-button';
       }
     }
   }
@@ -51,7 +52,7 @@ export class TodoManagementMenuBarComponent implements OnChanges{
 
     dialogRef.afterClosed().subscribe(todo => {
       this.todoService.saveTodo(todo, (todo: Todo) => {
-        this.todoAdded.emit(todo)
+        this.todoSyncService.addTodo(todo);
       });
     })
 
@@ -73,7 +74,7 @@ export class TodoManagementMenuBarComponent implements OnChanges{
       this.todoService.saveTodo(todo.todo,
         (saved: Todo) => {
           todo.todo = saved;
-          this.todoEdited.emit(todo);
+          this.todoSyncService.editTodo(todo);
         });
     });
   }
@@ -86,14 +87,14 @@ export class TodoManagementMenuBarComponent implements OnChanges{
     this.confirmDialogService.showConfirmDeleteDialog(() => this.todoService.deleteTodo(todo.todo, (deleted: Todo) => {
       todo.todo = deleted;
       this.editButtonClass = 'disabled-button';
-      this.todoDeleted.emit(todo);
+      this.todoSyncService.deleteTodo(todo);
     }), () => {});
   }
 
   closeTodo(todo: TodoManagementTodo) {
     this.todoService.closeTodo(todo.todo, (closedTodo: Todo) => {
       todo.todo = closedTodo;
-      this.todoEdited.emit(todo);
+      this.todoSyncService.editTodo(todo)
     })
   }
 }
