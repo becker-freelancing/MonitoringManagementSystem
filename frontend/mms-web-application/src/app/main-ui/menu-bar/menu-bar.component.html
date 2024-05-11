@@ -1,25 +1,26 @@
 <div id="menuBarWrapper">
   <a href="/dashboard">
-    <img ngSrc="assets/menubar/dashboard.png" height="40" width="40" class="menuBarItem" alt="Dashboard">
+    <img [ngClass]="getStyleClass(NavigationItem.DASHBOARD)" ngSrc="assets/menubar/dashboard.png" height="40" width="40" class="menuBarItem" alt="Dashboard">
   </a>
   <a href="/todo-management">
-    <img ngSrc="assets/menubar/to-do-list.png" height="40" width="40" class="menuBarItem" alt="To-Do-List">
+    <img [ngClass]="getStyleClass(NavigationItem.TODO)" ngSrc="assets/menubar/to-do-list.png" height="40" width="40" class="menuBarItem" alt="To-Do-List">
   </a>
   <a href="/working-hours-management">
-    <img ngSrc="assets/menubar/working-hours.png" height="40" width="40" class="menuBarItem" alt="Working-Hours">
+    <img [ngClass]="getStyleClass(NavigationItem.WORKING_HOURS)" ngSrc="assets/menubar/working-hours.png" height="40" width="40" class="menuBarItem" alt="Working-Hours">
   </a>
   <a href="/customer-management">
-    <img ngSrc="assets/menubar/customer.png" height="40" width="40" class="menuBarItem" alt="Customers">
+    <img [ngClass]="getStyleClass(NavigationItem.CUSTOMER_MANAGEMENT)" ngSrc="assets/menubar/customer.png" height="40" width="40" class="menuBarItem" alt="Customers">
   </a>
   <a href="/project-management">
-    <img ngSrc="assets/menubar/project.png" height="40" width="40" class="menuBarItem" alt="Projects">
+    <img [ngClass]="getStyleClass(NavigationItem.PROJECT_MANAGEMENT)" ngSrc="assets/menubar/project.png" height="40" width="40" class="menuBarItem" alt="Projects">
   </a>
   <a href="/income-management">
-    <img ngSrc="assets/menubar/income.png" height="40" width="40" class="menuBarItem" alt="Income">
+    <img [ngClass]="getStyleClass(NavigationItem.INCOME_MANAGEMENT)" ngSrc="assets/menubar/income.png" height="40" width="40" class="menuBarItem" alt="Income">
   </a>
   <a href="/documents">
-    <img ngSrc="assets/menubar/document.png" height="40" width="40" class="menuBarItem" alt="Documents">
+    <img [ngClass]="getStyleClass(NavigationItem.DOCUMENTS)" ngSrc="assets/menubar/document.png" height="40" width="40" class="menuBarItem" alt="Documents">
   </a>
   <a href="/settings">
-    <img ngSrc="assets/menubar/setting.png" height="40" width="40" class="menuBarItem" alt="Settings">
-  </a></div>
+    <img [ngClass]="getStyleClass(NavigationItem.SETTINGS)" ngSrc="assets/menubar/setting.png" height="40" width="40" class="menuBarItem" alt="Settings">
+  </a>
+</div>

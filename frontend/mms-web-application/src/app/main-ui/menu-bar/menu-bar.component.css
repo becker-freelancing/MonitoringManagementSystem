@@ -1,9 +1,19 @@
 #menuBarWrapper{
   display: flex;
   flex-direction: column;
+  margin-right: 15px;
 }
 
 .menuBarItem{
   margin-top: 20px;
-  padding-left: 10px;
+  margin-left: 10px;
+  padding-left: 0;
+}
+
+.selected-menu-bar-item{
+  padding: 3px;
+  margin-left: 15px;
+  border-radius: 50%;
+  border: 3px solid #6392b0;
+  box-shadow: 0 0 6px 3px rgba(99, 146,176,0.75);
 }
