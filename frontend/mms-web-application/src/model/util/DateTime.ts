@@ -8,6 +8,11 @@ export class DateTime extends Date{
     return new DateTime(date);
   }
 
+  public static fromDateNotNull(date: Date): DateTime {
+
+    return new DateTime(date);
+  }
+
   override toJSON(key?: any): string {
     return this.getFullYear() + '-' +
       this.fillZero(this.getMonth() + 1) + '-' +
