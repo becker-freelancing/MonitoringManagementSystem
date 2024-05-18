@@ -5,15 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +25,9 @@ import com.jabasoft.mms.customermanagement.domain.model.CustomerId;
 import com.jabasoft.mms.customermanagement.domain.model.EMail;
 import com.jabasoft.mms.customermanagement.domain.model.PhoneNumber;
 import com.jabasoft.mms.customermanagement.domain.model.ReasonForContact;
-import com.jabasoft.mms.junit.beans.RandomBeanSupplier;
-import com.jabasoft.mms.junit.beans.RandomBeanSupplierRegistrar;
-import com.jabasoft.mms.junit.beans.RandomBeanSupplierRegistry;
+import com.jabasoft.mms.junit.beans.supplier.constructor.RandomBeanSupplier;
+import com.jabasoft.mms.junit.beans.supplier.constructor.RandomBeanSupplierRegistrar;
+import com.jabasoft.mms.junit.beans.supplier.constructor.RandomConstructorBeanSupplierRegistry;
 
 @MmsDaoImplTest
 class JpaCustomerDaoTest {
@@ -47,7 +44,7 @@ class JpaCustomerDaoTest {
 	@BeforeAll
 	static void registerBeanSupplier() throws NoSuchMethodException {
 
-		RandomBeanSupplierRegistry.clear();
+		RandomConstructorBeanSupplierRegistry.clear();
 
 		new RandomBeanSupplierRegistrar<>(Customer.class)
 			.withConstructors(List.of(Customer.class.getConstructor(String.class, Address.class, List.class))).register();
@@ -76,7 +73,7 @@ class JpaCustomerDaoTest {
 	@BeforeEach
 	void setUp() {
 
-		customerCreator = RandomBeanSupplierRegistry.getRandomBeanSupplier(Customer.class);
+		customerCreator = RandomConstructorBeanSupplierRegistry.getRandomBeanSupplier(Customer.class);
 	}
 
 	@Test

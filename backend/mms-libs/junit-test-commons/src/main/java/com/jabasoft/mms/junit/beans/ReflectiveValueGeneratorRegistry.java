@@ -18,7 +18,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.mockito.Mockito;
+import com.jabasoft.mms.junit.beans.supplier.constructor.RandomConstructorBeanSupplierRegistry;
 
 @SuppressWarnings({"java:S112"})
 public class ReflectiveValueGeneratorRegistry implements ValueGeneratorRegistry {
@@ -181,6 +181,6 @@ public class ReflectiveValueGeneratorRegistry implements ValueGeneratorRegistry 
 		if(objectClass.isInterface()){
 			return mock(objectClass);
 		}
-		return RandomBeanSupplierRegistry.getRandomBeanSupplier(objectClass).get();
+		return RandomConstructorBeanSupplierRegistry.getRandomBeanSupplier(objectClass).get();
 	}
 }

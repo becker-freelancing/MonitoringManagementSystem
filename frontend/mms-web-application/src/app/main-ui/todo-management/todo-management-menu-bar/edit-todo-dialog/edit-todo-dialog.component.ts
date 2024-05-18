@@ -134,7 +134,7 @@ export class EditTodoDialogComponent implements OnInit {
         new DateTime(),
         formValues.shortDescription,
         formValues.longDescription,
-        formValues.endTime,
+        DateTime.fromDate(formValues.endTime),
         undefined,
         formValues.customer?.customerId,
         formValues.category,

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jabasoft.mms.customermanagement.MmsDaoImplTest;
 import com.jabasoft.mms.customermanagement.domain.model.ContactPersonPosition;
-import com.jabasoft.mms.junit.beans.RandomBeanCreator;
+import com.jabasoft.mms.junit.beans.supplier.constructor.RandomBeanCreator;
 
 @MmsDaoImplTest
 class ContactPersonPositionDaoTest {

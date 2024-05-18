@@ -41,7 +41,7 @@ public class JpaTodo {
 	@Column(name = "CUSTOMER_ID")
 	private Long customerId;
 
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	@JoinColumn(name = "CATEGORY", referencedColumnName = "CATEGORY")
 	private JpaTodoCategory category;
 
