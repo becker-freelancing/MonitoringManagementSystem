@@ -1,4 +1,4 @@
-import {DateTime} from "../util/DateTime";
+import {DateTime} from "../util/dateTime";
 
 export class Project{
 

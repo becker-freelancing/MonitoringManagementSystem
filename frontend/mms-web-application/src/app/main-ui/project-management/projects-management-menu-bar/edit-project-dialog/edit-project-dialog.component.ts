@@ -42,22 +42,11 @@ import {
 import {MatTab, MatTabContent, MatTabGroup} from "@angular/material/tabs";
 import {MatTooltip} from "@angular/material/tooltip";
 import {Customer} from "../../../../../model/cutomer/customer";
+import {CUSTOM_DATE_FORMATS} from "../../../../../model/util/dateFormats";
 import {CustomerManagementService} from "../../../../../services/customermanagement/customerManagementService";
 import {DeepCloneService} from "../../../../../services/util/deepCloneService";
 import {ConfirmDialogService} from "../../../../util/confirm-dialog/confirm-dialog.service";
 import {ProjectManagementProject} from "../../projectManagementProject";
-
-export const MY_CUSTOM_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'DD/MM/YYYY',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
 
 @Component({
   selector: 'app-edit-project-dialog',
@@ -67,7 +56,7 @@ export const MY_CUSTOM_DATE_FORMATS = {
   styleUrl: './edit-project-dialog.component.css',
   providers: [
     { provide: DateAdapter, useClass: NativeDateAdapter, deps: [MAT_DATE_LOCALE] },
-    { provide: MAT_DATE_FORMATS, useValue: MY_CUSTOM_DATE_FORMATS }
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
   ]
 })
 export class EditProjectDialogComponent implements OnInit {

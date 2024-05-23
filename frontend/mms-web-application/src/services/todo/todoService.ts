@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Customer} from "../../model/cutomer/customer";
 import {Todo} from "../../model/todo/todo";
-import {DateTime} from "../../model/util/DateTime";
+import {DateTime} from "../../model/util/dateTime";
 import {HttpClient} from "../http/httpClient";
 import {TodoCategoryResponseData, TodoCategoryService} from "./todoCategoryService";
 

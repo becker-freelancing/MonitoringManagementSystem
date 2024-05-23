@@ -2,7 +2,7 @@ import {DatePipe, NgClass, NgIf} from "@angular/common";
 import { Component } from '@angular/core';
 import {Todo} from "../../../../model/todo/todo";
 import {TodoManagementTodo} from "../../../../model/todo/todoManagementTodo";
-import {DateTime} from "../../../../model/util/DateTime";
+import {DateTime} from "../../../../model/util/dateTime";
 import {TodoService} from "../../../../services/todo/todoService";
 import {TodoSyncService} from "../../../../services/todo/todoSyncService";
 

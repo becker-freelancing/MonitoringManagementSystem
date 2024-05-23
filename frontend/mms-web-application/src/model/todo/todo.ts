@@ -1,5 +1,5 @@
 import {Customer} from "../cutomer/customer";
-import {DateTime} from "../util/DateTime";
+import {DateTime} from "../util/dateTime";
 import {TodoCategory} from "./todoCategory";
 
 export class Todo{

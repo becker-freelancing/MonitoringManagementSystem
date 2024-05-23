@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {DateTime} from "../../model/util/DateTime";
+import {DateTime} from "../../model/util/dateTime";
 import {WorkingHour} from "../../model/workinghours/workingHour";
 import {HttpClient} from "../http/httpClient";
 

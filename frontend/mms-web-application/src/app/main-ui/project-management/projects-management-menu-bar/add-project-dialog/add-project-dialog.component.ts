@@ -13,7 +13,7 @@ import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {Project} from "../../../../../model/project/project";
-import {DateTime} from "../../../../../model/util/DateTime";
+import {DateTime} from "../../../../../model/util/dateTime";
 import {ProjectManagementService} from "../../../../../services/projectmanagement/projectManagementService";
 
 @Component({

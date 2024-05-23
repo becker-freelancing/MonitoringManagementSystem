@@ -1,18 +1,42 @@
-<div id="add-working-hour-menu-bar-wrapper">
+<div id="add-working-hour-menu-bar-wrapper" [formGroup]="addWorkingHourForm">
   <div id="add-working-hour-menu-bar-date-time-recording">
     <div id="add-working-hour-menu-bar-date-recording">
-
+      <label for="working-hour-date-picker">Projekt Beginn</label>
+      <input id="working-hour-date-picker" matInput [matDatepicker]="startDatePicker" formControlName="workingHourDate">
+      <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
     </div>
     <div id="add-working-hour-menu-bar-time-recording">
-
+      <div class="working-hour-time-recording-control">
+        <label for="start-time-picker">Von</label>
+        <input id="start-time-picker" [ngxMatTimepicker]="startTimePicker" [format]="24" formControlName="workingHourStartTime">
+        <ngx-mat-timepicker #startTimePicker [minutesGap]="5" (timeChanged)="workingHourStartTime = $event"></ngx-mat-timepicker>
+      </div>
+      <div class="working-hour-time-recording-control">
+        <label for="end-time-picker">Bis</label>
+        <input id="end-time-picker" [ngxMatTimepicker]="endTimePicker" [format]="24" formControlName="workingHourEndTime">
+        <ngx-mat-timepicker #endTimePicker [minutesGap]="5" (timeChanged)="workingHourEndTime = $event"></ngx-mat-timepicker>
+      </div>
     </div>
   </div>
   <div id="add-working-hour-menu-bar-customer-and-project-recording">
     <div id="add-working-hour-menu-bar-customer-recording">
-
+<!--      <mat-form-field>-->
+<!--      <mat-select (selectionChange)="customerChanges($event)">-->
+<!--        <mat-option>&#45;&#45;&#45;&#45;</mat-option>-->
+<!--        <mat-option *ngFor="let customer of allCustomers" value="{{customer}}">{{ customer.companyName }}</mat-option>-->
+<!--      </mat-select>-->
+<!--      </mat-form-field>-->
+      <select #customerSelect (change)="customerChanges($event)">
+        <option>----</option>
+        <option *ngFor="let customer of allCustomers" value="{{customer}}">{{ customer.companyName }}</option>
+      </select>
     </div>
     <div id="add-working-hour-menu-bar-project-recording">
 
     </div>
+  </div>
+  <div id="add-working-hour-menu-bar-save-button-container">
+    <button (click)="save()" class="primary-button">Speichern</button>
   </div>
 </div>

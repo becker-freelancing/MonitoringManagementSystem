@@ -19,22 +19,12 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {Customer} from "../../../../../model/cutomer/customer";
 import {Todo} from "../../../../../model/todo/todo";
 import {TodoCategory} from "../../../../../model/todo/todoCategory";
-import {DateTime} from "../../../../../model/util/DateTime";
+import {CUSTOM_DATE_FORMATS} from "../../../../../model/util/dateFormats";
+import {DateTime} from "../../../../../model/util/dateTime";
 import {CustomerManagementService} from "../../../../../services/customermanagement/customerManagementService";
 import {TodoCategoryService} from "../../../../../services/todo/todoCategoryService";
 import {TodoSyncService} from "../../../../../services/todo/todoSyncService";
 
-export const MY_CUSTOM_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'DD/MM/YYYY',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
 
 @Component({
   selector: 'app-add-project-dialog',
@@ -44,7 +34,7 @@ export const MY_CUSTOM_DATE_FORMATS = {
   styleUrl: './add-todo-dialog.component.css',
   providers: [
     { provide: DateAdapter, useClass: NativeDateAdapter, deps: [MAT_DATE_LOCALE] },
-    { provide: MAT_DATE_FORMATS, useValue: MY_CUSTOM_DATE_FORMATS }
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
   ]
 })
 export class AddTodoDialogComponent implements OnInit{
