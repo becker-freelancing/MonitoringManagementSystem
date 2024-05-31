@@ -138,3 +138,65 @@ button {
   border: 2px solid gray;
   border-radius: 5px;
 }
+
+/*
+Date-Picker
+ */
+
+input[type="date"]{
+  margin-left: 5px;
+  border-radius: 2px;
+  color: black;
+  border: 2px solid #6392b0;
+  font-size: 1.0rem;
+}
+
+
+/*
+Time-Picker
+ */
+input[type="time"]{
+  margin-left: 5px;
+  border-radius: 2px;
+  color: black;
+  border: 2px solid #6392b0;
+  font-size: 1.0rem;
+}
+
+/*
+Select-Box
+ */
+
+select{
+  margin-left: 5px;
+  border-radius: 2px;
+  color: black;
+  border: 2px solid #6392b0;
+  font-size: 1.0rem;
+}
+
+select:disabled {
+
+  border: 2px solid gray;
+}
+
+.wide-select {
+  width: 400px;
+}
+
+/*
+Layout
+ */
+
+.no-bottom-margin{
+  margin: 0;
+}
+
+.horizontal-div {
+  display: flex;
+  flex-direction: row;
+}
+
+.div-margin {
+  margin: 4px;
+}

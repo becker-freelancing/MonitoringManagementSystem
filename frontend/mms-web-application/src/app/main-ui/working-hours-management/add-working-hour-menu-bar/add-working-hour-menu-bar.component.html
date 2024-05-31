@@ -1,42 +1,48 @@
-<div id="add-working-hour-menu-bar-wrapper" [formGroup]="addWorkingHourForm">
-  <div id="add-working-hour-menu-bar-date-time-recording">
-    <div id="add-working-hour-menu-bar-date-recording">
-      <label for="working-hour-date-picker">Projekt Beginn</label>
-      <input id="working-hour-date-picker" matInput [matDatepicker]="startDatePicker" formControlName="workingHourDate">
-      <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-      <mat-datepicker #startDatePicker></mat-datepicker>
+<div>
+  <div class="horizontal-div div-margin">
+  <div class="div-margin" id="add-working-hour-menu-bar-date-time-recording">
+    <div class="div-margin">
+      <label for="add-working-hour-date">Datum:</label>
+      <input type="date" id="add-working-hour-date" name="datum" (change)="dateChangedEvent($event)">
+      <p class="form-input-not-valid-label" *ngIf="!workingHourDateValid">Datum erforderlich</p>
     </div>
-    <div id="add-working-hour-menu-bar-time-recording">
-      <div class="working-hour-time-recording-control">
-        <label for="start-time-picker">Von</label>
-        <input id="start-time-picker" [ngxMatTimepicker]="startTimePicker" [format]="24" formControlName="workingHourStartTime">
-        <ngx-mat-timepicker #startTimePicker [minutesGap]="5" (timeChanged)="workingHourStartTime = $event"></ngx-mat-timepicker>
+    <div class="horizontal-div">
+      <div class="div-margin">
+        <label for="add-working-hour-from-time">Von:</label>
+        <input type="time" id="add-working-hour-from-time" name="datum" (change)="fromTimeChangedEvent($event)">
+        <p class="form-input-not-valid-label" *ngIf="!workingHourStartTimeValid">Start erforderlich</p>
       </div>
-      <div class="working-hour-time-recording-control">
-        <label for="end-time-picker">Bis</label>
-        <input id="end-time-picker" [ngxMatTimepicker]="endTimePicker" [format]="24" formControlName="workingHourEndTime">
-        <ngx-mat-timepicker #endTimePicker [minutesGap]="5" (timeChanged)="workingHourEndTime = $event"></ngx-mat-timepicker>
+      <div class="div-margin">
+        <label for="add-working-hour-to-time">Bis:</label>
+        <input type="time" id="add-working-hour-to-time" name="datum" (change)="toTimeChangedEvent($event)">
+        <p class="form-input-not-valid-label" *ngIf="!workingHourEndTimeValid">Ende erforderlich</p>
+      </div>
+      <div class="div-margin">
+        <p class="no-bottom-margin">Dauer: {{workingHourDuration}}</p>
+        <p class="form-input-not-valid-label" *ngIf="!workingHourDurationValid">Start muss vor dem Ende liegen</p>
       </div>
     </div>
   </div>
-  <div id="add-working-hour-menu-bar-customer-and-project-recording">
-    <div id="add-working-hour-menu-bar-customer-recording">
-<!--      <mat-form-field>-->
-<!--      <mat-select (selectionChange)="customerChanges($event)">-->
-<!--        <mat-option>&#45;&#45;&#45;&#45;</mat-option>-->
-<!--        <mat-option *ngFor="let customer of allCustomers" value="{{customer}}">{{ customer.companyName }}</mat-option>-->
-<!--      </mat-select>-->
-<!--      </mat-form-field>-->
-      <select #customerSelect (change)="customerChanges($event)">
-        <option>----</option>
-        <option *ngFor="let customer of allCustomers" value="{{customer}}">{{ customer.companyName }}</option>
+  <div class="div-margin">
+    <div class="div-margin">
+      <label for="add-working-hour-customer">Kunde:</label>
+      <select class="wide-select" id="add-working-hour-customer" (change)="customerChanges($event)">
+        <option [ngValue]="undefined">----</option>
+        <option *ngFor="let customer of allCustomers" [ngValue]="customer">{{ customer.companyName }}</option>
       </select>
+      <p class="form-input-not-valid-label" *ngIf="!customerValid">Kunde erforderlich</p>
     </div>
-    <div id="add-working-hour-menu-bar-project-recording">
-
+    <div class="div-margin">
+      <label for="add-working-hour-project">Projekt:</label>
+      <select class="wide-select" id="add-working-hour-project" (change)="projectChanges($event)" [disabled]="projectsForCustomer.length === 0">
+        <option>----</option>
+        <option *ngFor="let project of projectsForCustomer" [ngValue]="project">{{ project.title }}</option>
+      </select>
+      <p class="form-input-not-valid-label" *ngIf="!projectValid">Projekt erforderlich</p>
     </div>
   </div>
-  <div id="add-working-hour-menu-bar-save-button-container">
+  </div>
+  <div>
     <button (click)="save()" class="primary-button">Speichern</button>
   </div>
 </div>

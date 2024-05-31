@@ -1,17 +1,23 @@
-import {DateTime} from "../util/dateTime";
+import {CDate} from "../util/cDate";
+import {Time} from "../util/time";
 
 export class WorkingHour {
+
   id?: number;
-  startTime: DateTime;
-  endTime?: DateTime;
-  customerId?: number;
+  date: CDate;
+  startTime: Time;
+  endTime?: Time;
+  customerId: number;
+  projectId: number;
 
 
-  constructor(startTime: DateTime, endTime?: DateTime, customerId?: number, id?: number) {
+  constructor(date: CDate, startTime: Time, customerId: number, projectId: number, endTime?: Time, id?: number) {
     this.id = id;
+    this.date = date;
     this.startTime = startTime;
     this.endTime = endTime;
     this.customerId = customerId;
+    this.projectId = projectId;
   }
 
   isClosed(): boolean {

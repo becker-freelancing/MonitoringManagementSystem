@@ -64,9 +64,11 @@ class WorkingHourManagementInteractor implements WorkingHourManagementPort {
 		WorkingHourDto workingHourDto = new WorkingHourDto();
 
 		workingHourDto.setId(workingHour.getId());
+		workingHourDto.setDate(workingHour.getDate());
 		workingHourDto.setStartTime(workingHour.getStartTime());
 		workingHourDto.setEndTime(workingHour.getEndTime());
 		workingHourDto.setCustomerId(workingHour.getCustomerId());
+		workingHourDto.setProjectId(workingHour.getProjectId());
 
 		return workingHourDto;
 	}
@@ -76,9 +78,11 @@ class WorkingHourManagementInteractor implements WorkingHourManagementPort {
 		WorkingHour workingHour = new WorkingHour();
 
 		workingHour.setId(workingHourDto.getId());
+		workingHour.setDate(workingHourDto.getDate());
 		workingHour.setStartTime(workingHourDto.getStartTime());
 		workingHour.setEndTime(workingHourDto.getEndTime());
 		workingHour.setCustomerId(workingHourDto.getCustomerId());
+		workingHour.setProjectId(workingHourDto.getProjectId());
 
 		return workingHour;
 	}

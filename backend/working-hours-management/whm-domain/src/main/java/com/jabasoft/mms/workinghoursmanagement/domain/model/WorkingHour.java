@@ -1,18 +1,57 @@
 package com.jabasoft.mms.workinghoursmanagement.domain.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 
 public class WorkingHour {
 
 	private Long id;
-	private LocalDateTime startTime;
-	private LocalDateTime endTime;
+	private LocalDate date;
+	private LocalTime startTime;
+	private LocalTime endTime;
 	private Long customerId;
+	private Long projectId;
 
 	public Long getId() {
 
 		return id;
+	}
+
+	public void setId(Long id) {
+
+		this.id = id;
+	}
+
+	public LocalDate getDate() {
+
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+
+		this.date = date;
+	}
+
+	public LocalTime getStartTime() {
+
+		return startTime;
+	}
+
+	public void setStartTime(LocalTime startTime) {
+
+		this.startTime = startTime;
+	}
+
+	public LocalTime getEndTime() {
+
+		return endTime;
+	}
+
+	public void setEndTime(LocalTime endTime) {
+
+		this.endTime = endTime;
 	}
 
 	public Long getCustomerId() {
@@ -25,29 +64,14 @@ public class WorkingHour {
 		this.customerId = customerId;
 	}
 
-	public void setId(Long id) {
+	public Long getProjectId() {
 
-		this.id = id;
+		return projectId;
 	}
 
-	public LocalDateTime getStartTime() {
+	public void setProjectId(Long projectId) {
 
-		return startTime;
-	}
-
-	public void setStartTime(LocalDateTime startTime) {
-
-		this.startTime = startTime;
-	}
-
-	public LocalDateTime getEndTime() {
-
-		return endTime;
-	}
-
-	public void setEndTime(LocalDateTime endTime) {
-
-		this.endTime = endTime;
+		this.projectId = projectId;
 	}
 
 	@Override
@@ -58,16 +82,17 @@ public class WorkingHour {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		WorkingHour that = (WorkingHour) o;
-		return Objects.equals(id, that.id)
-			&& Objects.equals(startTime, that.startTime)
-			&& Objects.equals(endTime, that.endTime)
-			&& Objects.equals(customerId, that.customerId);
+		return Objects.equals(id, that.id) && Objects.equals(date, that.date) && Objects.equals(
+			startTime,
+			that.startTime) && Objects.equals(endTime, that.endTime) && Objects.equals(
+			customerId,
+			that.customerId) && Objects.equals(projectId, that.projectId);
 	}
 
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, startTime, endTime, customerId);
+		return Objects.hash(id, date, startTime, endTime, customerId, projectId);
 	}
 
 }

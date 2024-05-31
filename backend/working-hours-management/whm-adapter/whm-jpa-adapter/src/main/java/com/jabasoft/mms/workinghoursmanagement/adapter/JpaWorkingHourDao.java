@@ -81,9 +81,11 @@ class JpaWorkingHourDao implements WorkingHourRepository {
 		WorkingHour workingHour = new WorkingHour();
 
 		workingHour.setId(jpaWorkingHour.getId());
+		workingHour.setDate(jpaWorkingHour.getDate());
 		workingHour.setStartTime(jpaWorkingHour.getStartTime());
 		workingHour.setEndTime(jpaWorkingHour.getEndTime());
 		workingHour.setCustomerId(jpaWorkingHour.getCustomerId());
+		workingHour.setProjectId(jpaWorkingHour.getProjectId());
 
 		return workingHour;
 	}
@@ -93,9 +95,11 @@ class JpaWorkingHourDao implements WorkingHourRepository {
 		JpaWorkingHour jpaWorkingHour = new JpaWorkingHour();
 
 		jpaWorkingHour.setId(workingHour.getId());
+		jpaWorkingHour.setDate(workingHour.getDate());
 		jpaWorkingHour.setStartTime(workingHour.getStartTime());
 		jpaWorkingHour.setEndTime(workingHour.getEndTime());
 		jpaWorkingHour.setCustomerId(workingHour.getCustomerId());
+		jpaWorkingHour.setProjectId(workingHour.getProjectId());
 
 		return jpaWorkingHour;
 	}

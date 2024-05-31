@@ -1,13 +1,36 @@
 package com.jabasoft.mms.workinghoursmanagement.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class WorkingHourDto {
 
 	private Long id;
-	private LocalDateTime startTime;
-	private LocalDateTime endTime;
+	private LocalDate date;
+	private LocalTime startTime;
+	private LocalTime endTime;
 	private Long customerId;
+	private Long projectId;
+
+	public LocalDate getDate() {
+
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+
+		this.date = date;
+	}
+
+	public Long getProjectId() {
+
+		return projectId;
+	}
+
+	public void setProjectId(Long projectId) {
+
+		this.projectId = projectId;
+	}
 
 	public Long getCustomerId() {
 
@@ -29,22 +52,22 @@ public class WorkingHourDto {
 		this.id = id;
 	}
 
-	public LocalDateTime getStartTime() {
+	public LocalTime getStartTime() {
 
 		return startTime;
 	}
 
-	public void setStartTime(LocalDateTime startTime) {
+	public void setStartTime(LocalTime startTime) {
 
 		this.startTime = startTime;
 	}
 
-	public LocalDateTime getEndTime() {
+	public LocalTime getEndTime() {
 
 		return endTime;
 	}
 
-	public void setEndTime(LocalDateTime endTime) {
+	public void setEndTime(LocalTime endTime) {
 
 		this.endTime = endTime;
 	}

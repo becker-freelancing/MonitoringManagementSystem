@@ -2,7 +2,7 @@ package com.jabasoft.mms.junit.beans;
 
 import java.util.Objects;
 
-class Bean2 {
+public class Bean2 {
 
 	private String s;
 

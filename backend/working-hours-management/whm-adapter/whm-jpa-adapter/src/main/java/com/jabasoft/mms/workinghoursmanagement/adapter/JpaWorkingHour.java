@@ -1,6 +1,7 @@
 package com.jabasoft.mms.workinghoursmanagement.adapter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,14 +19,40 @@ public class JpaWorkingHour {
 	@Column(name = "ID")
 	private Long id;
 
+	@Column(name = "DATE")
+	private LocalDate date;
+
 	@Column(name = "START_TIME")
-	private LocalDateTime startTime;
+	private LocalTime startTime;
 
 	@Column(name = "END_TIME")
-	private LocalDateTime endTime;
+	private LocalTime endTime;
 
 	@Column(name = "CUSTOMER_ID")
 	private Long customerId;
+
+	@Column(name = "PROJECT_ID")
+	private Long projectId;
+
+	public LocalDate getDate() {
+
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+
+		this.date = date;
+	}
+
+	public Long getProjectId() {
+
+		return projectId;
+	}
+
+	public void setProjectId(Long projectId) {
+
+		this.projectId = projectId;
+	}
 
 	public Long getCustomerId() {
 
@@ -47,22 +74,22 @@ public class JpaWorkingHour {
 		this.id = id;
 	}
 
-	public LocalDateTime getStartTime() {
+	public LocalTime getStartTime() {
 
 		return startTime;
 	}
 
-	public void setStartTime(LocalDateTime startTime) {
+	public void setStartTime(LocalTime startTime) {
 
 		this.startTime = startTime;
 	}
 
-	public LocalDateTime getEndTime() {
+	public LocalTime getEndTime() {
 
 		return endTime;
 	}
 
-	public void setEndTime(LocalDateTime endTime) {
+	public void setEndTime(LocalTime endTime) {
 
 		this.endTime = endTime;
 	}

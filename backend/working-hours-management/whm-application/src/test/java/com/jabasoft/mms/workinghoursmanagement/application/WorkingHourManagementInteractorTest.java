@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,9 +44,11 @@ class WorkingHourManagementInteractorTest {
 		WorkingHourDto actual = saved.get();
 
 		assertEquals(expected.getId(), actual.getId(), "Id");
+		assertEquals(expected.getDate(), actual.getDate(), "Date");
 		assertEquals(expected.getStartTime(), actual.getStartTime(), "StartTime");
 		assertEquals(expected.getEndTime(), actual.getEndTime(), "EndTime");
 		assertEquals(expected.getCustomerId(), actual.getCustomerId(), "CustomerId");
+		assertEquals(expected.getProjectId(), actual.getProjectId(), "ProjectId");
 	}
 
 	@Test
@@ -73,18 +76,23 @@ class WorkingHourManagementInteractorTest {
 		WorkingHourDto actual1 = find.get(0);
 
 
+
 		assertEquals(expected1.getId(), actual1.getId(), "Id");
+		assertEquals(expected1.getDate(), actual1.getDate(), "Date");
 		assertEquals(expected1.getStartTime(), actual1.getStartTime(), "StartTime");
 		assertEquals(expected1.getEndTime(), actual1.getEndTime(), "EndTime");
 		assertEquals(expected1.getCustomerId(), actual1.getCustomerId(), "CustomerId");
+		assertEquals(expected1.getProjectId(), actual1.getProjectId(), "ProjectId");
 
 		WorkingHourDto actual2 = find.get(1);
 
 
 		assertEquals(expected2.getId(), actual2.getId(), "Id");
+		assertEquals(expected2.getDate(), actual2.getDate(), "Date");
 		assertEquals(expected2.getStartTime(), actual2.getStartTime(), "StartTime");
 		assertEquals(expected2.getEndTime(), actual2.getEndTime(), "EndTime");
 		assertEquals(expected2.getCustomerId(), actual2.getCustomerId(), "CustomerId");
+		assertEquals(expected2.getProjectId(), actual2.getProjectId(), "ProjectId");
 	}
 
 	@Test
@@ -110,9 +118,11 @@ class WorkingHourManagementInteractorTest {
 
 
 		assertEquals(expected.getId(), actual.getId(), "Id");
+		assertEquals(expected.getDate(), actual.getDate(), "Date");
 		assertEquals(expected.getStartTime(), actual.getStartTime(), "StartTime");
 		assertEquals(expected.getEndTime(), actual.getEndTime(), "EndTime");
 		assertEquals(expected.getCustomerId(), actual.getCustomerId(), "CustomerId");
+		assertEquals(expected.getProjectId(), actual.getProjectId(), "ProjectId");
 	}
 
 	@Test
@@ -138,9 +148,11 @@ class WorkingHourManagementInteractorTest {
 
 
 		assertEquals(expected.getId(), actual.getId(), "Id");
+		assertEquals(expected.getDate(), actual.getDate(), "Date");
 		assertEquals(expected.getStartTime(), actual.getStartTime(), "StartTime");
 		assertEquals(expected.getEndTime(), actual.getEndTime(), "EndTime");
 		assertEquals(expected.getCustomerId(), actual.getCustomerId(), "CustomerId");
+		assertEquals(expected.getProjectId(), actual.getProjectId(), "ProjectId");
 	}
 
 	@Test
@@ -199,9 +211,11 @@ class WorkingHourManagementInteractorTest {
 		WorkingHour workingHour = new WorkingHour();
 
 		workingHour.setId(1L);
-		workingHour.setStartTime(LocalDateTime.of(2024, 4, 29, 12, 34, 0));
-		workingHour.setEndTime(LocalDateTime.MAX);
+		workingHour.setDate(LocalDate.of(2024, 4, 19));
+		workingHour.setStartTime(LocalTime.of(12, 34, 0));
+		workingHour.setEndTime(LocalTime.MAX);
 		workingHour.setCustomerId(18L);
+		workingHour.setProjectId(12L);
 
 		return workingHour;
 	}
@@ -211,8 +225,10 @@ class WorkingHourManagementInteractorTest {
 		WorkingHour workingHour = new WorkingHour();
 
 		workingHour.setId(1L);
-		workingHour.setStartTime(LocalDateTime.of(2024, 4, 29, 12, 34, 0));
+		workingHour.setDate(LocalDate.of(2024, 4, 29));
+		workingHour.setStartTime(LocalTime.of(12, 34, 0));
 		workingHour.setCustomerId(18L);
+		workingHour.setProjectId(12L);
 
 		return workingHour;
 	}
@@ -222,9 +238,11 @@ class WorkingHourManagementInteractorTest {
 		WorkingHourDto workingHour = new WorkingHourDto();
 
 		workingHour.setId(1L);
-		workingHour.setStartTime(LocalDateTime.of(2024, 4, 29, 12, 34, 0));
-		workingHour.setEndTime(LocalDateTime.MAX);
+		workingHour.setDate(LocalDate.of(2024, 4, 29));
+		workingHour.setStartTime(LocalTime.of(12, 34, 0));
+		workingHour.setEndTime(LocalTime.MAX);
 		workingHour.setCustomerId(18L);
+		workingHour.setProjectId(12L);
 
 		return workingHour;
 	}

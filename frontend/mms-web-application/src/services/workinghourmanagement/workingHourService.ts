@@ -1,12 +1,14 @@
 import {Injectable} from "@angular/core";
+import {CDate} from "../../model/util/cDate";
 import {DateTime} from "../../model/util/dateTime";
+import {Time} from "../../model/util/time";
 import {WorkingHour} from "../../model/workinghours/workingHour";
 import {HttpClient} from "../http/httpClient";
 
 @Injectable({
   providedIn: 'root',
 })
-export class TodoService {
+export class WorkingHourService {
 
   httpClient: HttpClient;
 
@@ -140,9 +142,11 @@ export class TodoService {
   private mapToWorkingHour(dataItem: WorkingHourResponseData): WorkingHour {
 
     return new WorkingHour(
-      DateTime.fromDateNotNull(dataItem.startTime),
-      DateTime.fromDate(dataItem.endTime),
+      CDate.fromDate(dataItem.date),
+      Time.fromDate(dataItem.startTime),
       dataItem.customerId,
+      dataItem.projectId,
+      Time.fromDate(dataItem.endTime),
       dataItem.id
     )
   }
@@ -151,9 +155,11 @@ export class TodoService {
 
 interface WorkingHourResponseData {
   id: number;
+  date: Date,
   startTime: Date;
   endTime: Date;
   customerId: number;
+  projectId: number;
 }
 
 

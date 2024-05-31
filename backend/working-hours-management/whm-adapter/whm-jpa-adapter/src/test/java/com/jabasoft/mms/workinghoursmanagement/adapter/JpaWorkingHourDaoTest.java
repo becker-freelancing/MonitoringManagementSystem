@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -160,13 +162,17 @@ class JpaWorkingHourDaoTest {
 	List<WorkingHour> createWorkingHours(){
 
 		WorkingHour workingHour = new WorkingHour();
-		workingHour.setStartTime(LocalDateTime.MIN);
+		workingHour.setDate(LocalDate.of(2024, 4, 29));
+		workingHour.setStartTime(LocalTime.MIN);
 		workingHour.setCustomerId(12L);
+		workingHour.setProjectId(18L);
 		
 		WorkingHour workingHour1 = new WorkingHour();
-		workingHour1.setStartTime(LocalDateTime.MIN);
-		workingHour1.setEndTime(LocalDateTime.MAX);
+		workingHour1.setDate(LocalDate.of(2024, 4, 29));
+		workingHour1.setStartTime(LocalTime.MIN);
+		workingHour1.setEndTime(LocalTime.MAX);
 		workingHour1.setCustomerId(13L);
+		workingHour1.setProjectId(14L);
 		
 		return List.of(workingHour1, workingHour);
 	}
