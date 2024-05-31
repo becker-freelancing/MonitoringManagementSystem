@@ -48,6 +48,7 @@ export class AddWorkingHourMenuBarComponent {
 
   allCustomers: Customer[] = [];
   projectsForCustomer: Project[] = [];
+  currentDate: string;
 
   workingHourDate?: string;
   workingHourDateValid: boolean = true;
@@ -69,6 +70,7 @@ export class AddWorkingHourMenuBarComponent {
     public workingHourSyncService: WorkingHourSyncService) {
 
     customerService.getAllCustomers((customers) => this.allCustomers = customers);
+    this.currentDate = new Date().toISOString().split("T")[0];
   }
 
   save() {

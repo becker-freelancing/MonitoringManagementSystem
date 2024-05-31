@@ -3,18 +3,18 @@
   <div class="div-margin" id="add-working-hour-menu-bar-date-time-recording">
     <div class="div-margin">
       <label for="add-working-hour-date">Datum:</label>
-      <input type="date" id="add-working-hour-date" name="datum" (change)="dateChangedEvent($event)">
+      <input type="date" id="add-working-hour-date" [value]="currentDate" (change)="dateChangedEvent($event)">
       <p class="form-input-not-valid-label" *ngIf="!workingHourDateValid">Datum erforderlich</p>
     </div>
     <div class="horizontal-div">
       <div class="div-margin">
         <label for="add-working-hour-from-time">Von:</label>
-        <input type="time" id="add-working-hour-from-time" name="datum" (change)="fromTimeChangedEvent($event)">
+        <input type="time" id="add-working-hour-from-time" (change)="fromTimeChangedEvent($event)">
         <p class="form-input-not-valid-label" *ngIf="!workingHourStartTimeValid">Start erforderlich</p>
       </div>
       <div class="div-margin">
         <label for="add-working-hour-to-time">Bis:</label>
-        <input type="time" id="add-working-hour-to-time" name="datum" (change)="toTimeChangedEvent($event)">
+        <input type="time" id="add-working-hour-to-time" (change)="toTimeChangedEvent($event)">
         <p class="form-input-not-valid-label" *ngIf="!workingHourEndTimeValid">Ende erforderlich</p>
       </div>
       <div class="div-margin">
