@@ -71,6 +71,7 @@ export class AddWorkingHourMenuBarComponent {
 
     customerService.getAllCustomers((customers) => this.allCustomers = customers);
     this.currentDate = new Date().toISOString().split("T")[0];
+    this.workingHourDate = this.currentDate;
   }
 
   save() {
