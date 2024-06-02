@@ -112,6 +112,19 @@ export class Time {
   getTime(): number {
     return this._hour * 3600 + this._minute * 60 + this._second;
   }
+
+  toString(): string {
+    const hourStr = (this.hour < 10 ? '0' : '') + this.hour;
+    const minuteStr = (this.minute < 10 ? '0' : '') + this.minute;
+    const secondStr = (this.second < 10 ? '0' : '') + this.second;
+    return `${hourStr}:${minuteStr}:${secondStr}`;
+  }
+
+  toStringWithoutSeconds(): string {
+    const hourStr = (this.hour < 10 ? '0' : '') + this.hour;
+    const minuteStr = (this.minute < 10 ? '0' : '') + this.minute;
+    return `${hourStr}:${minuteStr}`;
+  }
 }
 
 

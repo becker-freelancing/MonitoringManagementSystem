@@ -38,6 +38,17 @@ export class WorkingHourSyncService{
     }
   }
 
+  setWorkingHours(workingHours: WorkingHour[]){
+    this.clearWorkingHours();
+    for (const workingHour of workingHours) {
+      WorkingHourSyncService.workingHours.push(new WorkingHourManagementWorkingHour(WorkingHourSyncService.workingHours.length + 1, workingHour));
+    }
+    this.sortWorkingHours();
+    for (const addWorkingHourObserverElement of WorkingHourSyncService.addWorkingHourObserver) {
+      addWorkingHourObserverElement(WorkingHourSyncService.workingHours);
+    }
+  }
+
   editWorkingHour(workingHour: WorkingHourManagementWorkingHour){
     WorkingHourSyncService.workingHours[this.getIndex(workingHour)] = workingHour;
     this.sortWorkingHours();
@@ -79,6 +90,11 @@ export class WorkingHourSyncService{
     let unclosedWorkingHours = WorkingHourSyncService.workingHours.filter(workingHour => !workingHour.workingHour.isClosed());
 
     closedWorkingHours = closedWorkingHours.sort((a, b) => {
+      let dateCompare = b.workingHour.date.getTime() - a.workingHour.date.getTime();
+      if(dateCompare !== 0){
+        return dateCompare;
+      }
+
       if(a.workingHour.endTime && b.workingHour.endTime) {
         return b.workingHour.endTime.getTime() - a.workingHour.endTime.getTime();
       }
@@ -86,6 +102,11 @@ export class WorkingHourSyncService{
     })
 
     unclosedWorkingHours = unclosedWorkingHours.sort((a, b) => {
+      let dateCompare = b.workingHour.date.getTime() - a.workingHour.date.getTime();
+      if(dateCompare !== 0){
+        return dateCompare;
+      }
+
       return a.workingHour.startTime.getTime() - b.workingHour.startTime.getTime();
     })
 

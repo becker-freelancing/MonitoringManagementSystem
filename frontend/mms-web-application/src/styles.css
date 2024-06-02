@@ -200,3 +200,42 @@ Layout
 .div-margin {
   margin: 4px;
 }
+
+/*
+Separator
+ */
+
+.right-vertical-border-separator {
+  border-right: 2px solid dimgray;
+  position: relative;
+}
+
+.vertical-separator {
+  border-right: 2px solid dimgray;
+  height: 100%;
+  width: 2px;
+  position: relative;
+}
+
+.horizontal-separator-big {
+  border-top: 4px solid dimgray;
+  width: 100%;
+  height: 4px;
+  position: relative;
+}
+
+.horizontal-separator-small {
+  border-top: 2px solid dimgray;
+  width: 100%;
+  height: 2px;
+  position: relative;
+}
+
+
+/*
+Scrolling
+ */
+
+.vertical-scroll-pane{
+  overflow-y: auto;
+}

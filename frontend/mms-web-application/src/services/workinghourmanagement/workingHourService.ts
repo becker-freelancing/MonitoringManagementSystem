@@ -142,11 +142,11 @@ export class WorkingHourService {
   private mapToWorkingHour(dataItem: WorkingHourResponseData): WorkingHour {
 
     return new WorkingHour(
-      CDate.fromDate(dataItem.date),
-      Time.fromDate(dataItem.startTime),
+      CDate.fromDateString(dataItem.date),
+      Time.fromTimeString(dataItem.startTime),
       dataItem.customerId,
       dataItem.projectId,
-      Time.fromDate(dataItem.endTime),
+      Time.fromTimeString(dataItem.endTime),
       dataItem.id
     )
   }
@@ -155,9 +155,9 @@ export class WorkingHourService {
 
 interface WorkingHourResponseData {
   id: number;
-  date: Date,
-  startTime: Date;
-  endTime: Date;
+  date: string,
+  startTime: string;
+  endTime: string;
   customerId: number;
   projectId: number;
 }

@@ -145,6 +145,24 @@ export class ProjectManagementService {
     })
   }
 
+  getProject(projectId: number, onSuccess: (project: Project) => void, onError?: (status: number) => void) {
+
+    this.httpClient.get('projects/get/' + projectId).then(r => {
+      if (r.status != 200){
+        if (onError) {
+          onError(r.status);
+        }
+        return;
+      }
+
+      onSuccess(this.mapToProject(r.data));
+    }).catch((reason: any) => {
+      if (onError) {
+        onError(reason.status)
+      }
+    })
+  }
+
   mapToProject(data: ProjectResponseData): Project {
 
     return new Project(
