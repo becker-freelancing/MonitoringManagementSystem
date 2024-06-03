@@ -114,4 +114,8 @@ export class WorkingHourSyncService{
     WorkingHourSyncService.workingHours = unclosedWorkingHours.concat(closedWorkingHours)
     this.rearrangeWorkingHours();
   }
+
+  getWorkingHours(): WorkingHourManagementWorkingHour[]{
+    return WorkingHourSyncService.workingHours;
+  }
 }

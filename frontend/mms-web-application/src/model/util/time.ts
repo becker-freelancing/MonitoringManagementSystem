@@ -91,6 +91,14 @@ export class Time {
     return false;
   }
 
+  isAfter(other?: Time): boolean {
+    if(!other){
+      return false;
+    }
+
+    return !this.isBefore(other) && !this.isEqual(other);
+  }
+
   toJSON(key?: any): any {
     return this.fillZero(this._hour) + ':' + this.fillZero(this._minute) + ':' + this.fillZero(this._second);
     // return {
@@ -124,6 +132,13 @@ export class Time {
     const hourStr = (this.hour < 10 ? '0' : '') + this.hour;
     const minuteStr = (this.minute < 10 ? '0' : '') + this.minute;
     return `${hourStr}:${minuteStr}`;
+  }
+
+  isEqual(other?: Time) {
+    if(!other){
+      return false;
+    }
+    return this.hour == other.hour && this.minute == other.minute && this.second == other.second;
   }
 }
 

@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatOption, NativeDateAdapter} from "@angular/material/core";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {MatDialog} from "@angular/material/dialog";
 import {MatFormField, MatInput, MatLabel, MatSuffix} from "@angular/material/input";
 import {MatSelect} from "@angular/material/select";
 import {NgxMatTimepickerComponent, NgxMatTimepickerDirective} from "ngx-mat-timepicker";
@@ -16,6 +17,12 @@ import {CustomerManagementService} from "../../../../services/customermanagement
 import {ProjectManagementService} from "../../../../services/projectmanagement/projectManagementService";
 import {WorkingHourService} from "../../../../services/workinghourmanagement/workingHourService";
 import {WorkingHourSyncService} from "../../../../services/workinghourmanagement/workingHourSyncService";
+import {
+  AddCustomerDialogComponent
+} from "../../customer-management/customer-management-menu-bar/add-customer-dialog/add-customer-dialog.component";
+import {
+  WorkingHourExistsWarningDialogComponent, WorkingHourExistsWarningDialogData, WorkingHourExistsWorkingHour
+} from "./working-hour-exists-warning-dialog/working-hour-exists-warning-dialog.component";
 
 @Component({
   selector: 'app-add-working-hour-menu-bar',
@@ -67,7 +74,8 @@ export class AddWorkingHourMenuBarComponent {
     customerService: CustomerManagementService,
     public projectService: ProjectManagementService,
     public workingHourService: WorkingHourService,
-    public workingHourSyncService: WorkingHourSyncService) {
+    public workingHourSyncService: WorkingHourSyncService,
+    public dialog: MatDialog) {
 
     customerService.getAllCustomers((customers) => this.allCustomers = customers);
     this.currentDate = new Date().toISOString().split("T")[0];
@@ -79,20 +87,29 @@ export class AddWorkingHourMenuBarComponent {
       return;
     }
 
-    if (!(this.workingHourDate && this.workingHourStartTime && this.customer && this.project && this.project.projectId)) {
+    let overlapped = this.checkForOverlappingWorkingHours(this.recordWorkingHour, this);
+
+    if(!overlapped){
+      this.recordWorkingHour(this);
+    }
+  }
+
+  private recordWorkingHour(that: AddWorkingHourMenuBarComponent){
+
+    if (!(that.workingHourDate && that.workingHourStartTime && that.customer && that.project && that.project.projectId)) {
       return;
     }
 
     let workingHour = new WorkingHour(
-      CDate.fromDateString(this.workingHourDate),
-      this.workingHourStartTime,
-      this.customer.customerId,
-      this.project.projectId,
-      this.workingHourEndTime
+      CDate.fromDateString(that.workingHourDate),
+      that.workingHourStartTime,
+      that.customer.customerId,
+      that.project.projectId,
+      that.workingHourEndTime
     );
 
-    this.workingHourService.save(workingHour, (workingHour: WorkingHour) => {
-      this.workingHourSyncService.addWorkingHour(workingHour);
+    that.workingHourService.save(workingHour, (workingHour: WorkingHour) => {
+      that.workingHourSyncService.addWorkingHour(workingHour);
     })
   }
 
@@ -176,5 +193,74 @@ export class AddWorkingHourMenuBarComponent {
       this.workingHourDurationValid &&
       this.customerValid &&
       this.projectValid;
+  }
+
+  private checkForOverlappingWorkingHours(onRecordWorkingHour: (that: AddWorkingHourMenuBarComponent) => void, that: AddWorkingHourMenuBarComponent): boolean {
+    if(!this.workingHourDate){
+      return true;
+    }
+
+    let recordedNewDate = CDate.fromDateString(this.workingHourDate);
+
+    let overlapped = this.workingHourSyncService.getWorkingHours()
+      .filter(workingHour => workingHour.workingHour.date.isEqual(recordedNewDate))
+      .filter(workingHour =>
+        (workingHour.workingHour.startTime.isBefore(this.workingHourStartTime) &&
+          workingHour.workingHour.endTime?.isAfter(this.workingHourStartTime)) ||
+        (workingHour.workingHour.startTime.isBefore(this.workingHourEndTime) &&
+          workingHour.workingHour.endTime?.isAfter(this.workingHourEndTime)) ||
+        (workingHour.workingHour.startTime.isEqual(this.workingHourStartTime) ||
+          workingHour.workingHour.startTime.isEqual(this.workingHourEndTime)) ||
+        (workingHour.workingHour.endTime?.isEqual(this.workingHourStartTime) ||
+          workingHour.workingHour.endTime?.isEqual(this.workingHourEndTime))
+      )
+      .map(workingHour => new class implements WorkingHourExistsWorkingHour {
+        customer?: Customer = that.findCustomerById(workingHour.workingHour.customerId);
+        date?: CDate = workingHour.workingHour.date;
+        endTime?: Time = workingHour.workingHour.endTime;
+        project?: Project = that.findProjectById(workingHour.workingHour.projectId);
+        startTime?: Time = workingHour.workingHour.startTime;
+      })
+
+    if(overlapped.length == 0){
+      return false;
+    }
+
+    let newWorkingHour = new class implements WorkingHourExistsWorkingHour {
+      customer?: Customer = that.customer;
+      date?: CDate = CDate.fromDateString(that.workingHourDate);
+      endTime?: Time = that.workingHourEndTime;
+      project?: Project = that.project;
+      startTime?: Time = that.workingHourStartTime;
+    }
+
+
+
+    let dialogData: WorkingHourExistsWarningDialogData = new class implements WorkingHourExistsWarningDialogData {
+      newWorkingHour: WorkingHourExistsWorkingHour = newWorkingHour;
+      overlappedWorkingHours: WorkingHourExistsWorkingHour[] = overlapped;
+    }
+
+    let dialogRef = this.dialog.open(WorkingHourExistsWarningDialogComponent, {
+      width: '500px',
+      height: '500px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(recordWorkingHour => {
+      if(recordWorkingHour){
+        onRecordWorkingHour(that);
+      }
+    })
+
+    return true;
+  }
+
+  findCustomerById(id: number): Customer{
+    return this.allCustomers.filter(customer => customer.customerId == id)[0];
+  }
+
+  findProjectById(id: number): Project{
+    return this.projectsForCustomer.filter(project => project.projectId == id)[0];
   }
 }

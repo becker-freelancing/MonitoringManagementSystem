@@ -12,7 +12,10 @@ export class CDate {
     );
   }
 
-  static fromDateString(date: string): CDate {
+  static fromDateString(date?: string): CDate {
+    if(!date){
+      return CDate.now();
+    }
     let split = date.split("-");
 
     if(split.length === 3){
@@ -170,6 +173,10 @@ export class CDate {
       return true;
     }
     return false;
+  }
+
+  isAfter(date: CDate): boolean {
+    return !this.isBefore(date) && !this.isBefore(date);
   }
 
   private asDate(): Date {

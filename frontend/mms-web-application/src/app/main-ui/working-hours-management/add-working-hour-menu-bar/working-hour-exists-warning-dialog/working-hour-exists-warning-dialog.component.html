@@ -1,0 +1,30 @@
+<mat-dialog-content>
+  <h2>Zeitüberschneidung mit einem anderen Kunden</h2>
+
+  <p>Bei der Erfassung der Zeiten ist eine Überschneidung aufgetreten:</p>
+
+  <h3>Neue Erfassung</h3>
+
+  <ul>
+    <li>Kunde: {{data.newWorkingHour.customer?.companyName}}</li>
+    <li>Datum: {{data.newWorkingHour.date?.toString()}}</li>
+    <li>Zeit: {{data.newWorkingHour.startTime?.toStringWithoutSeconds()}} - {{data.newWorkingHour.endTime?.toStringWithoutSeconds()}}</li>
+    <li>Projekt: {{data.newWorkingHour.project?.title}}</li>
+  </ul>
+
+  <h3 *ngIf="data.overlappedWorkingHours.length == 1">Überlappende Zeit</h3>
+  <h3 *ngIf="data.overlappedWorkingHours.length > 1">Überlappende Zeiten</h3>
+
+  <ul *ngFor="let overlappingWorkingHour of data.overlappedWorkingHours">
+    <li>Kunde: {{overlappingWorkingHour.customer?.companyName}}</li>
+    <li>Datum: {{overlappingWorkingHour.date?.toString()}}</li>
+    <li>Zeit: {{overlappingWorkingHour.startTime?.toStringWithoutSeconds()}} - {{data.newWorkingHour.endTime?.toStringWithoutSeconds()}}</li>
+    <li>Projekt: {{overlappingWorkingHour.project?.title}}</li>
+  </ul>
+
+  <h2>Soll die Arbeitszeit trotzdem erfasst werden?</h2>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="closeDialog(false)">Nein</button>
+  <button mat-button (click)="closeDialog(true)">Ja</button>
+</mat-dialog-actions>
