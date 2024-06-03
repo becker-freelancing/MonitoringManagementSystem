@@ -2,25 +2,29 @@
   @for (week of sortedWorkingHours.sortedByWeeks; track week.dayInWeek) {
     <div>
       <div class="horizontal-separator-big"></div>
-      <h2>Mo. {{ week.dayInWeek.getLastMonday() }} - So. {{ week.dayInWeek.getNextSunday() }}</h2>
+      <div class="horizontal-div">
+        <h2 class="all-working-hours-overview-week-heading">Mo. {{ week.dayInWeek.getLastMonday() }} - So. {{ week.dayInWeek.getNextSunday() }}</h2>
+        <div class="full-width-spacer"></div>
+        <p class="all-working-hours-overview-duration-label">Dauer gesamt: {{ calcDuration(week) }}</p>
+      </div>
 
       @for (day of week.sortedByDays; track day.day) {
         <div class="horizontal-separator-small"></div>
         <div class="horizontal-div">
           <div class="right-vertical-border-separator">
-            <h3>{{day.day.getDayOfWeekAsString()}}</h3>
-            <p>{{day.day.toStringWithoutYear()}}</p>
+            <h3>{{ day.day.getDayOfWeekAsString() }}</h3>
+            <p>{{ day.day.toStringWithoutYear() }}</p>
           </div>
           <div class="vertical-separator"></div>
           <div>
-          @for (workingHour of day.sortedByEndTime; track workingHour.uiId) {
-            <div class="horizontal-div">
-              <p class="working-hour-time-area">{{workingHour.workingHour.startTime.toStringWithoutSeconds()}}</p>
-              <p class="working-hour-time-area">{{workingHour.workingHour.endTime?.toStringWithoutSeconds()}}</p>
-              <p>{{getCustomer(workingHour.workingHour.customerId)?.companyName}}</p>
-              <p>{{getProject(workingHour.workingHour.projectId)?.title}}</p>
-            </div>
-          }
+            @for (workingHour of day.sortedByEndTime; track workingHour.uiId) {
+              <div class="horizontal-div">
+                <p class="working-hour-time-area">{{ workingHour.workingHour.startTime.toStringWithoutSeconds() }}</p>
+                <p class="working-hour-time-area">{{ workingHour.workingHour.endTime?.toStringWithoutSeconds() }}</p>
+                <p class="working-hour-customer-area">{{ getCustomer(workingHour.workingHour.customerId)?.companyName }}</p>
+                <p>{{ getProject(workingHour.workingHour.projectId)?.title }}</p>
+              </div>
+            }
           </div>
         </div>
       }
@@ -28,5 +32,5 @@
     </div>
   }
 
-  <div class="horizontal-separator-small"></div>
+  <div class="horizontal-separator-big"></div>
 </div>

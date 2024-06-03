@@ -1,8 +1,21 @@
 .working-hour-time-area{
-  width: 50px;
+  width: 70px;
   text-align: center;
 }
 
 #all-working-hours-overview-wrapper{
   height: 77%;
+}
+
+.working-hour-customer-area{
+  margin-left: 90px;
+  width: 300px;
+}
+
+.all-working-hours-overview-week-heading{
+  width: 500px;
+}
+
+.all-working-hours-overview-duration-label{
+  width: 300px;
 }

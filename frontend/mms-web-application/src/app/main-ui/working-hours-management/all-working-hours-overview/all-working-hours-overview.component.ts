@@ -44,13 +44,13 @@ export class AllWorkingHoursOverviewComponent {
 
   private onWorkingHoursChange(workingHours: WorkingHourManagementWorkingHour[]) {
 
-    if(workingHours.length == 0){
+    if (workingHours.length == 0) {
       return;
     }
 
     let sortWrapper: WorkingHourSortWrapper = new WorkingHourSortWrapper();
     let weekSortWrapper: WeekSortWrapper = new WeekSortWrapper(workingHours[0].workingHour.date);
-    let daySortWrapper: DaySortWrapper= new DaySortWrapper(workingHours[0].workingHour.date);
+    let daySortWrapper: DaySortWrapper = new DaySortWrapper(workingHours[0].workingHour.date);
 
     let addedDays: Set<string> = new Set<string>();
 
@@ -58,16 +58,16 @@ export class AllWorkingHoursOverviewComponent {
 
       let sameDay: WorkingHourManagementWorkingHour[] = [];
 
-      if(addedDays.has(workingHour.workingHour.date.toString())){
+      if (addedDays.has(workingHour.workingHour.date.toString())) {
         continue;
       }
 
       addedDays.add(workingHour.workingHour.date.toString());
 
       for (const other of workingHours) {
-        if(workingHour.workingHour.date.isEqual(other.workingHour.date)){
+        if (workingHour.workingHour.date.isEqual(other.workingHour.date)) {
           sameDay.push(other)
-        } else if(other.workingHour.date.isBefore(workingHour.workingHour.date)){
+        } else if (other.workingHour.date.isBefore(workingHour.workingHour.date)) {
           break;
         }
       }
@@ -77,7 +77,7 @@ export class AllWorkingHoursOverviewComponent {
         daySortWrapper.addWorkingHour(workingHourManagementWorkingHour);
       }
 
-      if(weekSortWrapper.dayInWeek.isSameWeek(daySortWrapper.day)){
+      if (weekSortWrapper.dayInWeek.isSameWeek(daySortWrapper.day)) {
         weekSortWrapper.addDay(daySortWrapper);
       } else {
         sortWrapper.addWeek(weekSortWrapper);
@@ -92,26 +92,42 @@ export class AllWorkingHoursOverviewComponent {
     this.loadCustomerAndProjects(workingHours);
   }
 
-  getProject(projectId: number): Project | undefined{
+  getProject(projectId: number): Project | undefined {
     return this.projects.get(projectId);
   }
 
-  getCustomer(customerId: number): Customer | undefined{
+  getCustomer(customerId: number): Customer | undefined {
     return this.customers.get(customerId);
   }
 
-  private loadCustomerAndProjects(workingHours: WorkingHourManagementWorkingHour[]): void{
+  private loadCustomerAndProjects(workingHours: WorkingHourManagementWorkingHour[]): void {
     for (const workingHour of workingHours) {
       let customerId = workingHour.workingHour.customerId;
-      if(!this.customers.has(customerId)){
+      if (!this.customers.has(customerId)) {
         this.customerService.getCustomer(customerId, customer => this.customers.set(customerId, customer))
       }
 
       let projectId = workingHour.workingHour.projectId;
-      if(!this.projects.has(projectId)){
+      if (!this.projects.has(projectId)) {
         this.projectService.getProject(projectId, project => this.projects.set(projectId, project))
       }
     }
+  }
+
+  calcDuration(week: WeekSortWrapper) {
+
+    let durationInMinutes = 0;
+
+    for (const sortedByDay of week.sortedByDays) {
+      for (const workingHour of sortedByDay.sortedByEndTime) {
+        if (workingHour.workingHour.endTime) {
+          let timeDuration = workingHour.workingHour.startTime.calcAbsoluteDurationTo(workingHour.workingHour.endTime);
+          durationInMinutes += timeDuration.hours * 60 + timeDuration.minutes;
+        }
+      }
+    }
+
+    return Math.floor(durationInMinutes / 60) + 'h ' + durationInMinutes % 60 + 'min';
   }
 }
 
@@ -125,7 +141,7 @@ class WorkingHourSortWrapper {
     return this._sortedByWeeks;
   }
 
-  addWeek(week: WeekSortWrapper): void{
+  addWeek(week: WeekSortWrapper): void {
     this._sortedByWeeks.push(week);
   }
 }
@@ -179,7 +195,7 @@ class DaySortWrapper {
     this._day = value;
   }
 
-  addWorkingHour(workingHour: WorkingHourManagementWorkingHour): void{
+  addWorkingHour(workingHour: WorkingHourManagementWorkingHour): void {
     this._sortedByEndTime.push(workingHour);
   }
 }

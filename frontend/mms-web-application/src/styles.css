@@ -231,6 +231,13 @@ Separator
   position: relative;
 }
 
+/*
+Spacer
+ */
+
+.full-width-spacer{
+  width: 100%;
+}
 
 /*
 Scrolling
