@@ -51,7 +51,15 @@ export class Time {
     return this._second;
   }
 
-  calcAbsoluteDurationTo(to: Time): TimeDuration {
+  calcAbsoluteDurationTo(to?: Time): TimeDuration {
+
+    if(!to){
+      return new class implements TimeDuration {
+        hours: number = 0;
+        minutes: number = 0;
+        seconds: number = 0;
+      };
+    }
 
     const startInSeconds = this.getTime()
     const endInSeconds = to.getTime();

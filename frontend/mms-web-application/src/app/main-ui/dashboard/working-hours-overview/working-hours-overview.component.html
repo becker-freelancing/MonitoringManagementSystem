@@ -1,3 +1,6 @@
 <div id="dashboardWorkingHoursOverview">
-  <p>Working Hours Overview</p>
+  <app-working-hours-overview-menu-bar (viewModeChange)="onWorkingHourViewModeChanged($event)"></app-working-hours-overview-menu-bar>
+  <app-working-hours-overview-chart [workingHours]="workingHours" [startDate]="dateRange.start" [endDate]="dateRange.end" [customers]="customers"></app-working-hours-overview-chart>
 </div>
+
+

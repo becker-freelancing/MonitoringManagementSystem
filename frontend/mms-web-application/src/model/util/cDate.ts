@@ -115,6 +115,44 @@ export class CDate {
     }
   }
 
+  getLastMonthStart(){
+    return new CDate(this.year, this.month, 1);
+  }
+
+  getNextMonthStart(){
+    let month = this.month + 1;
+
+    if(month > 12){
+      return new CDate(this.year + 1, 1, 1);
+    }
+
+    return new CDate(this.year, month, 1);
+  }
+
+  getLastYearStart(){
+    return new CDate(this.year, 1, 1);
+  }
+
+  getNextYearStart(){
+    return new CDate(this.year + 1, 1, 1);
+  }
+
+  getLastQuarterStart() {
+    let div3 = Math.floor(this.month / 3);
+
+    return new CDate(this.year, div3 * 3, 1);
+  }
+
+  getNextQuarterStart(){
+    let div3 = Math.floor(this.month / 3) + 1;
+
+    if(div3 == 4){
+      return new CDate(this.year + 1, 1, 1);
+    }
+
+    return new CDate(this.year, div3 * 3, 1);
+  }
+
   toString(): string {
     const yearStr = this._year.toString().padStart(4, '0');
     const monthStr = (this._month < 10 ? '0' : '') + this._month;
@@ -156,7 +194,7 @@ export class CDate {
   }
 
   getDayOfWeekAsString(): string{
-    let days = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+    let days = ["Fr", "Sa", "So", "Mo", "Di", "Mi", "Do"]
     return days[this.asDate().getDay()]
   }
 
@@ -183,6 +221,36 @@ export class CDate {
     return new Date(this._year, this._month, this._day);
   }
 
+  nextDay(): CDate {
+    let newDay = this.day + 1;
+
+    if(newDay > CDate.daysOfMonth(this.month, this.year)){
+      let newMonth = this.month + 1;
+      if(newMonth > 12){
+        return new CDate(this.year + 1, 1, 1);
+      }
+
+      return new CDate(this.year, this.month + 1, 1);
+    }
+
+    return new CDate(this.year, this.month, newDay);
+  }
+
+  lastDay(): CDate {
+    let newDay = this.day - 1;
+
+    if(newDay === 0){
+      let newMonth = this.month - 1;
+      if(newMonth === 0){
+        return new CDate(this.year - 1, 12, 31);
+      }
+
+      return new CDate(this.year, newMonth, CDate.daysOfMonth(newMonth, this.year))
+    }
+
+    return new CDate(this.year, this.month, newDay);
+  }
+
   static daysOfMonth(month: number, year: number): number {
     if(month == 2 && CDate.isLeapYear(year)){
       return 29;
@@ -198,5 +266,19 @@ export class CDate {
       return true;
     }
     return year % 400 === 0;
+  }
+
+  isSameQuarter(date: CDate) {
+    let lastQuarterStart = this.getLastQuarterStart();
+    let nextQuarterStart = this.getNextQuarterStart();
+
+    return date.isEqual(lastQuarterStart) || (date.isAfter(lastQuarterStart) && date.isBefore(nextQuarterStart));
+  }
+
+  isSameMonth(date: CDate) {
+    let lastMonthStart = this.getLastMonthStart();
+    let nextMonthStart = this.getNextMonthStart();
+
+    return date.isEqual(lastMonthStart) || (date.isAfter(lastMonthStart) && date.isBefore(nextMonthStart));
   }
 }

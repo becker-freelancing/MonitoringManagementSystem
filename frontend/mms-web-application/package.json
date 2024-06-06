@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^17.3.9",
+    "@angular/animations": "^17.3.10",
     "@angular/cdk": "^17.3.9",
     "@angular/common": "^17.3.9",
     "@angular/compiler": "^17.3.9",
@@ -23,6 +23,7 @@
     "@angular/platform-server": "^17.3.9",
     "@angular/router": "^17.3.9",
     "@angular/ssr": "^17.3.7",
+    "@swimlane/ngx-charts": "^20.5.0",
     "@types/lodash": "^4.17.0",
     "axios": "^1.6.8",
     "date-fns": "^3.6.0",
