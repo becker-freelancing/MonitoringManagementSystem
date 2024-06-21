@@ -1,34 +1,40 @@
 package com.jabasoft.mms.documentmanagement.domain.model;
 
-import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Objects;
 
-public class Document {
+public class Document extends DocumentWithoutContent{
 
-
-	private String relativePath;
 	private byte[] content;
-	private DocumentId documentId;
 
-	public Document(String  path, byte[] content, DocumentId documentId) {
-
-		this.relativePath = path;
-		this.content = content;
-		this.documentId = documentId;
-	}
-
-	public String  getRelativePath() {
-
-		return relativePath;
-	}
 
 	public byte[] getContent() {
 
 		return content;
 	}
 
-	public DocumentId getDocumentId() {
+	public void setContent(byte[] content) {
 
-		return documentId;
+		this.content = content;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+
+		if (this == o)
+			return true;
+		if (!(o instanceof Document document))
+			return false;
+		if (!super.equals(o))
+			return false;
+
+		return Arrays.equals(content, document.content) && super.equals(document);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(Arrays.hashCode(content), super.hashCode());
 	}
 
 }

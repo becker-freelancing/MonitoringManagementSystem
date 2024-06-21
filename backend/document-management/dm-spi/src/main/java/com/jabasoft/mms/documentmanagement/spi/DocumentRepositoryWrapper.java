@@ -1,10 +1,11 @@
 package com.jabasoft.mms.documentmanagement.spi;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.jabasoft.mms.documentmanagement.domain.model.Document;
-import com.jabasoft.mms.documentmanagement.domain.model.DocumentId;
+import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
 
 public class DocumentRepositoryWrapper implements DocumentRepository{
 
@@ -23,19 +24,29 @@ public class DocumentRepositoryWrapper implements DocumentRepository{
 	}
 
 	@Override
+	public Optional<Document> deleteDocument(FilePath path, String name) {
+
+		for (DocumentRepository documentRepository : documentRepositories) {
+			documentRepository.deleteDocument(path, name);
+		}
+
+		return defaultDocumentRepository.deleteDocument(path, name);
+	}
+
+	@Override
 	public List<Document> getAllDocuments() {
 
 		return defaultDocumentRepository.getAllDocuments();
 	}
 
 	@Override
-	public Document getDocument(DocumentId documentId) {
+	public Optional<Document> getDocument(Long documentId) {
 
 		return defaultDocumentRepository.getDocument(documentId);
 	}
 
 	@Override
-	public DocumentId saveDocument(Document document) {
+	public Optional<Document> saveDocument(Document document) {
 
 
 		for (DocumentRepository documentRepository : documentRepositories) {
@@ -44,5 +55,6 @@ public class DocumentRepositoryWrapper implements DocumentRepository{
 
 		return defaultDocumentRepository.saveDocument(document);
 	}
+
 
 }

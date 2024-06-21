@@ -1,0 +1,208 @@
+package com.jabasoft.mms.documentmanagement.domain.service.filetype;
+
+import com.jabasoft.mms.documentmanagement.domain.model.FileType;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class FileTypeUtilImplTest {
+
+    @ParameterizedTest
+    @MethodSource("getExpectedMappings")
+    void testFromStringReturnsCorrectFileType(String type, FileType expected){
+        FileTypeUtilImpl fileTypeUtil = new FileTypeUtilImpl();
+
+        FileType actual = fileTypeUtil.fromString(type);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testUnexpectedFileTypeReturnFileTypeOther(){
+        FileTypeUtilImpl fileTypeUtil = new FileTypeUtilImpl();
+
+        FileType actual = fileTypeUtil.fromString("ThisIsUnexpected");
+
+        assertEquals(FileType.OTHER, actual);
+    }
+
+
+    static Stream<Arguments> getExpectedMappings() {
+        return Stream.of(
+                Arguments.of("pp", FileType.PP),
+                Arguments.of("css", FileType.CSS),
+                Arguments.of("csv", FileType.CSV),
+                Arguments.of("py", FileType.PY),
+                Arguments.of("wsf", FileType.WSF),
+                Arguments.of("hs", FileType.HS),
+                Arguments.of("ost", FileType.OST),
+                Arguments.of("midi", FileType.MIDI),
+                Arguments.of("exe", FileType.EXE),
+                Arguments.of("java", FileType.JAVA),
+                Arguments.of("nim", FileType.NIM),
+                Arguments.of("bat", FileType.BAT),
+                Arguments.of("mov", FileType.MOV),
+                Arguments.of("xml", FileType.XML),
+                Arguments.of("jar", FileType.JAR),
+                Arguments.of("adoc", FileType.ADOC),
+                Arguments.of("scm", FileType.SCM),
+                Arguments.of("zip", FileType.ZIP),
+                Arguments.of("otf", FileType.OTF),
+                Arguments.of("clj", FileType.CLJ),
+                Arguments.of("exs", FileType.EXS),
+                Arguments.of("rar", FileType.RAR),
+                Arguments.of("7z", FileType._7Z),
+                Arguments.of("mpg", FileType.MPG),
+                Arguments.of("tex", FileType.TEX),
+                Arguments.of("png", FileType.PNG),
+                Arguments.of("ai", FileType.AI),
+                Arguments.of("torrent", FileType.TORRENT),
+                Arguments.of("eps", FileType.EPS),
+                Arguments.of("ra", FileType.RA),
+                Arguments.of("cdr", FileType.CDR),
+                Arguments.of("rb", FileType.RB),
+                Arguments.of("dwf", FileType.DWF),
+                Arguments.of("groovy", FileType.GROOVY),
+                Arguments.of("sln", FileType.SLN),
+                Arguments.of("dwg", FileType.DWG),
+                Arguments.of("doc", FileType.DOC),
+                Arguments.of("accdb", FileType.ACCDB),
+                Arguments.of("odp", FileType.ODP),
+                Arguments.of("rm", FileType.RM),
+                Arguments.of("odt", FileType.ODT),
+                Arguments.of("aif", FileType.AIF),
+                Arguments.of("ods", FileType.ODS),
+                Arguments.of("rs", FileType.RS),
+                Arguments.of("jl", FileType.JL),
+                Arguments.of("other", FileType.OTHER),
+                Arguments.of("log", FileType.LOG),
+                Arguments.of("vbs", FileType.VBS),
+                Arguments.of("jsp", FileType.JSP),
+                Arguments.of("flac", FileType.FLAC),
+                Arguments.of("js", FileType.JS),
+                Arguments.of("mid", FileType.MID),
+                Arguments.of("vmdk", FileType.VMDK),
+                Arguments.of("wma", FileType.WMA),
+                Arguments.of("kml", FileType.KML),
+                Arguments.of("dart", FileType.DART),
+                Arguments.of("fcp", FileType.FCP),
+                Arguments.of("sh", FileType.SH),
+                Arguments.of("pgn", FileType.PGN),
+                Arguments.of("epub", FileType.EPUB),
+                Arguments.of("jpeg", FileType.JPEG),
+                Arguments.of("mobi", FileType.MOBI),
+                Arguments.of("rkt", FileType.RKT),
+                Arguments.of("key", FileType.KEY),
+                Arguments.of("erl", FileType.ERL),
+                Arguments.of("xlsx", FileType.XLSX),
+                Arguments.of("wmv", FileType.WMV),
+                Arguments.of("mat", FileType.MAT),
+                Arguments.of("c", FileType.C),
+                Arguments.of("rtf", FileType.RTF),
+                Arguments.of("svg", FileType.SVG),
+                Arguments.of("cfg", FileType.CFG),
+                Arguments.of("max", FileType.MAX),
+                Arguments.of("tgz", FileType.TGZ),
+                Arguments.of("f", FileType.F),
+                Arguments.of("h", FileType.H),
+                Arguments.of("hpp", FileType.HPP),
+                Arguments.of("kt", FileType.KT),
+                Arguments.of("cfm", FileType.CFM),
+                Arguments.of("m", FileType.M),
+                Arguments.of("docx", FileType.DOCX),
+                Arguments.of("tc", FileType.TC),
+                Arguments.of("cs", FileType.CS),
+                Arguments.of("txt", FileType.TXT),
+                Arguments.of("flv", FileType.FLV),
+                Arguments.of("r", FileType.R),
+                Arguments.of("dproj", FileType.DPROJ),
+                Arguments.of("ppt", FileType.PPT),
+                Arguments.of("v", FileType.V),
+                Arguments.of("php", FileType.PHP),
+                Arguments.of("vdi", FileType.VDI),
+                Arguments.of("asm", FileType.ASM),
+                Arguments.of("pyc", FileType.PYC),
+                Arguments.of("db", FileType.DB),
+                Arguments.of("asp", FileType.ASP),
+                Arguments.of("ts", FileType.TS),
+                Arguments.of("msg", FileType.MSG),
+                Arguments.of("swf", FileType.SWF),
+                Arguments.of("bmp", FileType.BMP),
+                Arguments.of("iso", FileType.ISO),
+                Arguments.of("scss", FileType.SCSS),
+                Arguments.of("numbers", FileType.NUMBERS),
+                Arguments.of("project", FileType.PROJECT),
+                Arguments.of("vhdl", FileType.VHDL),
+                Arguments.of("ogg", FileType.OGG),
+                Arguments.of("tif", FileType.TIF),
+                Arguments.of("dv", FileType.DV),
+                Arguments.of("pages", FileType.PAGES),
+                Arguments.of("ma", FileType.MA),
+                Arguments.of("mb", FileType.MB),
+                Arguments.of("vcxproj", FileType.VCXPROJ),
+                Arguments.of("md", FileType.MD),
+                Arguments.of("aspx", FileType.ASPX),
+                Arguments.of("veg", FileType.VEG),
+                Arguments.of("mkv", FileType.MKV),
+                Arguments.of("html", FileType.HTML),
+                Arguments.of("ogv", FileType.OGV),
+                Arguments.of("swift", FileType.SWIFT),
+                Arguments.of("ml", FileType.ML),
+                Arguments.of("yaml", FileType.YAML),
+                Arguments.of("cpp", FileType.CPP),
+                Arguments.of("pas", FileType.PAS),
+                Arguments.of("tar", FileType.TAR),
+                Arguments.of("sqlite", FileType.SQLITE),
+                Arguments.of("lisp", FileType.LISP),
+                Arguments.of("mdb", FileType.MDB),
+                Arguments.of("fcpx", FileType.FCPX),
+                Arguments.of("less", FileType.LESS),
+                Arguments.of("mli", FileType.MLI),
+                Arguments.of("vb", FileType.VB),
+                Arguments.of("pptx", FileType.PPTX),
+                Arguments.of("ex", FileType.EX),
+                Arguments.of("mpeg", FileType.MPEG),
+                Arguments.of("psd", FileType.PSD),
+                Arguments.of("tiff", FileType.TIFF),
+                Arguments.of("gif", FileType.GIF),
+                Arguments.of("aiff", FileType.AIFF),
+                Arguments.of("scala", FileType.SCALA),
+                Arguments.of("blend", FileType.BLEND),
+                Arguments.of("prproj", FileType.PRPROJ),
+                Arguments.of("for", FileType.FOR),
+                Arguments.of("aep", FileType.AEP),
+                Arguments.of("fs", FileType.FS),
+                Arguments.of("sql", FileType.SQL),
+                Arguments.of("xsl", FileType.XSL),
+                Arguments.of("pst", FileType.PST),
+                Arguments.of("avi", FileType.AVI),
+                Arguments.of("yml", FileType.YML),
+                Arguments.of("bz2", FileType.BZ2),
+                Arguments.of("m4a", FileType.M4A),
+                Arguments.of("tcl", FileType.TCL),
+                Arguments.of("htm", FileType.HTM),
+                Arguments.of("jpg", FileType.JPG),
+                Arguments.of("ttf", FileType.TTF),
+                Arguments.of("go", FileType.GO),
+                Arguments.of("wav", FileType.WAV),
+                Arguments.of("mp4", FileType.MP4),
+                Arguments.of("cbp", FileType.CBP),
+                Arguments.of("mp3", FileType.MP3),
+                Arguments.of("pdf", FileType.PDF),
+                Arguments.of("vhd", FileType.VHD),
+                Arguments.of("gz", FileType.GZ),
+                Arguments.of("coffee", FileType.COFFEE),
+                Arguments.of("lua", FileType.LUA),
+                Arguments.of("pub", FileType.PUB),
+                Arguments.of("pl", FileType.PL),
+                Arguments.of("f90", FileType.F90),
+                Arguments.of("xls", FileType.XLS),
+                Arguments.of("dmg", FileType.DMG)
+        );
+    }
+}

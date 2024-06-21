@@ -11,4 +11,12 @@
 
     <groupId>com.jabasoft.mms.documentmanagement</groupId>
     <artifactId>dm-domain</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.jabasoft.mms.libs</groupId>
+            <artifactId>junit-test-commons</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

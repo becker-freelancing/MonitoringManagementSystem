@@ -3,15 +3,15 @@ package com.jabasoft.mms.documentmanagement.adapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import com.jabasoft.mms.documentmanagement.FileTypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jabasoft.mms.documentmanagement.domain.model.Document;
-import com.jabasoft.mms.documentmanagement.domain.model.DocumentId;
+import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
+import com.jabasoft.mms.documentmanagement.entity.JpaDocument;
+import com.jabasoft.mms.documentmanagement.filepath.spi.FilePathRepository;
 import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
 
 @Component
@@ -33,43 +33,70 @@ public class JpaDocumentDao implements DocumentRepository {
 		List<Document> documents = new ArrayList<>();
 
 		for (JpaDocument jpaDocument : jpaDocuments) {
-			documents.add(mapToDomain(jpaDocument));
+			if(jpaDocument.getContent() != null) {
+				documents.add(map(jpaDocument));
+			}
 		}
 
 		return documents;
 	}
 
 	@Override
-	public Document getDocument(DocumentId documentId) {
+	public Optional<Document> getDocument(Long documentId) {
 
-		Optional<JpaDocument> byId = documentRepository.findById(documentId.getDocumentId());
+		 Optional<JpaDocument> byId = documentRepository.findById(documentId);
 
-		return byId.map(this::mapToDomain).orElse(null);
+		return byId.map(this::map);
 	}
 
 	@Override
-	public DocumentId saveDocument(Document document) {
+	public Optional<Document> saveDocument(Document document) {
 
-		JpaDocument byRelativePath = documentRepository.findByRelativePath(document.getRelativePath());
-		if(byRelativePath != null){
-			documentRepository.deleteById(byRelativePath.getDocumentId());
+		if (document == null){
+			return Optional.empty();
 		}
 
-		String documentId = UUID.randomUUID().toString();
+		JpaDocument saved = documentRepository.save(map(document));
 
-		JpaDocument jpaDocument = new JpaDocument();
-		jpaDocument.setDocumentId(documentId);
-		jpaDocument.setContent(document.getContent());
-		jpaDocument.setRelativePath(document.getRelativePath());
-
-		documentRepository.save(jpaDocument);
-
-		return new DocumentId(documentId);
+		return Optional.of(saved).map(this::map);
 	}
 
-	private Document mapToDomain(JpaDocument document){
+	@Override
+	public Optional<Document> deleteDocument(FilePath path, String name) {
 
-		DocumentId documentId = new DocumentId(document.getDocumentId());
-		return new Document(document.getRelativePath(), document.getContent(), documentId);
+		Optional<JpaDocument> toDelete = documentRepository.findByPathToDocumentFromRootAndDocumentName(path.getFilePath(), name);
+
+		if(toDelete.isEmpty()){
+			return Optional.empty();
+		}
+
+		documentRepository.deleteById(toDelete.get().getDocumentId());
+
+		return toDelete.map(this::map);
+	}
+
+	private JpaDocument map(Document document) {
+
+		JpaDocument jpaDocument = new JpaDocument();
+		jpaDocument.setDocumentId(document.getDocumentId());
+		jpaDocument.setDocumentName(document.getDocumentName());
+		jpaDocument.setContent(document.getContent());
+		jpaDocument.setFileType(new FileTypeMapper().convertToDatabaseColumn(document.getFileType()));
+		jpaDocument.setPathToDocumentFromRoot(document.getPathToDocumentFromRoot().getFilePath());
+
+		return jpaDocument;
+	}
+
+	private Document map(JpaDocument jpaDocument) {
+
+
+		Document document = new Document();
+		document.setDocumentId(jpaDocument.getDocumentId());
+		document.setDocumentName(jpaDocument.getDocumentName());
+		document.setContent(jpaDocument.getContent());
+		document.setFileType(new FileTypeMapper().convertToEntityAttribute(jpaDocument.getFileType()));
+		document.setPathToDocumentFromRoot(new FilePath(jpaDocument.getPathToDocumentFromRoot()));
+
+		return document;
 	}
 }

@@ -3,105 +3,158 @@ package com.jabasoft.mms.documentmanagement.adapter;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.Mockito;
 
 import com.jabasoft.mms.documentmanagement.domain.model.Document;
-import com.jabasoft.mms.documentmanagement.domain.model.DocumentId;
+import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
+import com.jabasoft.mms.documentmanagement.domain.model.FileType;
 import com.jabasoft.mms.settings.api.SettingsPort;
+import org.mockito.MockedStatic;
 
 class FileDocumentDaoTest {
 
-	private FileDocumentDao documentDao;
-	private SettingsPort settingsPort;
+	@Test
+	void testGetAllDocumentsWithNoExistingDocumentsReturnsEmptyList(@TempDir Path tempDir){
+		SettingsPort settingsPort = mock(SettingsPort.class);
+		when(settingsPort.getLocalDocumentsRootPath()).thenReturn(tempDir);
+		FileDocumentDao documentDao = new FileDocumentDao(settingsPort);
+
+		List<Document> documents = documentDao.getAllDocuments();
+
+		assertEquals(0, documents.size());
+	}
 
 	@Test
-	void testGetAllDocuments(@TempDir Path tempDir) {
-		settingsPort = mock(SettingsPort.class);
+	void testGetAllDocumentsWithExistingDocumentsReturnsListWithDocuments(@TempDir Path tempDir){
+		SettingsPort settingsPort = mock(SettingsPort.class);
 		when(settingsPort.getLocalDocumentsRootPath()).thenReturn(tempDir);
-		documentDao = new FileDocumentDao(settingsPort);
+		FileDocumentDao documentDao = new FileDocumentDao(settingsPort);
 
-		String relativePath = "\\ab\\cd\\test.pdf";
-		Document mockDocument = getMockDocument(relativePath);
-		documentDao.saveDocument(mockDocument);
-
-		String relativePath2 = "\\cd\\ab\\test.pdf";
-		Document mockDocument2 = getMockDocument(relativePath2);
-		documentDao.saveDocument(mockDocument2);
-
-		String relativePath3 = "\\ab\\cd\\test2.pdf";
-		Document mockDocument3 = getMockDocument(relativePath3);
-		documentDao.saveDocument(mockDocument3);
-
-		String relativePath4 = "\\test.pdf";
-		Document mockDocument4 = getMockDocument(relativePath4);
-		documentDao.saveDocument(mockDocument4);
+		documentDao.saveDocument(getDocument("", "test", FileType.PDF));
+		documentDao.saveDocument(getDocument("test", "test", FileType.DOCX));
+		documentDao.saveDocument(getDocument("a\\b", "test45", FileType.PNG));
+		documentDao.saveDocument(getDocument("a\\b\\c", "abababa", FileType.PDF));
 
 		List<Document> documents = documentDao.getAllDocuments();
 
 		assertEquals(4, documents.size());
-		Set<String> relativePaths = documents.stream().map(Document::getRelativePath).collect(Collectors.toSet());
-		assertEquals(Set.of(relativePath, relativePath2, relativePath3, relativePath4), relativePaths);
+		assertArrayEquals(new byte[]{12, 34, 54, 32}, documents.get(0).getContent());
 	}
 
 	@Test
-	void testSaveDocumentsOverwritesIfFileExists(@TempDir Path tempDir) {
-		settingsPort = mock(SettingsPort.class);
+	void testGetAllDocumentsReturnsEmptyListWhenExceptionOccurres(@TempDir Path tempDir){
+		SettingsPort settingsPort = mock(SettingsPort.class);
 		when(settingsPort.getLocalDocumentsRootPath()).thenReturn(tempDir);
-		documentDao = new FileDocumentDao(settingsPort);
+		FileDocumentDao documentDao = new FileDocumentDao(settingsPort);
 
-		String relativePath = "\\ab\\cd\\test.pdf";
-		Document mockDocument = getMockDocument(relativePath);
-		documentDao.saveDocument(mockDocument);
+		try(MockedStatic<Files> mock = mockStatic(Files.class)){
+			mock.when(() -> Files.walk(any())).thenThrow(IOException.class);
 
-		String relativePath2 = "\\ab\\cd\\test.pdf";
-		Document mockDocument2 = getMockDocument(relativePath2);
-		documentDao.saveDocument(mockDocument2);
+			List<Document> allDocuments = documentDao.getAllDocuments();
 
-		List<Document> documents = documentDao.getAllDocuments();
-
-		assertEquals(1, documents.size());
-		assertEquals("\\ab\\cd\\test.pdf", documents.get(0).getRelativePath());
+			assertEquals(0, allDocuments.size());
+		}
 	}
 
 	@Test
-	void testGetDocumentReturnNull(@TempDir Path tempDir) {
-		settingsPort = mock(SettingsPort.class);
+	void testGetDocumentReturnsEmptyOptional(@TempDir Path tempDir){
+		SettingsPort settingsPort = mock(SettingsPort.class);
 		when(settingsPort.getLocalDocumentsRootPath()).thenReturn(tempDir);
-		documentDao = new FileDocumentDao(settingsPort);
+		FileDocumentDao documentDao = new FileDocumentDao(settingsPort);
 
-		Document document = documentDao.getDocument(new DocumentId(UUID.randomUUID().toString()));
+		Optional<Document> document = documentDao.getDocument(12L);
 
-		assertNull(document);
+		assertTrue(document.isEmpty());
 	}
 
 	@Test
-	void testSaveDocument(@TempDir Path tempDir) {
-		settingsPort = mock(SettingsPort.class);
+	void testSaveDocumentOverridesDocumentIfDocumentExists(@TempDir Path tempDir){
+		SettingsPort settingsPort = mock(SettingsPort.class);
 		when(settingsPort.getLocalDocumentsRootPath()).thenReturn(tempDir);
-		documentDao = new FileDocumentDao(settingsPort);
+		FileDocumentDao documentDao = new FileDocumentDao(settingsPort);
 
-		String relativePath = "\\ab\\cd\\test.pdf";
+		Document document = getDocument("a\\b\\c", "abababa", FileType.PDF);
 
-		Document mockDocument = getMockDocument(relativePath);
+		Optional<Document> saved = documentDao.saveDocument(document);
+		assertTrue(saved.isPresent());
 
-		documentDao.saveDocument(mockDocument);
+		document.setContent(new byte[]{12, 12, 12});
+		Optional<Document> actual = documentDao.saveDocument(document);
 
-		Path readPath = Path.of(tempDir.toString(), relativePath);
-
-		assertTrue(Files.exists(readPath));
+		assertTrue(actual.isPresent());
+		assertArrayEquals(new byte[]{12, 12, 12}, actual.get().getContent());
 	}
 
-	Document getMockDocument(String relativePath){
-		return new Document(relativePath, new byte[0], new DocumentId(UUID.randomUUID().toString()));
+	@Test
+	void testDeleteDocumentWithNotExistingFilePathReturnsEmptyOptional(@TempDir Path tempDir){
+		SettingsPort settingsPort = mock(SettingsPort.class);
+		when(settingsPort.getLocalDocumentsRootPath()).thenReturn(tempDir);
+		FileDocumentDao documentDao = new FileDocumentDao(settingsPort);
+
+		Optional<Document> deleted = documentDao.deleteDocument(new FilePath("/test/"), "test");
+
+		assertTrue(deleted.isEmpty());
 	}
+
+	@Test
+	void testExistingDocumentWithOtherDocumentsInFileReturnsDeletedDocument(@TempDir Path tempDir){
+		SettingsPort settingsPort = mock(SettingsPort.class);
+		when(settingsPort.getLocalDocumentsRootPath()).thenReturn(tempDir);
+		FileDocumentDao documentDao = new FileDocumentDao(settingsPort);
+
+		documentDao.saveDocument(getDocument("", "test", FileType.PDF));
+		documentDao.saveDocument(getDocument("test", "test", FileType.DOCX));
+		documentDao.saveDocument(getDocument("a\\b", "test45", FileType.PNG));
+		documentDao.saveDocument(getDocument("a\\b", "abababa", FileType.PDF));
+
+		Optional<Document> deleted = documentDao.deleteDocument(new FilePath("a\\b"), "test45");
+
+		assertTrue(deleted.isPresent());
+
+		Document actual = deleted.get();
+
+		assertEquals("a\\b", actual.getPathToDocumentFromRoot().getFilePath(), "FilePath");
+		assertEquals("test45", actual.getDocumentName(), "DocumentName");
+	}
+
+	@Test
+	void testSaveDocumentReturnsEmptyOptionalWhenExceptionOccurres(@TempDir Path tempDir){
+		SettingsPort settingsPort = mock(SettingsPort.class);
+		when(settingsPort.getLocalDocumentsRootPath()).thenReturn(tempDir);
+		FileDocumentDao documentDao = new FileDocumentDao(settingsPort);
+
+		try(MockedStatic<Files> mock = mockStatic(Files.class)){
+			mock.when(() -> Files.createFile(any())).thenThrow(IOException.class);
+
+			Optional<Document> allDocuments = documentDao.saveDocument(getDocument("", "test", FileType.PDF));
+
+			assertTrue(allDocuments.isEmpty());
+		}
+	}
+
+
+	Document getDocument(String relativePath, String documentName, FileType fileType){
+
+		Document document = new Document();
+
+		document.setDocumentName(documentName);
+		document.setFileType(fileType);
+		document.setContent(new byte[]{12, 34, 54, 32});
+		document.setPathToDocumentFromRoot(new FilePath(relativePath));
+
+		return document;
+	}
+
 
 }
