@@ -203,6 +203,27 @@ class FilePathRepositoryWrapperTest {
         assertEquals(3, methodCount.get());
     }
 
+    @Test
+    void testFindAllChildrenFromPathIsOnlyExecutedOnDefaultRepository(){
+
+        FilePathRepository repo1 = mock(FilePathRepo1.class);
+        FilePathRepository repo2 = mock(FilePathRepo2.class);
+
+        AtomicInteger methodCount = new AtomicInteger(0);
+
+        doAnswer(invocationOnMock -> {
+            methodCount.getAndIncrement();
+            return null;
+        }).when(repo1).findAllChildrenFromPath(any());
+        when(repo2.findAllChildrenFromPath(any())).thenThrow(AssertionFailedError.class);
+
+        FilePathRepositoryWrapper repository = new FilePathRepositoryWrapper(List.of(repo2), repo1);
+
+        repository.findAllChildrenFromPath(null);
+
+        assertEquals(1, methodCount.get());
+    }
+
 
     static abstract class FilePathRepo1 implements FilePathRepository {
 

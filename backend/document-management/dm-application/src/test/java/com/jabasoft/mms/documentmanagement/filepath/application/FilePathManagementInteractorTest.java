@@ -1,17 +1,20 @@
 package com.jabasoft.mms.documentmanagement.filepath.application;
 
-import com.jabasoft.mms.documentmanagement.api.dto.*;
+import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
+import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
+import com.jabasoft.mms.documentmanagement.domain.model.FilePathWithDocument;
+import com.jabasoft.mms.documentmanagement.domain.model.FileType;
+import com.jabasoft.mms.documentmanagement.domain.model.error.FileModificationException;
+import com.jabasoft.mms.documentmanagement.domain.service.filepath.FilePathServiceImpl;
 import com.jabasoft.mms.documentmanagement.dto.*;
 import com.jabasoft.mms.documentmanagement.error.ApiFileModificationException;
-import com.jabasoft.mms.documentmanagement.domain.model.*;
-import com.jabasoft.mms.documentmanagement.domain.model.error.FileModificationException;
 import com.jabasoft.mms.documentmanagement.filepath.spi.FilePathRepository;
-import com.jabasoft.mms.documentmanagement.domain.service.filepath.FilePathServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -187,7 +190,7 @@ class FilePathManagementInteractorTest {
     static FileStructureWithDocumentsDto childByName(FileStructureWithDocumentsDto parent, String name) {
 
         for (FileStructureWithDocumentsDto child : parent.getChildren()) {
-            if(child.getCurrent().equals(name)){
+            if (child.getCurrent().equals(name)) {
                 return child;
             }
         }
@@ -199,7 +202,7 @@ class FilePathManagementInteractorTest {
     static DocumentWithoutContentDto documentByName(FileStructureWithDocumentsDto parent, String name) {
 
         for (DocumentWithoutContentDto document : parent.getDocuments()) {
-            if(document.getDocumentName().equals(name)){
+            if (document.getDocumentName().equals(name)) {
                 return document;
             }
         }
@@ -333,7 +336,55 @@ class FilePathManagementInteractorTest {
         assertEquals(0, c.getChildren().size());
     }
 
-    static FilePathWithDocument getFilePathWithDocument(String filePath, String documentName){
+
+    @Test
+    void testFindAllChildrenFromPathWithNoChildrenReturnsEmptySet() {
+        when(repository.findAllChildrenFromPath(any())).thenReturn(Set.of());
+
+        Set<FilePathWithDocumentDto> children = interactor.findAllChildrenFromPath(new FilePathDto("root"));
+
+        assertEquals(0, children.size());
+    }
+
+
+    @Test
+    void testFindAllChildrenFromPathWithFilesAsChildrenReturnsSetWithDocuments() {
+
+        when(repository.findAllChildrenFromPath(any())).thenReturn(Set.of(
+                getFilePathWithDocument("root/test", "Test"),
+                getFilePathWithDocument("root/test", "Test2")
+        ));
+
+        Set<FilePathWithDocumentDto> children = interactor.findAllChildrenFromPath(new FilePathDto("root/test"));
+
+        assertEquals(2, children.size());
+        assertEquals(Set.of("Test", "Test2"), children.stream().map(FilePathWithDocumentDto::getDocument).map(DocumentWithoutContentDto::getDocumentName).collect(Collectors.toSet()));
+    }
+
+
+    @Test
+    void testFindAllChildrenFromPathWithFilesAndDirsAsChildrenReturnsSetWithDocuments() {
+
+        when(repository.findAllChildrenFromPath(any())).thenReturn(Set.of(
+                getFilePathWithDocument("root/test", "Test"),
+                getFilePathWithDocument("root/test", "Test2"),
+                new FilePathWithDocument("root/test/test2", null)
+        ));
+
+        Set<FilePathWithDocumentDto> children = interactor.findAllChildrenFromPath(new FilePathDto("root/test"));
+
+        assertEquals(3, children.size());
+        assertEquals(Set.of("Test", "Test2"), children.stream()
+                .map(FilePathWithDocumentDto::getDocument)
+                .filter(Objects::nonNull)
+                .map(DocumentWithoutContentDto::getDocumentName).collect(Collectors.toSet()));
+
+        assertEquals(Set.of("root\\test", "root\\test\\test2"), children.stream()
+                .map(FilePathWithDocumentDto::getFilePath)
+                .collect(Collectors.toSet()));
+    }
+
+    static FilePathWithDocument getFilePathWithDocument(String filePath, String documentName) {
 
         DocumentWithoutContent documentWithoutContent = new DocumentWithoutContent();
         documentWithoutContent.setDocumentName(documentName);

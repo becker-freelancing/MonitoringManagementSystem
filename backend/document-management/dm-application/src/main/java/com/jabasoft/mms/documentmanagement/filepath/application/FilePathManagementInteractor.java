@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class FilePathManagementInteractor implements FilePathManagementPort {
@@ -51,6 +52,14 @@ public class FilePathManagementInteractor implements FilePathManagementPort {
         FileStructure fileStructure = toFileStructure(pathsWithDocuments);
         FileStructureWithDocuments fileStructureWithDocuments = toFileStructureWithDocuments(fileStructure, pathsWithDocuments);
         return Optional.of(map(fileStructureWithDocuments));
+    }
+
+    @Override
+    public Set<FilePathWithDocumentDto> findAllChildrenFromPath(FilePathDto filePathDto) {
+
+        Set<FilePathWithDocument> children = repository.findAllChildrenFromPath(map(filePathDto));
+
+        return children.stream().map(this::map).collect(Collectors.toSet());
     }
 
     @Override
@@ -178,6 +187,11 @@ public class FilePathManagementInteractor implements FilePathManagementPort {
     }
 
     private DocumentWithoutContentDto map(DocumentWithoutContent document) {
+
+        if(document == null){
+            return null;
+        }
+
         DocumentWithoutContentDto documentWithoutContentDto = new DocumentWithoutContentDto();
 
         documentWithoutContentDto.setDocumentId(document.getDocumentId());
@@ -186,6 +200,14 @@ public class FilePathManagementInteractor implements FilePathManagementPort {
         documentWithoutContentDto.setPathToDocumentFromRoot(map(document.getPathToDocumentFromRoot()));
 
         return documentWithoutContentDto;
+    }
+
+    private FilePathWithDocumentDto map(FilePathWithDocument filePathWithDocument){
+        FilePathWithDocumentDto filePathWithDocumentDto = new FilePathWithDocumentDto();
+        filePathWithDocumentDto.setDocument(map(filePathWithDocument.getDocument()));
+        filePathWithDocumentDto.setFilePath(filePathWithDocument.getFilePath());
+
+        return filePathWithDocumentDto;
     }
 
     private <S extends Enum<S>, T extends Enum<T>> T mapEnumByName(Class<T> targetEnumType, S sourceEnum) {

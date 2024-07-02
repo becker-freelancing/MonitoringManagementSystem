@@ -1,5 +1,6 @@
 package com.jabasoft.mms.documentmanagement.filepath.adapter;
 
+import com.jabasoft.mms.documentmanagement.dto.FilePathWithDocumentDto;
 import com.jabasoft.mms.documentmanagement.filepath.api.FilePathManagementPort;
 import com.jabasoft.mms.documentmanagement.dto.FilePathDto;
 import com.jabasoft.mms.documentmanagement.dto.FileStructureDto;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/mms/api/files/paths")
@@ -71,5 +73,12 @@ public class FilePathManagementRestAdapter {
         } catch (ApiFileModificationException e) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("children")
+    public ResponseEntity<Set<FilePathWithDocumentDto>> getChildrenFromPath(@RequestBody FilePathDto pathDto){
+        Set<FilePathWithDocumentDto> allChildrenFromPath = filePathManagementPort.findAllChildrenFromPath(pathDto);
+        return ResponseEntity.ok(allChildrenFromPath);
     }
 }

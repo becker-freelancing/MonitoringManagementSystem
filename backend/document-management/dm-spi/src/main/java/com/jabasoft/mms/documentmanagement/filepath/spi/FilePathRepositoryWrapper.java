@@ -68,4 +68,10 @@ public class FilePathRepositoryWrapper implements FilePathRepository{
         }
         defaultFilePathRepository.deleteFileStructureWithChildren(path);
     }
+
+    @Override
+    public Set<FilePathWithDocument> findAllChildrenFromPath(FilePath path) {
+
+        return defaultFilePathRepository.findAllChildrenFromPath(path);
+    }
 }

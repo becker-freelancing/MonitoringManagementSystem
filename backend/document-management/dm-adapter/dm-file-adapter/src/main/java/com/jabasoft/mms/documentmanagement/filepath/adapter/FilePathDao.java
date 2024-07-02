@@ -48,7 +48,7 @@ public class FilePathDao implements FilePathRepository {
         try (Stream<Path> walk = Files.walk(root)) {
             return walk.filter(path -> !Files.isDirectory(path))
                     .map(this::readDocumentFromPath)
-                    .map(doc -> new FilePathWithDocument(parsePathFromDocument(doc), doc))
+                    .map(doc -> new FilePathWithDocument(doc.getPathToDocumentFromRoot().getFilePath(), doc))
                     .collect(Collectors.toSet());
         } catch (IOException e) {
             return Set.of();
@@ -109,6 +109,25 @@ public class FilePathDao implements FilePathRepository {
         }
     }
 
+    @Override
+    public Set<FilePathWithDocument> findAllChildrenFromPath(FilePath path) {
+        Path walkPath = Path.of(root.toString(), path.getFilePath());
+
+        try(Stream<Path> walk = Files.walk(walkPath)) {
+            return walk.filter(p -> !p.equals(walkPath))
+                    .filter(p -> p.getParent().equals(walkPath))
+                    .map(p -> {
+                      if(Files.isDirectory(p)){
+                          return new FilePathWithDocument(parsePathFromRoot(p).getFilePath(), null);
+                      }
+                      return new FilePathWithDocument(parsePathFromRoot(p).getFilePath(), readDocumentFromPath(p));
+                    })
+                    .collect(Collectors.toSet());
+        } catch (IOException e) {
+            return Set.of();
+        }
+    }
+
     private DocumentWithoutContent readDocumentFromPath(Path p) {
 
         DocumentWithoutContent document = new DocumentWithoutContent();
@@ -120,6 +139,10 @@ public class FilePathDao implements FilePathRepository {
     }
 
     private FilePath parsePathFromRoot(Path p) {
+
+        if(!Files.isDirectory(p)){
+            p = p.getParent();
+        }
 
         String fromRoot = p.toAbsolutePath().toString().replace(root.toString(), "");
 

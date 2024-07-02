@@ -90,6 +90,38 @@ public class JpaFilePathDao implements FilePathRepository {
 		filePathRepository.deleteAllByPathToDocumentFromRoot(path.getFilePath());
 	}
 
+	@Override
+	public Set<FilePathWithDocument> findAllChildrenFromPath(FilePath path) {
+		Set<JpaDocumentWithoutContent> subPaths = filePathRepository.findPathLike(path.getFilePath() + "\\%");
+		Set<JpaDocumentWithoutContent> exactPaths = filePathRepository.findPathLike(path.getFilePath() + "%");
+
+		int filePathDepth = path.getFilePath().split("\\\\").length + 1;
+		subPaths = subPaths.stream()
+				.filter(doc -> doc.getPathToDocumentFromRoot().split("\\\\").length == filePathDepth)
+				.peek(doc -> {
+					doc.setDocumentId(null);
+					doc.setFileType(null);
+					doc.setDocumentName(null);
+                })
+				.collect(Collectors.toSet());
+
+		exactPaths = exactPaths.stream().filter(doc -> path.getFilePath().equals(doc.getPathToDocumentFromRoot())).collect(Collectors.toSet());
+
+		exactPaths.addAll(subPaths);
+
+		return exactPaths.stream()
+				.map(this::mapToFilePathWithDocument)
+				.collect(Collectors.toSet());
+	}
+
+	private FilePathWithDocument mapToFilePathWithDocument(JpaDocumentWithoutContent jpaDocumentWithoutContent){
+		if(jpaDocumentWithoutContent.getDocumentName() == null){
+			return new FilePathWithDocument(jpaDocumentWithoutContent.getPathToDocumentFromRoot(), null);
+		}
+
+		return new FilePathWithDocument(jpaDocumentWithoutContent.getPathToDocumentFromRoot(), map(jpaDocumentWithoutContent));
+	}
+
 	private FilePath map(String path){
 
 		return new FilePath(path);

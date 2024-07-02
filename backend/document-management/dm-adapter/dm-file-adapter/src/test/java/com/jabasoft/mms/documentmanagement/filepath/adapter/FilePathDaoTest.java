@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -201,4 +202,47 @@ class FilePathDaoTest {
         assertEquals(Set.of("root\\test2", "root"), filePaths);
     }
 
+    @Test
+    void testFindAllChildrenFromPathWithNoChildrenReturnsEmptySet(){
+        Set<FilePathWithDocument> children = filePathDao.findAllChildrenFromPath(new FilePath("root"));
+
+        assertEquals(0, children.size());
+    }
+
+
+    @Test
+    void testFindAllChildrenFromPathWithFilesAsChildrenReturnsSetWithDocuments(){
+
+        documentDao.saveDocument(getDocument("root/test", "Test", FileType.PDF));
+        documentDao.saveDocument(getDocument("root/test", "Test2", FileType.PDF));
+        documentDao.saveDocument(getDocument("root/test2", "Test3", FileType.PDF));
+        documentDao.saveDocument(getDocument("root", "Test4", FileType.PDF));
+
+        Set<FilePathWithDocument> children = filePathDao.findAllChildrenFromPath(new FilePath("root/test"));
+
+        assertEquals(2, children.size());
+        assertEquals(Set.of("Test", "Test2"), children.stream().map(FilePathWithDocument::getDocument).map(DocumentWithoutContent::getDocumentName).collect(Collectors.toSet()));
+    }
+
+
+    @Test
+    void testFindAllChildrenFromPathWithFilesAndDirsAsChildrenReturnsSetWithDocuments(){
+
+        documentDao.saveDocument(getDocument("root/test", "Test", FileType.PDF));
+        documentDao.saveDocument(getDocument("root/test", "Test2", FileType.PDF));
+        documentDao.saveDocument(getDocument("root/test/test2", "Test3", FileType.PDF));
+        documentDao.saveDocument(getDocument("root", "Test4", FileType.PDF));
+
+        Set<FilePathWithDocument> children = filePathDao.findAllChildrenFromPath(new FilePath("root/test"));
+
+        assertEquals(3, children.size());
+        assertEquals(Set.of("Test", "Test2"), children.stream()
+                .map(FilePathWithDocument::getDocument)
+                .filter(Objects::nonNull)
+                .map(DocumentWithoutContent::getDocumentName).collect(Collectors.toSet()));
+
+        assertEquals(Set.of("root\\test", "root\\test\\test2"), children.stream()
+                .map(FilePathWithDocument::getFilePath)
+                .collect(Collectors.toSet()));
+    }
 }
