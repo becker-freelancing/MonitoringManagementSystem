@@ -24,6 +24,12 @@ export class HttpClient {
     return axios.delete(url)
   }
 
+  public deletePost(endpoint: string, body: any): Promise<AxiosResponse<any>>{
+    let url = this.baseUrl + '/' + endpoint;
+
+    return axios.delete(url, {data: body});
+  }
+
   public put(endpoint: string, id: string, data: any): Promise<AxiosResponse<any>>{
     return axios.put(this.baseUrl + '/' + endpoint + '/' + id, data)
   }
