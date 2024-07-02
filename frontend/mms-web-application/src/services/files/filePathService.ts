@@ -79,6 +79,22 @@ export class FilePathService{
     })
   }
 
+  getChildrenFromPath(path: FilePath, onSuccess: (fileStructure: FileStructure) => void, onError?: (errorCode: number) => void){
+    this.httpClient.post('files/paths/children', path).then(r => {
+      if(r.status != 200){
+        if(onError){
+          onError(r.status);
+        }
+      }
+
+      onSuccess(this.mapFileStructure(r.data));
+    }).catch((reason: any) => {
+      if (onError) {
+        onError(reason.status)
+      }
+    })
+  }
+
   private mapFileStructure(data: FileStructureResponseData) {
     let fileStructure = new FileStructure(data.current);
     for (const child of data.children) {
