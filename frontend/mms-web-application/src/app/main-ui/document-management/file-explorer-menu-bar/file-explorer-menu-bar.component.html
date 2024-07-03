@@ -1,0 +1,16 @@
+<div class="horizontal-div">
+
+  <button class="primary-button">
+    <img ngSrc="assets/document-management/create-folder.png" height="20" width="20" alt="New Dir">
+  </button>
+  <button class="primary-button">
+    <img ngSrc="assets/document-management/upload-document.png" height="20" width="20" alt="Upload Doc">
+  </button>
+
+  <button [ngClass]="enableDeleteDirectoryButton ? 'secondary-button' : 'disabled-button'">
+    <img ngSrc="assets/document-management/delete-folder.png" height="20" width="20" alt="Delete Dir">
+  </button>
+  <button [ngClass]="enableDeleteDocumentButton ? 'secondary-button' : 'disabled-button'">
+    <img ngSrc="assets/document-management/delete-document.png" height="20" width="20" alt="Delete Doc">
+  </button>
+</div>

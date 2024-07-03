@@ -1,16 +1,16 @@
 <div class="file-explorer-all-files">
-  <div *ngIf="showGoToUpperDir" class="horizontal-div file-explorer-file" (click)="onGoToUpperDir()">
+  <div *ngIf="showGoToUpperDir" class="horizontal-div file-explorer-file" (dblclick)="onGoToUpperDir()">
     <img ngSrc="assets/document-management/folder.png" height="30" width="30" alt="Dir">
     <p class="file-explorer-file-name">..</p>
   </div>
 
-  <div *ngFor="let dir of childDirs" class="horizontal-div file-explorer-file" (click)="onGoToDeeperDir(dir.filePath.filePath)">
+  <div *ngFor="let dir of childDirs" [ngClass]="getCSSClass(dir.uiId)" (dblclick)="onGoToDeeperDir(dir.document.filePath.filePath)" (click)="onSelectDir(dir.uiId)">
     <img ngSrc="assets/document-management/folder.png" height="30" width="30" alt="Dir">
-    <p class="file-explorer-file-name">{{ dir.currentDirectoryName() }}</p>
+    <p class="file-explorer-file-name">{{ dir.document.currentDirectoryName() }}</p>
   </div>
 
-  <div *ngFor="let doc of childDocuments" class="horizontal-div file-explorer-file">
+  <div *ngFor="let doc of childDocuments" [ngClass]="getCSSClass(doc.uiId)" (click)="onSelectDir(doc.uiId)">
     <img ngSrc="assets/document-management/document.png" height="30" width="30" alt="Doc">
-    <p class="file-explorer-file-name">{{ doc.document?.documentName }}</p>
+    <p class="file-explorer-file-name">{{ doc.document.document?.documentName }}</p>
   </div>
 </div>

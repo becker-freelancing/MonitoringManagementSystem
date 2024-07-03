@@ -1,6 +1,9 @@
 <div class="horizontal-div">
   <div class="full-width-spacer">
+    <app-file-explorer-menu-bar [document]="selectedDocument"></app-file-explorer-menu-bar>
     <app-file-explorer-path-hint [filePath]="filePath"></app-file-explorer-path-hint>
-    <app-file-explorer class="file-explorer" (filePathChange)="onFilePathChange($event)"></app-file-explorer>
+    <app-file-explorer class="file-explorer"
+                       (filePathChange)="onFilePathChange($event)"
+                       (documentSelectChange)="onDocumentSelectChange($event)"></app-file-explorer>
   </div>
 </div>
