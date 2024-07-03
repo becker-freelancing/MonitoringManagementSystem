@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FilePathService} from "../../../../services/files/filePathService";
 import {FilePathWithDocument} from "../../../../model/files/filePathWithDocument";
 import {FilePath} from "../../../../model/files/filePath";
@@ -16,6 +16,8 @@ import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
   styleUrl: './file-explorer.component.css'
 })
 export class FileExplorerComponent {
+
+  @Output("filePathChange") filePathChangeOutput = new EventEmitter<string>();
 
   filePathService: FilePathService;
   currentDir: string = "";
@@ -46,6 +48,7 @@ export class FileExplorerComponent {
     this.filePathService.getChildrenFromPath(new FilePath(dir), (children) => {
       this.setChildDirs(children);
       this.setChildDocuments(children);
+      this.filePathChangeOutput.emit(dir);
     })
   }
 
