@@ -1,0 +1,20 @@
+<mat-dialog-content [formGroup]="form">
+  <header>
+    <h2>Ordner erstellen</h2>
+  </header>
+
+  <div class="form-division">
+    <div class="form-input">
+      <mat-form-field class="form-input-field">
+        <input matInput placeholder="Name des Ordners*" type="text" id="name" required formControlName="directoryName">
+      </mat-form-field>
+      <div class="form-input-not-valid-label" *ngIf="directoryNameNotValid">Ordner-Name erforderlich</div>
+      <div class="form-input-not-valid-label" *ngIf="directoryNameWrongRegex">Ordner-Name darf kein '\' enthalten</div>
+    </div>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Abbrechen</button>
+  <button mat-button cdkFocusInitial (click)="createDirectory()">Speichern</button>
+</mat-dialog-actions>

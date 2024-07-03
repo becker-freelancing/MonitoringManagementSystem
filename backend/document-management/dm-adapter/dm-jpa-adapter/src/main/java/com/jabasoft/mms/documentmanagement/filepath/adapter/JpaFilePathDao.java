@@ -105,7 +105,9 @@ public class JpaFilePathDao implements FilePathRepository {
                 })
 				.collect(Collectors.toSet());
 
-		exactPaths = exactPaths.stream().filter(doc -> path.getFilePath().equals(doc.getPathToDocumentFromRoot())).collect(Collectors.toSet());
+		exactPaths = exactPaths.stream()
+				.filter(doc -> path.getFilePath().equals(doc.getPathToDocumentFromRoot()))
+				.filter(doc -> doc.getDocumentName() != null).collect(Collectors.toSet());
 
 		exactPaths.addAll(subPaths);
 
