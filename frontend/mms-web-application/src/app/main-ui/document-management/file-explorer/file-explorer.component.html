@@ -1,1 +1,16 @@
-<p>file-explorer works!</p>
+<div class="file-explorer-all-files">
+  <div *ngIf="showGoToUpperDir" class="horizontal-div file-explorer-file" (click)="onGoToUpperDir()">
+    <img ngSrc="assets/document-management/folder.png" height="30" width="30" alt="Dir">
+    <p class="file-explorer-file-name">..</p>
+  </div>
+
+  <div *ngFor="let dir of childDirs" class="horizontal-div file-explorer-file" (click)="onGoToDeeperDir(dir.filePath.filePath)">
+    <img ngSrc="assets/document-management/folder.png" height="30" width="30" alt="Dir">
+    <p class="file-explorer-file-name">{{ dir.currentDirectoryName() }}</p>
+  </div>
+
+  <div *ngFor="let doc of childDocuments" class="horizontal-div file-explorer-file">
+    <img ngSrc="assets/document-management/document.png" height="30" width="30" alt="Doc">
+    <p class="file-explorer-file-name">{{ doc.document?.documentName }}</p>
+  </div>
+</div>

@@ -2,6 +2,10 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "../http/httpClient";
 import {FileStructure} from "../../model/files/fileStructure";
 import {FilePath} from "../../model/files/filePath";
+import {FilePathWithDocument} from "../../model/files/filePathWithDocument";
+import {Customer} from "../../model/cutomer/customer";
+import {DocumentWithoutContent} from "../../model/documents/DocumentWithoutContent";
+import {FileType} from "../../model/files/fileType";
 
 @Injectable({
   providedIn: 'root'
@@ -79,7 +83,7 @@ export class FilePathService{
     })
   }
 
-  getChildrenFromPath(path: FilePath, onSuccess: (fileStructure: FileStructure) => void, onError?: (errorCode: number) => void){
+  getChildrenFromPath(path: FilePath, onSuccess: (children: FilePathWithDocument[]) => void, onError?: (errorCode: number) => void){
     this.httpClient.post('files/paths/children', path).then(r => {
       if(r.status != 200){
         if(onError){
@@ -87,7 +91,13 @@ export class FilePathService{
         }
       }
 
-      onSuccess(this.mapFileStructure(r.data));
+      let responsePaths: FilePathWithDocument[] = [];
+
+      for (let dataItem of r.data){
+        responsePaths.push(this.mapFilePathWithDocument(dataItem));
+      }
+
+      onSuccess(responsePaths);
     }).catch((reason: any) => {
       if (onError) {
         onError(reason.status)
@@ -102,9 +112,39 @@ export class FilePathService{
     }
     return fileStructure;
   }
+
+  private mapFilePathWithDocument(data: FilePathWithDocumentResponseData) {
+    if(data.document === null){
+      return new FilePathWithDocument(
+        new FilePath(data.filePath),
+        undefined
+      );
+    }
+    return new FilePathWithDocument(
+      new FilePath(data.filePath),
+      new DocumentWithoutContent(
+        data.document.documentId,
+        new FilePath(data.document.pathToDocumentFromRoot.filePath),
+        data.document.documentName,
+        FileType.fromFileEnding(data.document.fileType)
+      )
+    );
+  }
 }
 
 export interface FileStructureResponseData {
   current: string;
   children: FileStructureResponseData[];
+}
+
+export interface FilePathWithDocumentResponseData {
+  filePath: string;
+  document: {
+    documentId: number;
+    documentName: string;
+    fileType: string;
+    pathToDocumentFromRoot: {
+      filePath: string;
+    }
+  } | null;
 }
