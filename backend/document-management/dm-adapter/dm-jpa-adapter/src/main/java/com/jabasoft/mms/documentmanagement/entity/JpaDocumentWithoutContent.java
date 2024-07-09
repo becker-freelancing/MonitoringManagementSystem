@@ -1,18 +1,13 @@
 package com.jabasoft.mms.documentmanagement.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
 public class JpaDocumentWithoutContent {
 
     private Long documentId;
     private String pathToDocumentFromRoot;
     private String documentName;
-    private Long fileType;
+    private String fileType;
 
-    public JpaDocumentWithoutContent(Long documentId, String pathToDocumentFromRoot, String documentName, Long fileType) {
+    public JpaDocumentWithoutContent(Long documentId, String pathToDocumentFromRoot, String documentName, String fileType) {
         this.documentId = documentId;
         this.pathToDocumentFromRoot = pathToDocumentFromRoot;
         this.documentName = documentName;
@@ -45,11 +40,11 @@ public class JpaDocumentWithoutContent {
         this.documentName = documentName;
     }
 
-    public Long getFileType() {
+    public String getFileType() {
         return fileType;
     }
 
-    public void setFileType(Long fileType) {
+    public void setFileType(String fileType) {
         this.fileType = fileType;
     }
 }

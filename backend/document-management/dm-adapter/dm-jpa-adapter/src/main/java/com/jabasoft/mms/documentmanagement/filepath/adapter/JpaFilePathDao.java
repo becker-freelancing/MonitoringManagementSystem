@@ -5,9 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.jabasoft.mms.documentmanagement.FileTypeMapper;
-import com.jabasoft.mms.documentmanagement.domain.model.Document;
-import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
-import com.jabasoft.mms.documentmanagement.domain.model.FilePathWithDocument;
+import com.jabasoft.mms.documentmanagement.domain.model.*;
 import com.jabasoft.mms.documentmanagement.domain.model.error.FileModificationException;
 import com.jabasoft.mms.documentmanagement.domain.model.error.FileModificationExceptionReason;
 import com.jabasoft.mms.documentmanagement.entity.JpaDocument;
@@ -15,7 +13,6 @@ import com.jabasoft.mms.documentmanagement.entity.JpaDocumentWithoutContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
 import com.jabasoft.mms.documentmanagement.filepath.spi.FilePathRepository;
 
 import jakarta.persistence.Column;
@@ -134,7 +131,7 @@ public class JpaFilePathDao implements FilePathRepository {
 		DocumentWithoutContent document = new DocumentWithoutContent();
 		document.setDocumentId(jpaDocument.getDocumentId());
 		document.setDocumentName(jpaDocument.getDocumentName());
-		document.setFileType(new FileTypeMapper().convertToEntityAttribute(jpaDocument.getFileType()));
+		document.setFileType(new FileType(jpaDocument.getFileType()));
 		document.setPathToDocumentFromRoot(new FilePath(jpaDocument.getPathToDocumentFromRoot()));
 
 		return document;

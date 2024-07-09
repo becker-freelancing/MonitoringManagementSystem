@@ -23,7 +23,7 @@ public class JpaDocument {
 	private String documentName;
 
 	@Column(name = "FILE_TYPE")
-	private Long fileType;
+	private String fileType;
 
 	@Column(name = "CONTENT")
 	private byte[] content;
@@ -58,12 +58,12 @@ public class JpaDocument {
 		this.documentName = documentName;
 	}
 
-	public Long getFileType() {
+	public String getFileType() {
 
 		return fileType;
 	}
 
-	public void setFileType(Long fileType) {
+	public void setFileType(String fileType) {
 
 		this.fileType = fileType;
 	}

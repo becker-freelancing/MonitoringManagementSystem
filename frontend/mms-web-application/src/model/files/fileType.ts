@@ -179,7 +179,7 @@ export class FileType {
         return supportedFileType;
       }
     }
-    return this.defaultFileType;
+    return new FileType(fileEnding);
   }
 
   fileEnding: string;

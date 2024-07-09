@@ -62,7 +62,7 @@ class DocumentManagementInteractor implements DocumentManagementPort {
 		documentDto.setDocumentId(document.getDocumentId());
 		documentDto.setDocumentName(document.getDocumentName());
 		documentDto.setContent(document.getContent());
-		documentDto.setFileType(mapEnumByName(FileTypeDto.class, document.getFileType()));
+		documentDto.setFileType(new FileTypeDto(document.getFileType().getFileEnding()));
 		documentDto.setPathToDocumentFromRoot(map(document.getPathToDocumentFromRoot()));
 
 		return documentDto;
@@ -90,7 +90,7 @@ class DocumentManagementInteractor implements DocumentManagementPort {
 		document.setDocumentId(documentDto.getDocumentId());
 		document.setDocumentName(documentDto.getDocumentName());
 		document.setContent(documentDto.getContent());
-		document.setFileType(mapEnumByName(FileType.class, documentDto.getFileType()));
+		document.setFileType(new FileType(documentDto.getFileType().getFileEnding()));
 		document.setPathToDocumentFromRoot(map(documentDto.getPathToDocumentFromRoot()));
 
 		return document;

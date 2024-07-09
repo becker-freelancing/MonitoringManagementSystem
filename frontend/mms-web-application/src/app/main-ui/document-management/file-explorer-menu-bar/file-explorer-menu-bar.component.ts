@@ -9,6 +9,12 @@ import {CreateDirectoryDialogComponent} from "./create-directory-dialog/create-d
 import {FilePathService} from "../../../../services/files/filePathService";
 import {FileStructure} from "../../../../model/files/fileStructure";
 import {FilePath} from "../../../../model/files/filePath";
+import {
+  CreateDocumentDialogComponent,
+  CreateDocumentResultData
+} from "./create-document-dialog/create-document-dialog.component";
+import {Document} from "../../../../model/documents/Document";
+import {DocumentsService} from "../../../../services/documents/documentsService";
 
 @Component({
   selector: 'app-file-explorer-menu-bar',
@@ -30,7 +36,8 @@ export class FileExplorerMenuBarComponent implements OnChanges{
   enableDeleteDocumentButton: boolean = false;
 
   constructor(public dialog: MatDialog,
-              public filePathService: FilePathService) {
+              public filePathService: FilePathService,
+              public documentService: DocumentsService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -58,6 +65,33 @@ export class FileExplorerMenuBarComponent implements OnChanges{
     dialogRef.afterClosed().subscribe(dirName => {
       let toCreate = this.currentDir + "\\" + dirName;
       this.filePathService.createFileStructure(new FilePath(toCreate), (created) => this.update())
+    })
+  }
+
+  onUploadDocument(){
+    let dialogRef = this.dialog.open(CreateDocumentDialogComponent, {
+      width: '500px',
+      height: '350px'
+    });
+
+    dialogRef.afterClosed().subscribe(document => {
+      const reader = new FileReader();
+      let that = this;
+      reader.onload = function(e) {
+        if(e !== null && e.target !== null && e.target.result instanceof ArrayBuffer && that.currentDir) {
+          console.log(e.target.result)
+
+          let fileDoc = new Document(
+            new FilePath(that.currentDir),
+            document.documentName,
+            document.fileType,
+            Array.from(new Int8Array(e.target.result))
+          );
+
+          that.documentService.saveDocument(fileDoc, () => that.update());
+        }
+      };
+      reader.readAsArrayBuffer(document.file);
     })
   }
 

@@ -2,14 +2,14 @@ import {FilePath} from "../files/filePath";
 import {FileType} from "../files/fileType";
 
 export class Document {
-  documentId: number;
+  documentId?: number;
   pathToDocumentFromRoot: FilePath;
   documentName: string;
   fileType: FileType;
-  content: Int8Array;
+  content: number[];
 
 
-  constructor(documentId: number, pathToDocumentFromRoot: FilePath, documentName: string, fileType: FileType, content: Int8Array) {
+  constructor(pathToDocumentFromRoot: FilePath, documentName: string, fileType: FileType, content: number[], documentId?: number) {
     this.documentId = documentId;
     this.pathToDocumentFromRoot = pathToDocumentFromRoot;
     this.documentName = documentName;

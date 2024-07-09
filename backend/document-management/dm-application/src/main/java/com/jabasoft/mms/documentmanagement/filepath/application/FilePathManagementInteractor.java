@@ -195,7 +195,7 @@ public class FilePathManagementInteractor implements FilePathManagementPort {
         DocumentWithoutContentDto documentWithoutContentDto = new DocumentWithoutContentDto();
 
         documentWithoutContentDto.setDocumentId(document.getDocumentId());
-        documentWithoutContentDto.setFileType(mapEnumByName(FileTypeDto.class, document.getFileType()));
+        documentWithoutContentDto.setFileType(new FileTypeDto(document.getFileType().getFileEnding()));
         documentWithoutContentDto.setDocumentName(document.getDocumentName());
         documentWithoutContentDto.setPathToDocumentFromRoot(map(document.getPathToDocumentFromRoot()));
 

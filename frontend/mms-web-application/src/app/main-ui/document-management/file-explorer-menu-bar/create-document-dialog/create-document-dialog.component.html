@@ -1,0 +1,30 @@
+<mat-dialog-content>
+    <header>
+        <h2>Dokument hochladen</h2>
+    </header>
+
+    <div class="form-division">
+        <div class="form-input">
+            <input placeholder="Dokument auswählen*" type="file" required (change)="onFileUpload($event)">
+        </div>
+    </div>
+
+    <div class="form-division">
+        <h3>Meta-Daten des Dokuments</h3>
+
+        <div class="form-input form-input-horizontal">
+            <label for="document-name-input">Name</label>
+            <input class="form-input" type="text" placeholder="Name" id="document-name-input" [value]="documentName ? documentName : ''" [disabled]="documentName === undefined" (input)="onDocumentNameChange($event)">
+        </div>
+
+        <div class="form-input form-input-horizontal">
+            <label for="document-file-ending">Dateiendung</label>
+            <input class="form-input" type="text" placeholder="Dateiendung" id="document-file-ending" [value]="fileType?.fileEnding" [disabled]="fileType === undefined" readonly>
+        </div>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Abbrechen</button>
+    <button mat-button cdkFocusInitial (click)="onSave()">Speichern</button>
+</mat-dialog-actions>

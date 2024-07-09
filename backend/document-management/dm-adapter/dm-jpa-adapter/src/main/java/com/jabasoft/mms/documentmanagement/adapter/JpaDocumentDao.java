@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.jabasoft.mms.documentmanagement.FileTypeMapper;
+import com.jabasoft.mms.documentmanagement.domain.model.FileType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -81,7 +82,7 @@ public class JpaDocumentDao implements DocumentRepository {
 		jpaDocument.setDocumentId(document.getDocumentId());
 		jpaDocument.setDocumentName(document.getDocumentName());
 		jpaDocument.setContent(document.getContent());
-		jpaDocument.setFileType(new FileTypeMapper().convertToDatabaseColumn(document.getFileType()));
+		jpaDocument.setFileType(document.getFileType().getFileEnding());
 		jpaDocument.setPathToDocumentFromRoot(document.getPathToDocumentFromRoot().getFilePath());
 
 		return jpaDocument;
@@ -94,7 +95,7 @@ public class JpaDocumentDao implements DocumentRepository {
 		document.setDocumentId(jpaDocument.getDocumentId());
 		document.setDocumentName(jpaDocument.getDocumentName());
 		document.setContent(jpaDocument.getContent());
-		document.setFileType(new FileTypeMapper().convertToEntityAttribute(jpaDocument.getFileType()));
+		document.setFileType(new FileType(jpaDocument.getFileType()));
 		document.setPathToDocumentFromRoot(new FilePath(jpaDocument.getPathToDocumentFromRoot()));
 
 		return document;

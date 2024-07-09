@@ -67,11 +67,11 @@ export class DocumentsService {
 
   private mapToDocument(data: DocumentResponseData) {
     return new Document(
-      data.documentId,
       this.mapToFilePath(data.pathToDocumentFromRoot),
       data.documentName,
       FileType.fromFileEnding(data.fileType),
-      data.content)
+      data.content,
+      data.documentId)
   }
 
   private mapToFilePath(data: FilePathResponseData){
@@ -84,7 +84,7 @@ export interface DocumentResponseData {
   pathToDocumentFromRoot: FilePathResponseData;
   documentName: string;
   fileType: string;
-  content: Int8Array;
+  content: number[];
 }
 
 export interface FilePathResponseData {

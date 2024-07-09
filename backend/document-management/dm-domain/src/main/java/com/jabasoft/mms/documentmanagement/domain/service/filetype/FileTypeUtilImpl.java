@@ -10,13 +10,7 @@ public class FileTypeUtilImpl implements FileTypeUtil {
 	@Override
 	public FileType fromString(String fileType){
 
-		for (FileType type : FileType.values()) {
-			if(type.getFileEnding().equalsIgnoreCase(fileType)){
-				return type;
-			}
-		}
-
-		return FileType.OTHER;
+		return new FileType(fileType);
 	}
 
 }
