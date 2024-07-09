@@ -33,6 +33,21 @@ export class DocumentsService {
       }});
   }
 
+  existsDocument(document: DocumentWithoutContent, onSuccess: (exists: boolean) => void, onError?: (errorCode: number) => void){
+    this.httpClient.post('documents/exists', document).then(r =>{
+      if (r.status != 200){
+        if (onError) {
+          onError(r.status);
+        }
+        return;
+      }
+      onSuccess(r.data);
+    }).catch(error => {
+      if (onError) {
+        onError(error.status)
+      }});
+  }
+
   getDocument(id: number, onSuccess: (document: Document) => void, onError?: (errorCode: number) => void){
 
     this.httpClient.get('documents/save/' + id).then(r =>{

@@ -15,6 +15,7 @@ import {
 } from "./create-document-dialog/create-document-dialog.component";
 import {Document} from "../../../../model/documents/Document";
 import {DocumentsService} from "../../../../services/documents/documentsService";
+import {DocumentWithoutContent} from "../../../../model/documents/DocumentWithoutContent";
 
 @Component({
   selector: 'app-file-explorer-menu-bar',
@@ -29,7 +30,7 @@ import {DocumentsService} from "../../../../services/documents/documentsService"
 export class FileExplorerMenuBarComponent implements OnChanges{
 
   @Input("document") document?: FilePathWithDocument;
-  @Input("currentDir") currentDir?: string;
+  @Input("currentDir") currentDir!: string;
   @Output("update") updateEventEmitter = new EventEmitter<void>();
 
   enableDeleteDirectoryButton: boolean = false;
@@ -75,26 +76,47 @@ export class FileExplorerMenuBarComponent implements OnChanges{
     });
 
     dialogRef.afterClosed().subscribe(document => {
-      const reader = new FileReader();
-      let that = this;
-      reader.onload = function(e) {
-        if(e !== null && e.target !== null && e.target.result instanceof ArrayBuffer && that.currentDir) {
-          console.log(e.target.result)
 
-          let fileDoc = new Document(
-            new FilePath(that.currentDir),
-            document.documentName,
-            document.fileType,
-            Array.from(new Int8Array(e.target.result))
-          );
-
-          that.documentService.saveDocument(fileDoc, () => that.update());
-        }
-      };
-      reader.readAsArrayBuffer(document.file);
+      this.existsDocument(document,
+        () => alert("Dokument existiert bereits"),
+        () => this.saveDocument(document));
     })
   }
 
+  existsDocument(document: any, onExists: () => void, onNotExists: () => void) {
+    let toCheck = new DocumentWithoutContent(
+      new FilePath(this.currentDir),
+      document.documentName,
+      document.fileType);
+
+    this.documentService.existsDocument(toCheck, (exists) => {
+      if(exists){
+        onExists();
+      } else {
+        onNotExists();
+      }
+    })
+  }
+
+  saveDocument(document: any) {
+    const reader = new FileReader();
+    let that = this;
+    reader.onload = function(e) {
+      if(e !== null && e.target !== null && e.target.result instanceof ArrayBuffer && that.currentDir) {
+        console.log(e.target.result)
+
+        let fileDoc = new Document(
+          new FilePath(that.currentDir),
+          document.documentName,
+          document.fileType,
+          Array.from(new Int8Array(e.target.result))
+        );
+
+        that.documentService.saveDocument(fileDoc, () => that.update());
+      }
+    };
+    reader.readAsArrayBuffer(document.file);
+  }
 
 
   private update() {

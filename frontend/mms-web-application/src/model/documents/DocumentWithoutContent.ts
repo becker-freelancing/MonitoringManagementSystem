@@ -2,13 +2,14 @@ import {FilePath} from "../files/filePath";
 import {FileType} from "../files/fileType";
 
 export class DocumentWithoutContent{
-  documentId: number;
+
   pathToDocumentFromRoot: FilePath;
   documentName: string;
   fileType: FileType;
+  documentId?: number;
 
 
-  constructor(documentId: number, pathToDocumentFromRoot: FilePath, documentName: string, fileType: FileType) {
+  constructor(pathToDocumentFromRoot: FilePath, documentName: string, fileType: FileType, documentId?: number) {
     this.documentId = documentId;
     this.pathToDocumentFromRoot = pathToDocumentFromRoot;
     this.documentName = documentName;

@@ -123,10 +123,10 @@ export class FilePathService{
     return new FilePathWithDocument(
       new FilePath(data.filePath),
       new DocumentWithoutContent(
-        data.document.documentId,
         new FilePath(data.document.pathToDocumentFromRoot.filePath),
         data.document.documentName,
-        FileType.fromFileEnding(data.document.fileType)
+        FileType.fromFileEnding(data.document.fileType),
+        data.document.documentId
       )
     );
   }
