@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.jabasoft.mms.documentmanagement.domain.model.Document;
+import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
 import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
 
 public class DocumentRepositoryWrapper implements DocumentRepository{
@@ -54,6 +55,11 @@ public class DocumentRepositoryWrapper implements DocumentRepository{
 		}
 
 		return defaultDocumentRepository.saveDocument(document);
+	}
+
+	@Override
+	public boolean existsDocument(DocumentWithoutContent document) {
+		return defaultDocumentRepository.existsDocument(document);
 	}
 
 

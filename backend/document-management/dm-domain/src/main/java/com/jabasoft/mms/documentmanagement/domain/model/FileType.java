@@ -1,5 +1,7 @@
 package com.jabasoft.mms.documentmanagement.domain.model;
 
+import java.util.Objects;
+
 public class FileType {
 
 	public static FileType PP = new FileType("pp");
@@ -182,5 +184,18 @@ public class FileType {
 	public String getFileEnding() {
 
 		return fileEnding;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		FileType fileType = (FileType) o;
+		return Objects.equals(fileEnding, fileType.fileEnding);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(fileEnding);
 	}
 }

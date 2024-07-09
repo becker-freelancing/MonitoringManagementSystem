@@ -1,10 +1,8 @@
 package com.jabasoft.mms.documentmanagement.filepath.adapter;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.jabasoft.mms.documentmanagement.FileTypeMapper;
 import com.jabasoft.mms.documentmanagement.domain.model.*;
 import com.jabasoft.mms.documentmanagement.domain.model.error.FileModificationException;
 import com.jabasoft.mms.documentmanagement.domain.model.error.FileModificationExceptionReason;
@@ -14,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jabasoft.mms.documentmanagement.filepath.spi.FilePathRepository;
-
-import jakarta.persistence.Column;
 
 @Component
 public class JpaFilePathDao implements FilePathRepository {

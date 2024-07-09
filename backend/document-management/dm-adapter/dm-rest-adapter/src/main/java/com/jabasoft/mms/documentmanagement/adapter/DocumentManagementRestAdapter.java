@@ -53,4 +53,11 @@ public class DocumentManagementRestAdapter {
         Optional<DocumentDto> deleted = documentManagementPort.deleteDocument(document.getPathToDocumentFromRoot(), document.getDocumentName());
         return deleted.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/exists")
+    public ResponseEntity<Boolean> existsDocument(@RequestBody DocumentWithoutContentDto document) {
+        boolean exists = documentManagementPort.existsDocument(document);
+        return ResponseEntity.ok(exists);
+    }
 }

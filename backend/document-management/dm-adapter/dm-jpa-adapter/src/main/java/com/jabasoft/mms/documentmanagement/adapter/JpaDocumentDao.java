@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.jabasoft.mms.documentmanagement.FileTypeMapper;
+import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
 import com.jabasoft.mms.documentmanagement.domain.model.FileType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import com.jabasoft.mms.documentmanagement.domain.model.Document;
 import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
 import com.jabasoft.mms.documentmanagement.entity.JpaDocument;
-import com.jabasoft.mms.documentmanagement.filepath.spi.FilePathRepository;
 import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
 
 @Component
@@ -74,6 +73,13 @@ public class JpaDocumentDao implements DocumentRepository {
 		documentRepository.deleteById(toDelete.get().getDocumentId());
 
 		return toDelete.map(this::map);
+	}
+
+	@Override
+	public boolean existsDocument(DocumentWithoutContent map) {
+		Optional<JpaDocument> toDelete = documentRepository.findByPathToDocumentFromRootAndDocumentName(map.getPathToDocumentFromRoot().getFilePath(), map.getDocumentName());
+
+		return toDelete.isPresent();
 	}
 
 	private JpaDocument map(Document document) {

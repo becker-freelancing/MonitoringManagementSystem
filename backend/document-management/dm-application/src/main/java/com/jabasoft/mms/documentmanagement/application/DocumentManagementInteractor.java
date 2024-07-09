@@ -3,6 +3,8 @@ package com.jabasoft.mms.documentmanagement.application;
 import java.util.List;
 import java.util.Optional;
 
+import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
+import com.jabasoft.mms.documentmanagement.dto.DocumentWithoutContentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,6 +58,12 @@ class DocumentManagementInteractor implements DocumentManagementPort {
 		return deleted.map(this::map);
 	}
 
+	@Override
+	public boolean existsDocument(DocumentWithoutContentDto document) {
+
+        return documentRepository.existsDocument(map(document));
+	}
+
 	private DocumentDto map(Document document){
 
 		DocumentDto documentDto = new DocumentDto();
@@ -90,6 +98,17 @@ class DocumentManagementInteractor implements DocumentManagementPort {
 		document.setDocumentId(documentDto.getDocumentId());
 		document.setDocumentName(documentDto.getDocumentName());
 		document.setContent(documentDto.getContent());
+		document.setFileType(new FileType(documentDto.getFileType().getFileEnding()));
+		document.setPathToDocumentFromRoot(map(documentDto.getPathToDocumentFromRoot()));
+
+		return document;
+	}
+
+	private DocumentWithoutContent map(DocumentWithoutContentDto documentDto){
+
+		Document document = new Document();
+		document.setDocumentId(documentDto.getDocumentId());
+		document.setDocumentName(documentDto.getDocumentName());
 		document.setFileType(new FileType(documentDto.getFileType().getFileEnding()));
 		document.setPathToDocumentFromRoot(map(documentDto.getPathToDocumentFromRoot()));
 

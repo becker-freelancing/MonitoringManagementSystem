@@ -28,7 +28,7 @@ class FileTypeUtilImplTest {
 
         FileType actual = fileTypeUtil.fromString("ThisIsUnexpected");
 
-        assertEquals(FileType.OTHER, actual);
+        assertEquals(new FileType("ThisIsUnexpected"), actual);
     }
 
 

@@ -52,7 +52,7 @@ class DocumentManagementInteractorTest {
 		assertEquals(12L, actual.getDocumentId(), "DocumentId");
 		assertEquals("9ab2b6e2-e6ec-45ab-b2b6-e2e6ec65ab95", actual.getDocumentName(), "DocumentName");
 		assertArrayEquals(new byte[]{12, 23, 25, 31}, actual.getContent(), "Content");
-		assertEquals(FileTypeDto.PDF, actual.getFileType(), "FileType");
+		assertEquals(new FileTypeDto("pdf"), actual.getFileType(), "FileType");
 		assertEquals("root\\dir1", actual.getPathToDocumentFromRoot().getFilePath(), "DocumentPath");
 	}
 
@@ -78,7 +78,7 @@ class DocumentManagementInteractorTest {
 		assertEquals(12L, actual.getDocumentId(), "DocumentId");
 		assertEquals("9ab2b6e2-e6ec-45ab-b2b6-e2e6ec65ab95", actual.getDocumentName(), "DocumentName");
 		assertArrayEquals(new byte[]{12, 23, 25, 31}, actual.getContent(), "Content");
-		assertEquals(FileTypeDto.PDF, actual.getFileType(), "FileType");
+		assertEquals(new FileTypeDto("pdf"), actual.getFileType(), "FileType");
 		assertEquals("root\\dir1", actual.getPathToDocumentFromRoot().getFilePath(), "DocumentPath");
 	}
 
@@ -104,7 +104,7 @@ class DocumentManagementInteractorTest {
 		assertEquals(12L, actual.getDocumentId(), "DocumentId");
 		assertEquals("9ab2b6e2-e6ec-45ab-b2b6-e2e6ec65ab95", actual.getDocumentName(), "DocumentName");
 		assertArrayEquals(new byte[]{12, 23, 25, 31}, actual.getContent(), "Content");
-		assertEquals(FileTypeDto.PDF, actual.getFileType(), "FileType");
+		assertEquals(new FileTypeDto("pdf"), actual.getFileType(), "FileType");
 		assertEquals("root\\dir1", actual.getPathToDocumentFromRoot().getFilePath(), "DocumentPath");
 	}
 
@@ -129,8 +129,26 @@ class DocumentManagementInteractorTest {
 		assertEquals(12L, actual.getDocumentId(), "DocumentId");
 		assertEquals("9ab2b6e2-e6ec-45ab-b2b6-e2e6ec65ab95", actual.getDocumentName(), "DocumentName");
 		assertArrayEquals(new byte[]{12, 23, 25, 31}, actual.getContent(), "Content");
-		assertEquals(FileTypeDto.PDF, actual.getFileType(), "FileType");
+		assertEquals(new FileTypeDto("pdf"), actual.getFileType(), "FileType");
 		assertEquals("root\\dir1", actual.getPathToDocumentFromRoot().getFilePath(), "DocumentPath");
+	}
+
+	@Test
+	void testExistsDocumentReturnsTrueIfDocumentExists(){
+		when(documentRepository.existsDocument(any())).thenReturn(true);
+
+		boolean exists = interactor.existsDocument(getDocumentDto());
+
+		assertTrue(exists);
+	}
+
+	@Test
+	void testExistsDocumentReturnsFalseIfDocumentDoesNotExists(){
+		when(documentRepository.existsDocument(any())).thenReturn(false);
+
+		boolean exists = interactor.existsDocument(getDocumentDto());
+
+		assertFalse(exists);
 	}
 
 	public DocumentDto getDocumentDto(){
@@ -141,7 +159,7 @@ class DocumentManagementInteractorTest {
 		documentDto.setDocumentId(12L);
 		documentDto.setDocumentName("9ab2b6e2-e6ec-45ab-b2b6-e2e6ec65ab95");
 		documentDto.setContent(new byte[]{12, 23, 25, 31});
-		documentDto.setFileType(FileTypeDto.PDF);
+		documentDto.setFileType(new FileTypeDto("pdf"));
 
 		FilePathDto filePathDto = new FilePathDto();
 		filePathDto.setFilePath("/root/dir1/");

@@ -1,5 +1,6 @@
 package com.jabasoft.mms.documentmanagement.spi;
 
+import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
 import jakarta.persistence.Table;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -130,6 +131,27 @@ class DocumentRepositoryWrapperTest {
         repository.saveDocument(null);
 
         assertEquals(3, methodCount.get());
+    }
+
+    @Test
+    void testExistsDocumentIsOnlyExecutedOnDefaultRepository(){
+
+        DocumentRepository repo1 = mock(DocumentRepo1.class);
+        DocumentRepository repo2 = mock(DocumentRepo2.class);
+
+        AtomicInteger methodCount = new AtomicInteger(0);
+
+        doAnswer(invocationOnMock -> {
+            methodCount.getAndIncrement();
+            return null;
+        }).when(repo1).existsDocument(any());
+        when(repo2.existsDocument(any())).thenThrow(AssertionFailedError.class);
+
+        DocumentRepositoryWrapper repository = new DocumentRepositoryWrapper(List.of(repo2), repo1);
+
+        repository.existsDocument(new DocumentWithoutContent());
+
+        assertEquals(1, methodCount.get());
     }
 
     static abstract class DocumentRepo1 implements DocumentRepository {

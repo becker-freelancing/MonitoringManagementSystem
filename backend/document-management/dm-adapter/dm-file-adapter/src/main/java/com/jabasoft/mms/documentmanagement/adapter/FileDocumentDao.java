@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -114,6 +115,12 @@ public class FileDocumentDao implements DocumentRepository {
 		catch (IOException e) {
 			return Optional.empty();
 		}
+	}
+
+	@Override
+	public boolean existsDocument(DocumentWithoutContent document) {
+		Path path = Path.of(documentRootPath.toString(), document.getPathToDocumentFromRoot().getFilePath(), document.getDocumentName() + "." + document.getFileType().getFileEnding());
+		return Files.exists(path);
 	}
 
 	@Override

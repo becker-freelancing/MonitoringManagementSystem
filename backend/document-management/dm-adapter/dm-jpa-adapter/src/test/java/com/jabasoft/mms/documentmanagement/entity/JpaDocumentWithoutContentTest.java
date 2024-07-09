@@ -20,12 +20,12 @@ class JpaDocumentWithoutContentTest extends DynamicBeanTest {
                 12L,
                 "root/test",
                 "Test",
-                2L
+                "PDF"
         );
 
         assertEquals(12L, document.getDocumentId());
         assertEquals("root/test", document.getPathToDocumentFromRoot());
         assertEquals("Test", document.getDocumentName());
-        assertEquals(2L, document.getFileType());
+        assertEquals("PDF", document.getFileType());
     }
 }

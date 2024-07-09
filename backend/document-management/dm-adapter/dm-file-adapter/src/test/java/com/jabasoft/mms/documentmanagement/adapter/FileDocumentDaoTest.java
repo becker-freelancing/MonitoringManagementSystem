@@ -143,6 +143,33 @@ class FileDocumentDaoTest {
 		}
 	}
 
+	@Test
+	void testExistsDocumentReturnsFalseWhenDocumentDoesNotExist(@TempDir Path tempDir){
+		SettingsPort settingsPort = mock(SettingsPort.class);
+		when(settingsPort.getLocalDocumentsRootPath()).thenReturn(tempDir);
+		FileDocumentDao documentDao = new FileDocumentDao(settingsPort);
+
+		boolean exists = documentDao.existsDocument(getDocument("root/test", "Test", FileType.PDF));
+
+		assertFalse(exists);
+	}
+
+	@Test
+	void testExistsDocumentReturnsTrueWhenDocumentDoesExist(@TempDir Path tempDir){
+		SettingsPort settingsPort = mock(SettingsPort.class);
+		when(settingsPort.getLocalDocumentsRootPath()).thenReturn(tempDir);
+		FileDocumentDao documentDao = new FileDocumentDao(settingsPort);
+
+		Document test = getDocument("root/test", "Test", FileType.PDF);
+		Optional<Document> saved = documentDao.saveDocument(test);
+
+		assertTrue(saved.isPresent());
+
+		boolean exists = documentDao.existsDocument(test);
+
+		assertTrue(exists);
+	}
+
 
 	Document getDocument(String relativePath, String documentName, FileType fileType){
 

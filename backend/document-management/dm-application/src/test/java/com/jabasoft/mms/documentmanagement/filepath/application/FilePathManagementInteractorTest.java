@@ -125,7 +125,7 @@ class FilePathManagementInteractorTest {
 
         DocumentWithoutContentDto document = actual.getDocuments().get(0);
 
-        assertEquals(FileTypeDto.PDF, document.getFileType());
+        assertEquals(new FileTypeDto("pdf"), document.getFileType());
         assertEquals("Test", document.getDocumentName());
         assertEquals("root", document.getPathToDocumentFromRoot().getFilePath());
     }
@@ -151,7 +151,7 @@ class FilePathManagementInteractorTest {
 
         DocumentWithoutContentDto document = children.get(0).getDocuments().get(0);
 
-        assertEquals(FileTypeDto.PDF, document.getFileType());
+        assertEquals(new FileTypeDto("pdf"), document.getFileType());
         assertEquals("Test", document.getDocumentName());
         assertEquals("root\\a", document.getPathToDocumentFromRoot().getFilePath());
     }

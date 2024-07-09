@@ -131,6 +131,28 @@ class JpaDocumentDaoTest {
 	}
 
 
+	@Test
+	void testExistsDocumentReturnsFalseWhenDocumentDoesNotExist(){
+
+		boolean exists = documentDao.existsDocument(getDocument("root/test", "Test", FileType.PDF));
+
+		assertFalse(exists);
+	}
+
+	@Test
+	void testExistsDocumentReturnsTrueWhenDocumentDoesExist(){;
+
+		Document test = getDocument("root/test", "Test", FileType.PDF);
+		Optional<Document> saved = documentDao.saveDocument(test);
+
+		assertTrue(saved.isPresent());
+
+		boolean exists = documentDao.existsDocument(test);
+
+		assertTrue(exists);
+	}
+
+
 	Document getDocument(String relativePath, String documentName, FileType fileType){
 
 		Document document = new Document();

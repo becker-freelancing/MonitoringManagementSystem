@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.jabasoft.mms.documentmanagement.domain.model.Document;
+import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
 import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
 
 public interface DocumentRepository {
@@ -13,4 +14,5 @@ public interface DocumentRepository {
 	public Optional<Document> getDocument(Long documentId);
 	public Optional<Document> saveDocument(Document document);
 
+    boolean existsDocument(DocumentWithoutContent map);
 }
