@@ -16,6 +16,7 @@ import {
 import {Document} from "../../../../model/documents/Document";
 import {DocumentsService} from "../../../../services/documents/documentsService";
 import {DocumentWithoutContent} from "../../../../model/documents/DocumentWithoutContent";
+import {DeleteDirectoryDialogComponent} from "./delete-directory-dialog/delete-directory-dialog.component";
 
 @Component({
   selector: 'app-file-explorer-menu-bar',
@@ -121,5 +122,25 @@ export class FileExplorerMenuBarComponent implements OnChanges{
 
   private update() {
     this.updateEventEmitter.emit();
+  }
+
+  deleteDirectory() {
+
+    if(!this.document){
+      return;
+    }
+
+    let dialogRef = this.dialog.open(DeleteDirectoryDialogComponent, {
+      width: '500px',
+      height: '375px',
+      data: {dir: this.document?.filePath.filePath}
+    });
+
+    dialogRef.afterClosed().subscribe(canDelete => {
+      if(canDelete && this.document){
+        this.filePathService.deleteFileStructureWithChildren(new FilePath(this.document.filePath.filePath),
+          (fileStructure) => this.update());
+      }
+    })
   }
 }
