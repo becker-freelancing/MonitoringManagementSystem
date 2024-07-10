@@ -3,7 +3,6 @@ import {HttpClient} from "../http/httpClient";
 import {FileStructure} from "../../model/files/fileStructure";
 import {FilePath} from "../../model/files/filePath";
 import {FilePathWithDocument} from "../../model/files/filePathWithDocument";
-import {Customer} from "../../model/cutomer/customer";
 import {DocumentWithoutContent} from "../../model/documents/DocumentWithoutContent";
 import {FileType} from "../../model/files/fileType";
 
@@ -125,7 +124,7 @@ export class FilePathService{
       new DocumentWithoutContent(
         new FilePath(data.document.pathToDocumentFromRoot.filePath),
         data.document.documentName,
-        FileType.fromFileEnding(data.document.fileType),
+        new FileType(data.document.fileType.fileEnding),
         data.document.documentId
       )
     );
@@ -142,7 +141,7 @@ export interface FilePathWithDocumentResponseData {
   document: {
     documentId: number;
     documentName: string;
-    fileType: string;
+    fileType: any;
     pathToDocumentFromRoot: {
       filePath: string;
     }

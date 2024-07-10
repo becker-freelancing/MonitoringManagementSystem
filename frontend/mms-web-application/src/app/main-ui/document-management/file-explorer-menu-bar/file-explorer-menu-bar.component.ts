@@ -1,22 +1,16 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {NgClass, NgOptimizedImage} from "@angular/common";
 import {FilePathWithDocument} from "../../../../model/files/filePathWithDocument";
-import {
-  AddCustomerDialogComponent
-} from "../../customer-management/customer-management-menu-bar/add-customer-dialog/add-customer-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateDirectoryDialogComponent} from "./create-directory-dialog/create-directory-dialog.component";
 import {FilePathService} from "../../../../services/files/filePathService";
-import {FileStructure} from "../../../../model/files/fileStructure";
 import {FilePath} from "../../../../model/files/filePath";
-import {
-  CreateDocumentDialogComponent,
-  CreateDocumentResultData
-} from "./create-document-dialog/create-document-dialog.component";
+import {CreateDocumentDialogComponent} from "./create-document-dialog/create-document-dialog.component";
 import {Document} from "../../../../model/documents/Document";
 import {DocumentsService} from "../../../../services/documents/documentsService";
 import {DocumentWithoutContent} from "../../../../model/documents/DocumentWithoutContent";
 import {DeleteDirectoryDialogComponent} from "./delete-directory-dialog/delete-directory-dialog.component";
+import {DeleteDocumentDialogComponent} from "./delete-document-dialog/delete-document-dialog.component";
 
 @Component({
   selector: 'app-file-explorer-menu-bar',
@@ -140,6 +134,25 @@ export class FileExplorerMenuBarComponent implements OnChanges{
       if(canDelete && this.document){
         this.filePathService.deleteFileStructureWithChildren(new FilePath(this.document.filePath.filePath),
           (fileStructure) => this.update());
+      }
+    })
+  }
+
+  deleteDocument() {
+    if (!this.document?.document) {
+      return;
+    }
+
+    let dialogRef = this.dialog.open(DeleteDocumentDialogComponent, {
+      width: '500px',
+      height: '375px',
+      data: {document: this.document.document}
+    });
+
+    dialogRef.afterClosed().subscribe(canDelete => {
+      if (canDelete && this.document?.document) {
+        this.documentService.deleteDocument(this.document.document,
+          () => this.update())
       }
     })
   }

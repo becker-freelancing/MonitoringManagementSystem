@@ -1,11 +1,11 @@
 package com.jabasoft.mms.documentmanagement.api;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.jabasoft.mms.documentmanagement.dto.DocumentDto;
 import com.jabasoft.mms.documentmanagement.dto.DocumentWithoutContentDto;
 import com.jabasoft.mms.documentmanagement.dto.FilePathDto;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface DocumentManagementPort {
 
@@ -15,7 +15,7 @@ public interface DocumentManagementPort {
 
 	public Optional<DocumentDto> getDocument(Long documentId);
 
-	public Optional<DocumentDto> deleteDocument(FilePathDto path, String name);
+	public Optional<DocumentWithoutContentDto> deleteDocument(FilePathDto path, String name);
 
     boolean existsDocument(DocumentWithoutContentDto document);
 }

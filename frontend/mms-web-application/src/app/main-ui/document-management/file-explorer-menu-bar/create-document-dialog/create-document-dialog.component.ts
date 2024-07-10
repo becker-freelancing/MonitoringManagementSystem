@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {Form, FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {Component} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef} from "@angular/material/dialog";
 import {FileType} from "../../../../../model/files/fileType";
 import {MatButton} from "@angular/material/button";
@@ -49,7 +49,7 @@ export class CreateDocumentDialogComponent {
     let nameSplit = name.split("\.");
 
     this.documentName = nameSplit[0];
-    this.fileType = FileType.fromFileEnding(nameSplit[1]);
+    this.fileType = new FileType(nameSplit[1]);
     this.file = file;
   }
 

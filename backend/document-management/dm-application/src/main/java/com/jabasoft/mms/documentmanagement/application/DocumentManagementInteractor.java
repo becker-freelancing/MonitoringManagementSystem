@@ -1,21 +1,20 @@
 package com.jabasoft.mms.documentmanagement.application;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.jabasoft.mms.documentmanagement.api.DocumentManagementPort;
+import com.jabasoft.mms.documentmanagement.domain.model.Document;
 import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
+import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
+import com.jabasoft.mms.documentmanagement.domain.model.FileType;
+import com.jabasoft.mms.documentmanagement.dto.DocumentDto;
 import com.jabasoft.mms.documentmanagement.dto.DocumentWithoutContentDto;
+import com.jabasoft.mms.documentmanagement.dto.FilePathDto;
+import com.jabasoft.mms.documentmanagement.dto.FileTypeDto;
+import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.jabasoft.mms.documentmanagement.api.DocumentManagementPort;
-import com.jabasoft.mms.documentmanagement.dto.DocumentDto;
-import com.jabasoft.mms.documentmanagement.dto.FilePathDto;
-import com.jabasoft.mms.documentmanagement.dto.FileTypeDto;
-import com.jabasoft.mms.documentmanagement.domain.model.Document;
-import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
-import com.jabasoft.mms.documentmanagement.domain.model.FileType;
-import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 class DocumentManagementInteractor implements DocumentManagementPort {
@@ -51,7 +50,7 @@ class DocumentManagementInteractor implements DocumentManagementPort {
 	}
 
 	@Override
-	public Optional<DocumentDto> deleteDocument(FilePathDto path, String name) {
+	public Optional<DocumentWithoutContentDto> deleteDocument(FilePathDto path, String name) {
 
 		Optional<Document> deleted = documentRepository.deleteDocument(map(path), name);
 

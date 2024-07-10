@@ -49,8 +49,8 @@ public class DocumentManagementRestAdapter {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping
-    public ResponseEntity<DocumentDto> deleteDocument(@RequestBody DocumentWithoutContentDto document){
-        Optional<DocumentDto> deleted = documentManagementPort.deleteDocument(document.getPathToDocumentFromRoot(), document.getDocumentName());
+    public ResponseEntity<DocumentWithoutContentDto> deleteDocument(@RequestBody DocumentWithoutContentDto document) {
+        Optional<DocumentWithoutContentDto> deleted = documentManagementPort.deleteDocument(document.getPathToDocumentFromRoot(), document.getDocumentName());
         return deleted.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 

@@ -1,1 +1,20 @@
-<p>delete-document-dialog works!</p>
+<mat-dialog-content>
+  <header>
+    <h2>Dokument löschen</h2>
+  </header>
+
+  <div class="form-division">
+    <p>Soll das Dokument</p>
+    <h3 class="form-input-not-valid-label">{{ document.documentName }}</h3>
+    <p>wirklich gelöscht werden?</p>
+  </div>
+
+  <div class="form-division">
+    <h1>Diese Aktion kann nicht rückgängig gemacht werden!</h1>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button (click)="onCancel()" cdkFocusInitial mat-button mat-dialog-close>Nein</button>
+  <button (click)="onSave()" mat-button>Ja</button>
+</mat-dialog-actions>

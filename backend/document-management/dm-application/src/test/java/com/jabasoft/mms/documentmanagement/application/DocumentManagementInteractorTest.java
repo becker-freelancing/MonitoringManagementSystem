@@ -1,23 +1,23 @@
 package com.jabasoft.mms.documentmanagement.application;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import com.jabasoft.mms.documentmanagement.domain.model.Document;
+import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
+import com.jabasoft.mms.documentmanagement.domain.model.FileType;
+import com.jabasoft.mms.documentmanagement.dto.DocumentDto;
+import com.jabasoft.mms.documentmanagement.dto.DocumentWithoutContentDto;
+import com.jabasoft.mms.documentmanagement.dto.FilePathDto;
+import com.jabasoft.mms.documentmanagement.dto.FileTypeDto;
+import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import com.jabasoft.mms.documentmanagement.dto.DocumentDto;
-import com.jabasoft.mms.documentmanagement.dto.FilePathDto;
-import com.jabasoft.mms.documentmanagement.dto.FileTypeDto;
-import com.jabasoft.mms.documentmanagement.domain.model.Document;
-import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
-import com.jabasoft.mms.documentmanagement.domain.model.FileType;
-import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class DocumentManagementInteractorTest {
 	
@@ -112,7 +112,7 @@ class DocumentManagementInteractorTest {
 	void testDeleteDocumentWithNotExistingDocumentReturnsEmptyOptional(){
 		when(documentRepository.deleteDocument(new FilePath("/abc/def/"), "test")).thenReturn(Optional.empty());
 
-		Optional<DocumentDto> deleted = interactor.deleteDocument(new FilePathDto("/abc/def/"), "test");
+		Optional<DocumentWithoutContentDto> deleted = interactor.deleteDocument(new FilePathDto("/abc/def/"), "test");
 
 		assertTrue(deleted.isEmpty());
 	}
@@ -121,14 +121,13 @@ class DocumentManagementInteractorTest {
 	void testDeleteDocumentWithExistingDocumentReturnsOptionalWithDocument(){
 		when(documentRepository.deleteDocument(new FilePath("/abc/def/"), "test")).thenReturn(Optional.of(getDocument()));
 
-		Optional<DocumentDto> deleted = interactor.deleteDocument(new FilePathDto("/abc/def/"), "test");
+		Optional<DocumentWithoutContentDto> deleted = interactor.deleteDocument(new FilePathDto("/abc/def/"), "test");
 
 		assertTrue(deleted.isPresent());
-		DocumentDto actual = deleted.get();
+		DocumentWithoutContentDto actual = deleted.get();
 
 		assertEquals(12L, actual.getDocumentId(), "DocumentId");
 		assertEquals("9ab2b6e2-e6ec-45ab-b2b6-e2e6ec65ab95", actual.getDocumentName(), "DocumentName");
-		assertArrayEquals(new byte[]{12, 23, 25, 31}, actual.getContent(), "Content");
 		assertEquals(new FileTypeDto("pdf"), actual.getFileType(), "FileType");
 		assertEquals("root\\dir1", actual.getPathToDocumentFromRoot().getFilePath(), "DocumentPath");
 	}

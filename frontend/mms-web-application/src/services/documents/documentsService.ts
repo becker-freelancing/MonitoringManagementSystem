@@ -3,7 +3,6 @@ import {HttpClient} from "../http/httpClient";
 import {Document} from "../../model/documents/Document";
 import {FilePath} from "../../model/files/filePath";
 import {FileType} from "../../model/files/fileType";
-import {FileStructure} from "../../model/files/fileStructure";
 import {DocumentWithoutContent} from "../../model/documents/DocumentWithoutContent";
 
 @Injectable({
@@ -66,7 +65,7 @@ export class DocumentsService {
 
   deleteDocument(document: DocumentWithoutContent, onSuccess: (document: Document) => void, onError?: (errorCode: number) => void){
 
-    this.httpClient.deletePost('documents/', document).then(r =>{
+    this.httpClient.deletePost('documents', document).then(r => {
       if (r.status != 200){
         if (onError) {
           onError(r.status);
@@ -84,7 +83,7 @@ export class DocumentsService {
     return new Document(
       this.mapToFilePath(data.pathToDocumentFromRoot),
       data.documentName,
-      FileType.fromFileEnding(data.fileType),
+      new FileType(data.fileType),
       data.content,
       data.documentId)
   }
