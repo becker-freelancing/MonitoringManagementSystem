@@ -31,6 +31,11 @@ class DocumentManagementInteractor implements DocumentManagementPort {
 	public Optional<DocumentDto> saveDocument(DocumentDto document) {
 
 		Document mapped = map(document);
+
+		boolean exists = documentRepository.existsDocument(mapped);
+		if (exists) {
+			documentRepository.deleteDocument(mapped.getPathToDocumentFromRoot(), mapped.getDocumentName());
+		}
 		Optional<Document> saved = documentRepository.saveDocument(mapped);
 
 		return saved.map(this::map);

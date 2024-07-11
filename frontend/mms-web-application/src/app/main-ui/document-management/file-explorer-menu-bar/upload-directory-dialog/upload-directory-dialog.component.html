@@ -1,0 +1,24 @@
+<mat-dialog-content>
+  <header>
+    <h2>Ordner hochladen</h2>
+  </header>
+
+  <div class="form-division">
+    <input (change)="onDirectoryUpload($event)" id="folder" multiple placeholder="Ordner auswählen*" required type="file"
+           webkitdirectory/>
+  </div>
+
+  <div class="form-division">
+    <h3>Ausgewählte Dateien</h3>
+    <div class="vertical-scroll-pane">
+      <ul>
+        <li *ngFor="let file of files">{{ file.name }}</li>
+      </ul>
+    </div>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Abbrechen</button>
+  <button (click)="onSave()" cdkFocusInitial mat-button>Speichern</button>
+</mat-dialog-actions>

@@ -1,0 +1,20 @@
+<mat-dialog-content>
+  <header>
+    <h2>Dokument existiert bereits</h2>
+  </header>
+
+  <div class="form-division">
+    <p>Das Dokument:</p>
+    <h3 class="form-input-not-valid-label">{{ documentName }}</h3>
+    <p>existiert bereits?</p>
+  </div>
+
+  <div class="form-division">
+    <p>Soll das vorhandene Dokument überschrieben werden?</p>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button (click)="onDiscard()" cdkFocusInitial mat-button>Nein</button>
+  <button (click)="onSave()" mat-button>Ja</button>
+</mat-dialog-actions>

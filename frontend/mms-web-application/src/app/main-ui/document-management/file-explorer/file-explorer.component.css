@@ -16,6 +16,7 @@
 }
 
 .file-explorer-all-files{
+  max-height: 93vh;
   display: block;
   width: 100%;
 }

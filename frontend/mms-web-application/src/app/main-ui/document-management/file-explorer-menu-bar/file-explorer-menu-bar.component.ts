@@ -11,6 +11,10 @@ import {DocumentsService} from "../../../../services/documents/documentsService"
 import {DocumentWithoutContent} from "../../../../model/documents/DocumentWithoutContent";
 import {DeleteDirectoryDialogComponent} from "./delete-directory-dialog/delete-directory-dialog.component";
 import {DeleteDocumentDialogComponent} from "./delete-document-dialog/delete-document-dialog.component";
+import {UploadDirectoryDialogComponent} from "./upload-directory-dialog/upload-directory-dialog.component";
+import {
+  OverwriteDocumentConfirmationDialogComponent
+} from "./overwrite-document-confirmation-dialog/overwrite-document-confirmation-dialog.component";
 
 @Component({
   selector: 'app-file-explorer-menu-bar',
@@ -73,8 +77,40 @@ export class FileExplorerMenuBarComponent implements OnChanges{
     dialogRef.afterClosed().subscribe(document => {
 
       this.existsDocument(document,
-        () => alert("Dokument existiert bereits"),
+        () => this.showOverwriteConfirmationDialog(document.documentName, () => this.saveDocument(document)),
         () => this.saveDocument(document));
+    })
+  }
+
+  onUploadFolder() {
+    let dialogRef = this.dialog.open(UploadDirectoryDialogComponent, {
+      width: '500px',
+      height: '75%'
+    });
+
+    dialogRef.afterClosed().subscribe(documents => {
+      for (const document of documents) {
+        this.existsDocument(document,
+          () => this.showOverwriteConfirmationDialog(document.documentName, () => this.saveDocument(document)),
+          () => this.saveDocument(document));
+      }
+    })
+  }
+
+
+  showOverwriteConfirmationDialog(documentName: string, onOverwrite: () => void, onNotOverwrite?: () => void) {
+    let dialogRef = this.dialog.open(OverwriteDocumentConfirmationDialogComponent, {
+      width: '500px',
+      height: '350px',
+      data: {documentName: documentName}
+    });
+
+    dialogRef.afterClosed().subscribe(overwrite => {
+      if (overwrite) {
+        onOverwrite();
+      } else if (onNotOverwrite) {
+        onNotOverwrite();
+      }
     })
   }
 
@@ -98,7 +134,6 @@ export class FileExplorerMenuBarComponent implements OnChanges{
     let that = this;
     reader.onload = function(e) {
       if(e !== null && e.target !== null && e.target.result instanceof ArrayBuffer && that.currentDir) {
-        console.log(e.target.result)
 
         let fileDoc = new Document(
           new FilePath(that.currentDir),
