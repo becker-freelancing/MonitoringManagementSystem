@@ -135,12 +135,14 @@ export class FileExplorerMenuBarComponent implements OnChanges{
     reader.onload = function(e) {
       if(e !== null && e.target !== null && e.target.result instanceof ArrayBuffer && that.currentDir) {
 
+        console.log(document)
         let fileDoc = new Document(
-          new FilePath(that.currentDir),
+          new FilePath(that.currentDir + "\\" + document.file.webkitRelativePath), //TODO FilePAth richtig bauen
           document.documentName,
           document.fileType,
           Array.from(new Int8Array(e.target.result))
         );
+        console.log(fileDoc)
 
         that.documentService.saveDocument(fileDoc, () => that.update());
       }

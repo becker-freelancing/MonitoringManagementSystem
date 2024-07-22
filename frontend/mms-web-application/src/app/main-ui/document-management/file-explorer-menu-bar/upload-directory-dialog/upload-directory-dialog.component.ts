@@ -21,7 +21,7 @@ import {FileType} from "../../../../../model/files/fileType";
 })
 export class UploadDirectoryDialogComponent {
 
-  files: File[] = []
+  files: any[] = []
 
   constructor(public dialogRef: MatDialogRef<UploadDirectoryDialogComponent>) {
   }
@@ -41,7 +41,6 @@ export class UploadDirectoryDialogComponent {
 
   onDirectoryUpload(event: any) {
     this.files = Array.from(event.target.files);
-    console.log(this.files) //TODO Dokumente werden beim einlesen flachgeklopft
   }
 
 }

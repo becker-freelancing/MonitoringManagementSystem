@@ -7,6 +7,7 @@ import com.jabasoft.mms.documentmanagement.dto.DocumentDto;
 import com.jabasoft.mms.documentmanagement.dto.DocumentWithoutContentDto;
 import com.jabasoft.mms.documentmanagement.dto.FilePathDto;
 import com.jabasoft.mms.documentmanagement.dto.FileTypeDto;
+import com.jabasoft.mms.documentmanagement.filepath.spi.FilePathRepositoryWrapper;
 import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ class DocumentManagementInteractorTest {
 	@BeforeEach
 	void setUp(){
 		this.documentRepository = mock(DocumentRepository.class);
-		interactor = new DocumentManagementInteractor(documentRepository);
+        interactor = new DocumentManagementInteractor(documentRepository, mock(FilePathRepositoryWrapper.class));
 	}
 
 	@Test

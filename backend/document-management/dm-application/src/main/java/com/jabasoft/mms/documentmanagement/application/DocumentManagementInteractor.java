@@ -5,10 +5,12 @@ import com.jabasoft.mms.documentmanagement.domain.model.Document;
 import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
 import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
 import com.jabasoft.mms.documentmanagement.domain.model.FileType;
+import com.jabasoft.mms.documentmanagement.domain.model.error.FileModificationException;
 import com.jabasoft.mms.documentmanagement.dto.DocumentDto;
 import com.jabasoft.mms.documentmanagement.dto.DocumentWithoutContentDto;
 import com.jabasoft.mms.documentmanagement.dto.FilePathDto;
 import com.jabasoft.mms.documentmanagement.dto.FileTypeDto;
+import com.jabasoft.mms.documentmanagement.filepath.spi.FilePathRepository;
 import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,17 +22,28 @@ import java.util.Optional;
 class DocumentManagementInteractor implements DocumentManagementPort {
 
 	private DocumentRepository documentRepository;
+	private FilePathRepository filePathRepository;
 
 	@Autowired
-	public DocumentManagementInteractor(DocumentRepository documentRepository) {
+	public DocumentManagementInteractor(DocumentRepository documentRepository, FilePathRepository filePathRepository) {
 
 		this.documentRepository = documentRepository;
+		this.filePathRepository = filePathRepository;
 	}
 
 	@Override
 	public Optional<DocumentDto> saveDocument(DocumentDto document) {
 
 		Document mapped = map(document);
+
+		boolean dirDoesNotExist = filePathRepository.isPathCreatable(mapped.getPathToDocumentFromRoot().getParent());
+		if (dirDoesNotExist) {
+			try {
+				filePathRepository.createFileStructure(mapped.getPathToDocumentFromRoot().getParent());
+			} catch (FileModificationException e) {
+				return Optional.empty();
+			}
+		}
 
 		boolean exists = documentRepository.existsDocument(mapped);
 		if (exists) {

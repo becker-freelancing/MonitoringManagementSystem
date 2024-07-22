@@ -15,6 +15,19 @@ public class FilePath {
 
 	}
 
+	public FilePath getParent() {
+		if (new FilePath("root").equals(this)) {
+			return this;
+		}
+		String[] splitted = filePath.split("\\\\");
+		StringBuilder parent = new StringBuilder();
+		for (int i = 0; i < splitted.length - 1; i++) {
+			parent.append("\\").append(splitted[i]);
+		}
+
+		return new FilePath(parent.toString());
+	}
+
 	public String getFilePath() {
 
 		return filePath;
