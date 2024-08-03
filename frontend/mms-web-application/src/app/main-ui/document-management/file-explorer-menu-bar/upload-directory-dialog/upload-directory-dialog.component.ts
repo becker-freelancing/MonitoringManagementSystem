@@ -30,10 +30,11 @@ export class UploadDirectoryDialogComponent {
     let documents: CreateDocumentResultData[] = [];
     for (const file of this.files) {
       let split = file.name.split(".");
+      let fileType = new FileType(split.pop());
       documents.push({
         file: file,
-        documentName: split[0],
-        fileType: new FileType(split[1])
+        documentName: split.join("."),
+        fileType: fileType
       });
     }
     this.dialogRef.close(documents);

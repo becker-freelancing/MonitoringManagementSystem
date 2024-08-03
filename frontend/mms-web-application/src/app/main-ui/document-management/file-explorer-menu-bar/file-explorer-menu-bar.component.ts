@@ -63,6 +63,9 @@ export class FileExplorerMenuBarComponent implements OnChanges{
     });
 
     dialogRef.afterClosed().subscribe(dirName => {
+      if (dirName === undefined) {
+        return;
+      }
       let toCreate = this.currentDir + "\\" + dirName;
       this.filePathService.createFileStructure(new FilePath(toCreate), (created) => this.update())
     })
@@ -135,14 +138,12 @@ export class FileExplorerMenuBarComponent implements OnChanges{
     reader.onload = function(e) {
       if(e !== null && e.target !== null && e.target.result instanceof ArrayBuffer && that.currentDir) {
 
-        console.log(document)
         let fileDoc = new Document(
-          new FilePath(that.currentDir + "\\" + document.file.webkitRelativePath), //TODO FilePAth richtig bauen
+          new FilePath(that.currentDir + "\\" + that.extractFilePath(document)), //TODO FilePAth richtig bauen
           document.documentName,
           document.fileType,
           Array.from(new Int8Array(e.target.result))
         );
-        console.log(fileDoc)
 
         that.documentService.saveDocument(fileDoc, () => that.update());
       }
@@ -150,6 +151,16 @@ export class FileExplorerMenuBarComponent implements OnChanges{
     reader.readAsArrayBuffer(document.file);
   }
 
+
+  private extractFilePath(document: any) {
+    let relativePath = document.file.webkitRelativePath;
+    let documentName = document.documentName + "." + document.fileType.fileEnding;
+    if (!relativePath.includes(documentName)) {
+      return relativePath;
+    } else {
+      return relativePath.replace(documentName, "");
+    }
+  }
 
   private update() {
     this.updateEventEmitter.emit();

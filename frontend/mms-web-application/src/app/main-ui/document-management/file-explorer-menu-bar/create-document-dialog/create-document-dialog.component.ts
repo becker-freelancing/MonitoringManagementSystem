@@ -44,12 +44,12 @@ export class CreateDocumentDialogComponent {
       return;
     }
 
-    let name = file.name as string;
+    let name = file.name;
 
-    let nameSplit = name.split("\.");
+    let nameSplit = name.split(".");
 
-    this.documentName = nameSplit[0];
-    this.fileType = new FileType(nameSplit[1]);
+    this.fileType = new FileType(nameSplit.pop());
+    this.documentName = nameSplit.join(".");
     this.file = file;
   }
 
