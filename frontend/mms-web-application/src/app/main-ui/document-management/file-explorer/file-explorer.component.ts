@@ -60,7 +60,7 @@ export class FileExplorerComponent {
   private setChildDirs(children: FilePathWithDocument[]){
     this.childDirs = [];
 
-    let dirs =  children.filter(doc => doc.isDirectory());
+    let dirs = this.sortDirsByName(children.filter(doc => doc.isDirectory()));
     let id = 0;
 
     for (const dir of dirs) {
@@ -72,13 +72,28 @@ export class FileExplorerComponent {
   private setChildDocuments(children: FilePathWithDocument[]){
     this.childDocuments = [];
 
-    let dirs =  children.filter(doc => !doc.isDirectory());
+    let dirs = this.sortDocumentsByName(children.filter(doc => !doc.isDirectory()));
     let id = this.childDirs.length;
 
     for (const dir of dirs) {
       this.childDocuments.push({uiId: id, document: dir});
       id++;
     }
+  }
+
+  private sortDocumentsByName(documents: FilePathWithDocument[]) {
+    return documents.sort((a, b) => {
+      if (b.document?.documentName && a.document?.documentName) {
+        return a.document.documentName.localeCompare(b.document.documentName)
+      }
+      return 0;
+    })
+  }
+
+  private sortDirsByName(documents: FilePathWithDocument[]) {
+    return documents.sort((a, b) =>
+      a.filePath.filePath.localeCompare(b.filePath.filePath)
+    );
   }
 
   onSelectDir(uiId: number) {
