@@ -3,6 +3,7 @@ import {FilePathService} from "../../../../services/files/filePathService";
 import {FilePathWithDocument} from "../../../../model/files/filePathWithDocument";
 import {FilePath} from "../../../../model/files/filePath";
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {DocumentsService} from "../../../../services/documents/documentsService";
 
 @Component({
   selector: 'app-file-explorer',
@@ -30,7 +31,8 @@ export class FileExplorerComponent {
   childDirs: FilePathWithDocumentAndId[] = []
   childDocuments: FilePathWithDocumentAndId[] = []
 
-  constructor(filePathService: FilePathService) {
+  constructor(filePathService: FilePathService,
+              public documentService: DocumentsService) {
     this.filePathService = filePathService;
     this.fetchElementsForDir("root")
   }
@@ -125,6 +127,35 @@ export class FileExplorerComponent {
     }
 
     return "horizontal-div file-explorer-file"
+  }
+
+  downloadDocument(doc: FilePathWithDocumentAndId) {
+
+    if (!doc.document.document?.documentId) {
+      return;
+    }
+
+    this.documentService.getDocument(doc.document.document?.documentId, document => {
+      let name = document.documentName + "." + document.fileType.fileEnding.toString();
+
+      this.downloadBinaryFile(name, document.content);
+    });
+  }
+
+  downloadBinaryFile(filename: string, content: number[]) {
+    const blob = new Blob([new Uint8Array(content)], {type: 'application/octet-stream'});
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 }
 

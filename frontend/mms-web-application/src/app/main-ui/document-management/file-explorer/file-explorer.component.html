@@ -4,13 +4,19 @@
     <p class="file-explorer-file-name">..</p>
   </div>
 
-  <div *ngFor="let dir of childDirs" [ngClass]="getCSSClass(dir.uiId)" (dblclick)="onGoToDeeperDir(dir.document.filePath.filePath)" (click)="onSelectDir(dir.uiId)">
+  <div (click)="onSelectDir(dir.uiId)" (dblclick)="onGoToDeeperDir(dir.document.filePath.filePath)"
+       *ngFor="let dir of childDirs" [ngClass]="getCSSClass(dir.uiId)">
     <img ngSrc="assets/document-management/folder.png" height="30" width="30" alt="Dir">
     <p class="file-explorer-file-name">{{ dir.document.currentDirectoryName() }}</p>
   </div>
 
   <div *ngFor="let doc of childDocuments" [ngClass]="getCSSClass(doc.uiId)" (click)="onSelectDir(doc.uiId)">
     <img ngSrc="assets/document-management/document.png" height="30" width="30" alt="Doc">
+    <p class="file-explorer-file-type">{{ doc.document.document?.fileType?.fileEnding }}</p>
     <p class="file-explorer-file-name">{{ doc.document.document?.documentName }}</p>
+    <div class="horizontal-div document-controls-container">
+      <img (click)="downloadDocument(doc)" alt="Download" class="document-control" height="25"
+           ngSrc="assets/document-management/download.png" width="25">
+    </div>
   </div>
 </div>

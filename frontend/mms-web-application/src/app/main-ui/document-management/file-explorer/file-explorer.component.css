@@ -16,7 +16,7 @@
 }
 
 .file-explorer-all-files{
-  max-height: 93vh;
+  max-height: 90vh;
   display: block;
   width: 100%;
 }
@@ -27,4 +27,23 @@
 
 .file-explorer-file-name {
   margin: auto 0 auto 50px;
+}
+
+.file-explorer-file-type {
+  margin: auto 0 auto 50px;
+  width: 50px;
+  align-items: center;
+}
+
+.document-controls-container {
+  margin: auto 50px auto auto;
+}
+
+.document-control {
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.document-control:hover {
+  background-color: #a4a3a3;
 }

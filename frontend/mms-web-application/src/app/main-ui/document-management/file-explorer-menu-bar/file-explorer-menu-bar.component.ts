@@ -139,7 +139,7 @@ export class FileExplorerMenuBarComponent implements OnChanges{
       if(e !== null && e.target !== null && e.target.result instanceof ArrayBuffer && that.currentDir) {
 
         let fileDoc = new Document(
-          new FilePath(that.currentDir + "\\" + that.extractFilePath(document)), //TODO FilePAth richtig bauen
+          new FilePath(that.currentDir + "\\" + that.extractFilePath(document)),
           document.documentName,
           document.fileType,
           Array.from(new Int8Array(e.target.result))

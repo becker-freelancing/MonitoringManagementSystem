@@ -49,7 +49,7 @@ export class DocumentsService {
 
   getDocument(id: number, onSuccess: (document: Document) => void, onError?: (errorCode: number) => void){
 
-    this.httpClient.get('documents/save/' + id).then(r =>{
+    this.httpClient.get('documents/' + id).then(r => {
       if (r.status != 200){
         if (onError) {
           onError(r.status);
@@ -83,7 +83,7 @@ export class DocumentsService {
     return new Document(
       this.mapToFilePath(data.pathToDocumentFromRoot),
       data.documentName,
-      new FileType(data.fileType),
+      new FileType(data.fileType.fileEnding),
       data.content,
       data.documentId)
   }
@@ -97,7 +97,7 @@ export interface DocumentResponseData {
   documentId: number;
   pathToDocumentFromRoot: FilePathResponseData;
   documentName: string;
-  fileType: string;
+  fileType: { fileEnding: string };
   content: number[];
 }
 

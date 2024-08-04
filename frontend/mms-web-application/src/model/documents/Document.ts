@@ -16,4 +16,8 @@ export class Document {
     this.fileType = fileType;
     this.content = content;
   }
+
+  fileEndingAsString(): string {
+    return this.fileType.fileEnding;
+  }
 }
