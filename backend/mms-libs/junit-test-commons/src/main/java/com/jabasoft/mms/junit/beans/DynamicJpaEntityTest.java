@@ -1,7 +1,7 @@
 package com.jabasoft.mms.junit.beans;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import jakarta.persistence.*;
+import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -9,16 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Test;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class DynamicJpaEntityTest extends DynamicBeanTest {
 
@@ -54,6 +46,10 @@ public abstract class DynamicJpaEntityTest extends DynamicBeanTest {
 		return JoinColumn.class;
 	}
 
+    protected Class<? extends Annotation> manyToManyAnnotation() {
+        return ManyToMany.class;
+    }
+
 	@Override
 	protected Stream<Class<?>> beanClasses() {
 
@@ -80,6 +76,11 @@ public abstract class DynamicJpaEntityTest extends DynamicBeanTest {
 			} else if (field.isAnnotationPresent(manyToOneAnnotation())) {
 				expectedAnnotations.add(manyToOneAnnotation());
 				expectedAnnotations.add(joinColumnAnnotation());
+            } else if (field.isAnnotationPresent(manyToManyAnnotation())) {
+                expectedAnnotations.add(manyToManyAnnotation());
+                if (field.getAnnotation(ManyToMany.class).mappedBy().isEmpty()) {
+                    expectedAnnotations.add(joinTableAnnotation());
+                }
 			}
 
 			assertFalse(expectedAnnotations.isEmpty(), "Min one Annotation needed for Field " + field.getName());

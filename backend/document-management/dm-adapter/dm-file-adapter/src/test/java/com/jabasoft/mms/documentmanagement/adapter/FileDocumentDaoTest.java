@@ -1,26 +1,21 @@
 package com.jabasoft.mms.documentmanagement.adapter;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import com.jabasoft.mms.documentmanagement.domain.model.Document;
+import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
+import com.jabasoft.mms.documentmanagement.domain.model.FileType;
+import com.jabasoft.mms.settings.api.SettingsPort;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.mockito.MockedStatic;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
-import com.jabasoft.mms.documentmanagement.domain.model.Document;
-import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
-import com.jabasoft.mms.documentmanagement.domain.model.FileType;
-import com.jabasoft.mms.settings.api.SettingsPort;
-import org.mockito.MockedStatic;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class FileDocumentDaoTest {
 
@@ -170,6 +165,21 @@ class FileDocumentDaoTest {
 		assertTrue(exists);
 	}
 
+    @Test
+    void testSetCustomerThrowsUnsupportedOperationException() {
+
+        FileDocumentDao documentDao = new FileDocumentDao(mock(SettingsPort.class));
+
+        assertThrows(UnsupportedOperationException.class, () -> documentDao.setCustomer(12L, 43L));
+    }
+
+    @Test
+    void testResetCustomerThrowsUnsupportedOperationException() {
+
+        FileDocumentDao documentDao = new FileDocumentDao(mock(SettingsPort.class));
+
+        assertThrows(UnsupportedOperationException.class, () -> documentDao.resetCustomer(12L));
+    }
 
 	Document getDocument(String relativePath, String documentName, FileType fileType){
 

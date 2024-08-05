@@ -1,11 +1,8 @@
 package com.jabasoft.mms.documentmanagement.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "DOCUMENTS")
@@ -27,6 +24,33 @@ public class JpaDocument {
 
 	@Column(name = "CONTENT")
 	private byte[] content;
+
+    @Column(name = "CUSTOMER_ID")
+    private Long customerId;
+
+    @ManyToMany
+    @JoinTable(
+            name = "DOCUMENT_TAGS",
+            joinColumns = @JoinColumn(name = "DOCUMENT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "TAG_ID")
+    )
+    private Set<JpaTag> tags;
+
+    public Set<JpaTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<JpaTag> tags) {
+        this.tags = tags;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
 
 	public Long getDocumentId() {
 

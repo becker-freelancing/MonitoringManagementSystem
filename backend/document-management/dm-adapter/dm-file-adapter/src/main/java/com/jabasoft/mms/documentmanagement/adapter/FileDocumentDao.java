@@ -1,5 +1,15 @@
 package com.jabasoft.mms.documentmanagement.adapter;
 
+import com.jabasoft.mms.documentmanagement.domain.model.Document;
+import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
+import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
+import com.jabasoft.mms.documentmanagement.domain.model.FileType;
+import com.jabasoft.mms.documentmanagement.domain.service.filetype.FileTypeUtilImpl;
+import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
+import com.jabasoft.mms.settings.api.SettingsPort;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,17 +19,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.jabasoft.mms.documentmanagement.domain.model.Document;
-import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
-import com.jabasoft.mms.documentmanagement.domain.model.FileType;
-import com.jabasoft.mms.documentmanagement.domain.service.filetype.FileTypeUtilImpl;
-import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
-import com.jabasoft.mms.settings.api.SettingsPort;
 
 @Component
 public class FileDocumentDao implements DocumentRepository {
@@ -122,6 +121,16 @@ public class FileDocumentDao implements DocumentRepository {
 		Path path = Path.of(documentRootPath.toString(), document.getPathToDocumentFromRoot().getFilePath(), document.getDocumentName() + "." + document.getFileType().getFileEnding());
 		return Files.exists(path);
 	}
+
+    @Override
+    public Optional<Document> setCustomer(Long documentId, Long customerId) {
+        throw new UnsupportedOperationException("Adding Customer is not supported");
+    }
+
+    @Override
+    public Optional<Document> resetCustomer(Long documentId) {
+        throw new UnsupportedOperationException("Resetting Customer is not supported");
+    }
 
 	@Override
 	public Optional<Document> deleteDocument(FilePath path, String name) {

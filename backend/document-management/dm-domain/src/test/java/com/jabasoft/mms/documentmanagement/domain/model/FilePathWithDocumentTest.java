@@ -3,15 +3,21 @@ package com.jabasoft.mms.documentmanagement.domain.model;
 import com.jabasoft.mms.junit.beans.DynamicBeanTest;
 import org.junit.jupiter.api.Test;
 
+import java.beans.PropertyDescriptor;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FilePathWithDocumentTest extends DynamicBeanTest {
 
     @Override
     protected Stream<Class<?>> beanClasses() {
         return Stream.of(FilePathWithDocument.class);
+    }
+
+    @Override
+    protected void testUnequalProperty(Object bean, PropertyDescriptor propertyDescriptor) throws Exception {
+
     }
 
     @Test

@@ -26,6 +26,10 @@
 }
 
 .file-explorer-file-name {
+  width: 300px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   margin: auto 0 auto 50px;
 }
 

@@ -1,11 +1,5 @@
 package com.jabasoft.mms.junit.beans;
 
-import static java.util.Objects.requireNonNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -15,6 +9,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
+
+import static java.util.Objects.requireNonNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("java:S112")
 public abstract class BeanTestBase {
@@ -46,6 +43,9 @@ public abstract class BeanTestBase {
 		ValueGenerator valueGenerator = valueGeneratorRegistry.getValueGenerator(propertyType);
 		Object propertyValue = valueGenerator.getValue();
 
+		if (setter == null) {
+			return;
+		}
 		setter.invoke(bean, propertyValue);
 		assertEquals(propertyValue, getter.invoke(bean), () -> "setAndGet: " + propertyDescriptor.getName());
 	}
@@ -120,7 +120,7 @@ public abstract class BeanTestBase {
 		}
 	}
 
-	private void testUnequalProperty(Object bean, PropertyDescriptor propertyDescriptor) throws Exception {
+	protected void testUnequalProperty(Object bean, PropertyDescriptor propertyDescriptor) throws Exception {
 
 		testPropertyUnequalToNull(bean, propertyDescriptor);
 		testPropertyUnequalToDifferentValue(bean, propertyDescriptor);
@@ -200,7 +200,9 @@ public abstract class BeanTestBase {
 			Object propertyValue = readMethod.invoke(bean);
 
 			Method writeMethod = propertyDescriptor.getWriteMethod();
-			writeMethod.invoke(clone, propertyValue);
+			if (writeMethod != null) {
+				writeMethod.invoke(clone, propertyValue);
+			}
 		}
 
 		return clone;

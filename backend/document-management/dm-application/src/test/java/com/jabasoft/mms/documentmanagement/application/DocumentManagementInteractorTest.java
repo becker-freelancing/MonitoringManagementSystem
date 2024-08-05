@@ -3,10 +3,8 @@ package com.jabasoft.mms.documentmanagement.application;
 import com.jabasoft.mms.documentmanagement.domain.model.Document;
 import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
 import com.jabasoft.mms.documentmanagement.domain.model.FileType;
-import com.jabasoft.mms.documentmanagement.dto.DocumentDto;
-import com.jabasoft.mms.documentmanagement.dto.DocumentWithoutContentDto;
-import com.jabasoft.mms.documentmanagement.dto.FilePathDto;
-import com.jabasoft.mms.documentmanagement.dto.FileTypeDto;
+import com.jabasoft.mms.documentmanagement.domain.model.Tag;
+import com.jabasoft.mms.documentmanagement.dto.*;
 import com.jabasoft.mms.documentmanagement.filepath.spi.FilePathRepositoryWrapper;
 import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,8 +20,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class DocumentManagementInteractorTest {
-	
-	DocumentRepository documentRepository;
+
+
+    DocumentRepository documentRepository;
 	DocumentManagementInteractor interactor;
 	
 	@BeforeEach
@@ -150,6 +150,96 @@ class DocumentManagementInteractorTest {
 
 		assertFalse(exists);
 	}
+
+    @Test
+    void testSetCustomerAddsCustomer() {
+        Document expected = getDocument();
+        expected.setCustomerId(12L);
+        when(documentRepository.setCustomer(34L, 12L)).thenReturn(Optional.of(expected));
+
+        Optional<DocumentDto> actual = interactor.setCustomer(34L, 12L);
+
+        assertTrue(actual.isPresent());
+        assertEquals(12L, actual.get().getCustomerId());
+    }
+
+    @Test
+    void testResetCustomerAddsCustomer() {
+        Document expected = getDocument();
+        expected.setCustomerId(null);
+        when(documentRepository.resetCustomer(34L)).thenReturn(Optional.of(expected));
+
+        Optional<DocumentDto> actual = interactor.resetCustomer(34L);
+
+        assertTrue(actual.isPresent());
+        assertNull(actual.get().getCustomerId());
+    }
+
+    @Test
+    void testAddTagReturnsEmptyOptionalWhenNoDocumentExists() {
+        when(documentRepository.getDocument(12L)).thenReturn(Optional.empty());
+
+        Optional<DocumentDto> actual = interactor.addTag(12L, new TagDto("Test"));
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    void testAddTagReturnsDocumentWithTagWhenDocumentExists() {
+        when(documentRepository.getDocument(12L)).thenReturn(Optional.of(getDocument()));
+        when(documentRepository.saveDocument(any())).thenAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            return Optional.of((Document) args[0]);
+        });
+
+        Optional<DocumentDto> actual = interactor.addTag(12L, new TagDto("Test"));
+
+        assertTrue(actual.isPresent());
+        assertEquals(Set.of(new TagDto("Test")), actual.get().getTags());
+    }
+
+    @Test
+    void testRemoveTagReturnsEmptyOptionalWhenNoDocumentExists() {
+        when(documentRepository.getDocument(12L)).thenReturn(Optional.empty());
+
+        Optional<DocumentDto> actual = interactor.removeTag(12L, new TagDto("Test"));
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    void testRemoveTagReturnsDocumentWithoutTagsWhenDocumentHasOnlyOneTag() {
+        Document document = getDocument();
+        document.addTag(new Tag("Test"));
+        when(documentRepository.getDocument(12L)).thenReturn(Optional.of(document));
+        when(documentRepository.saveDocument(any())).thenAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            return Optional.of((Document) args[0]);
+        });
+
+
+        Optional<DocumentDto> actual = interactor.removeTag(12L, new TagDto("Test"));
+
+        assertTrue(actual.isPresent());
+        assertEquals(Set.of(), actual.get().getTags());
+    }
+
+    @Test
+    void testRemoveTagReturnsDocumentWithoutTagWhenDocumentHasMultipleTag() {
+        Document document = getDocument();
+        document.addTag(new Tag("Test"));
+        document.addTag(new Tag("Test2"));
+        when(documentRepository.getDocument(12L)).thenReturn(Optional.of(document));
+        when(documentRepository.saveDocument(any())).thenAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            return Optional.of((Document) args[0]);
+        });
+
+        Optional<DocumentDto> actual = interactor.removeTag(12L, new TagDto("Test"));
+
+        assertTrue(actual.isPresent());
+        assertEquals(Set.of(new TagDto("Test2")), actual.get().getTags());
+    }
 
 	public DocumentDto getDocumentDto(){
 

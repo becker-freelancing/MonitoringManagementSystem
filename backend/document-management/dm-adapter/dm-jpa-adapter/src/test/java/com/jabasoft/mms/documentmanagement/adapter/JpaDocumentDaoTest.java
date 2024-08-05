@@ -1,168 +1,251 @@
 package com.jabasoft.mms.documentmanagement.adapter;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.jabasoft.mms.documentmanagement.MmsDaoImplTest;
 import com.jabasoft.mms.documentmanagement.domain.model.Document;
 import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
 import com.jabasoft.mms.documentmanagement.domain.model.FileType;
+import com.jabasoft.mms.documentmanagement.domain.model.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @MmsDaoImplTest
 class JpaDocumentDaoTest {
 
-	JpaDocumentDao documentDao;
+    JpaDocumentDao documentDao;
 
-	@Autowired
-	public JpaDocumentDaoTest(JpaDocumentDao documentDao) {
+    @Autowired
+    public JpaDocumentDaoTest(JpaDocumentDao documentDao) {
 
-		this.documentDao = documentDao;
-	}
+        this.documentDao = documentDao;
+    }
 
-	@Test
-	void testGetAllDocumentsWithNoExistingDocumentsReturnsEmptyList(){
-		
-		List<Document> documents = documentDao.getAllDocuments();
+    @Test
+    void testGetAllDocumentsWithNoExistingDocumentsReturnsEmptyList() {
 
-		assertEquals(0, documents.size());
-	}
+        List<Document> documents = documentDao.getAllDocuments();
 
-	@Test
-	void testGetAllDocumentsWithExistingDocumentsReturnsListWithDocuments(){
-		
-		documentDao.saveDocument(getDocument("", "test", FileType.PDF));
-		documentDao.saveDocument(getDocument("test", "test", FileType.DOCX));
-		documentDao.saveDocument(getDocument("a\\b", "test45", FileType.PNG));
-		documentDao.saveDocument(getDocument("a\\b\\c", "abababa", FileType.PDF));
+        assertEquals(0, documents.size());
+    }
 
-		List<Document> documents = documentDao.getAllDocuments();
+    @Test
+    void testGetAllDocumentsWithExistingDocumentsReturnsListWithDocuments() {
 
-		assertEquals(4, documents.size());
-		assertArrayEquals(new byte[]{12, 34, 54, 32}, documents.get(0).getContent());
-	}
+        List<Document> expected = List.of(
+                getDocument("", "test", FileType.PDF),
+                getDocument("test", "test", FileType.DOCX),
+                getDocument("a\\b", "test45", FileType.PNG),
+                getDocument("a\\b\\c", "abababa", FileType.PDF),
+                getDocumentWithCustomer("a\\b", "adjkf", FileType.DOCX, 12L),
+                getDocumentWithCustomer("a\\b\\v", "adjkf", FileType.AI, 12L),
+                getDocumentWithTags("test\\a", "ajdf", FileType.DOC, Set.of("a", "b", "c")),
+                getDocumentWithCustomerIdAndTags("a\\test", "oanfa", FileType._7Z, 123L, Set.of("a", "b", "d", "e")));
 
-	@Test
-	void testGetDocumentReturnsEmptyOptionalWhenNoDocumentExists(){
+        expected.forEach(documentDao::saveDocument);
 
-		documentDao.saveDocument(getDocument("", "test", FileType.PDF));
-		documentDao.saveDocument(getDocument("test", "test", FileType.DOCX));
-		Optional<Document> saved = documentDao.saveDocument(getDocument("a\\b", "test45", FileType.PNG));
-		documentDao.saveDocument(getDocument("a\\b\\c", "abababa", FileType.PDF));
+        List<Document> actual = documentDao.getAllDocuments();
 
-		assertTrue(saved.isPresent());
+        assertEquals(expected.size(), actual.size());
 
-		Optional<Document> document = documentDao.getDocument(saved.get().getDocumentId());
+        for (int i = 0; i < expected.size(); i++) {
+            Document doc1 = expected.get(i);
+            Document doc2 = actual.get(i);
+            assertTrue(equalsWithoutId(doc1, doc2), "\n" + doc1 + "\n" + doc2);
+        }
+    }
 
-		assertTrue(document.isPresent());
-		Document actual = document.get();
+    @Test
+    void testGetDocumentReturnsEmptyOptionalWhenNoDocumentExists() {
 
-		assertEquals("a\\b", actual.getPathToDocumentFromRoot().getFilePath(), "FilePath");
-		assertEquals("test45", actual.getDocumentName(), "DocumentName");
-		assertEquals(FileType.PNG, actual.getFileType(), "FileType");
-		assertEquals(saved.get().getDocumentId(), actual.getDocumentId(), "DocumentId");
-		assertArrayEquals(new byte[]{12, 34, 54, 32}, actual.getContent(), "Content");
-	}
+        documentDao.saveDocument(getDocument("", "test", FileType.PDF));
+        documentDao.saveDocument(getDocument("test", "test", FileType.DOCX));
+        Optional<Document> saved = documentDao.saveDocument(getDocument("a\\b", "test45", FileType.PNG));
+        documentDao.saveDocument(getDocument("a\\b\\c", "abababa", FileType.PDF));
 
-	@Test
-	void testGetDocumentReturnsOptionalWithDocumentIfDocumentExists(){
+        assertTrue(saved.isPresent());
 
-		Optional<Document> document = documentDao.getDocument(12L);
+        Optional<Document> document = documentDao.getDocument(saved.get().getDocumentId());
 
-		assertTrue(document.isEmpty());
-	}
+        assertTrue(document.isPresent());
+        Document actual = document.get();
 
-	@Test
-	void testSaveDocumentOverridesDocumentIfDocumentExists(){
-		
-		Document document = getDocument("a\\b\\c", "abababa", FileType.PDF);
+        assertTrue(equalsWithoutId(saved.get(), actual), "\n" + saved.get() + "\n" + actual);
+    }
 
-		Optional<Document> saved = documentDao.saveDocument(document);
-		assertTrue(saved.isPresent());
+    @Test
+    void testGetDocumentReturnsOptionalWithDocumentIfDocumentExists() {
 
-		Document overrideDocument = saved.get();
-		overrideDocument.setContent(new byte[]{12, 12, 12});
-		Optional<Document> actual = documentDao.saveDocument(overrideDocument);
+        Optional<Document> document = documentDao.getDocument(12L);
 
-		assertTrue(actual.isPresent());
-		assertArrayEquals(new byte[]{12, 12, 12}, actual.get().getContent());
-	}
+        assertTrue(document.isEmpty());
+    }
 
-	@Test
-	void testSaveDocumentReturnsEmptyOptionalOnNullParameter(){
+    @Test
+    void testSaveDocumentOverridesDocumentIfDocumentExists() {
 
-		Optional<Document> actual = documentDao.saveDocument(null);
+        Document document = getDocument("a\\b\\c", "abababa", FileType.PDF);
 
-		assertTrue(actual.isEmpty());
-	}
+        Optional<Document> saved = documentDao.saveDocument(document);
+        assertTrue(saved.isPresent());
 
-	@Test
-	void testDeleteDocumentWithNotExistingFilePathReturnsEmptyOptional(){
+        Document overrideDocument = saved.get();
+        overrideDocument.setContent(new byte[]{12, 12, 12});
+        Optional<Document> actual = documentDao.saveDocument(overrideDocument);
 
-		Optional<Document> deleted = documentDao.deleteDocument(new FilePath("/test/"), "test");
+        assertTrue(actual.isPresent());
+        assertTrue(equalsWithoutId(overrideDocument, actual.get()), "\n" + overrideDocument + "\n" + actual.get());
+    }
 
-		assertTrue(deleted.isEmpty());
-	}
+    @Test
+    void testSaveDocumentReturnsEmptyOptionalOnNullParameter() {
 
-	@Test
-	void testExistingDocumentWithOtherDocumentsInFileReturnsDeletedDocument(){
-		documentDao.saveDocument(getDocument("", "test", FileType.PDF));
-		documentDao.saveDocument(getDocument("test", "test", FileType.DOCX));
-		documentDao.saveDocument(getDocument("a\\b", "test45", FileType.PNG));
-		documentDao.saveDocument(getDocument("a\\b", "abababa", FileType.PDF));
+        Optional<Document> actual = documentDao.saveDocument(null);
 
-		Optional<Document> deleted = documentDao.deleteDocument(new FilePath("a\\b"), "test45");
+        assertTrue(actual.isEmpty());
+    }
 
-		assertTrue(deleted.isPresent());
+    @Test
+    void testDeleteDocumentWithNotExistingFilePathReturnsEmptyOptional() {
 
-		Document actual = deleted.get();
+        Optional<Document> deleted = documentDao.deleteDocument(new FilePath("/test/"), "test");
 
-		assertEquals("a\\b", actual.getPathToDocumentFromRoot().getFilePath(), "FilePath");
-		assertEquals("test45", actual.getDocumentName(), "DocumentName");
-	}
+        assertTrue(deleted.isEmpty());
+    }
 
+    @Test
+    void testExistingDocumentWithOtherDocumentsInFileReturnsDeletedDocument() {
+        documentDao.saveDocument(getDocument("", "test", FileType.PDF));
+        documentDao.saveDocument(getDocument("test", "test", FileType.DOCX));
+        documentDao.saveDocument(getDocument("a\\b", "test45", FileType.PNG));
+        documentDao.saveDocument(getDocument("a\\b", "abababa", FileType.PDF));
 
-	@Test
-	void testExistsDocumentReturnsFalseWhenDocumentDoesNotExist(){
+        Optional<Document> deleted = documentDao.deleteDocument(new FilePath("a\\b"), "test45");
 
-		boolean exists = documentDao.existsDocument(getDocument("root/test", "Test", FileType.PDF));
+        assertTrue(deleted.isPresent());
 
-		assertFalse(exists);
-	}
+        Document actual = deleted.get();
 
-	@Test
-	void testExistsDocumentReturnsTrueWhenDocumentDoesExist(){;
-
-		Document test = getDocument("root/test", "Test", FileType.PDF);
-		Optional<Document> saved = documentDao.saveDocument(test);
-
-		assertTrue(saved.isPresent());
-
-		boolean exists = documentDao.existsDocument(test);
-
-		assertTrue(exists);
-	}
+        assertEquals("a\\b", actual.getPathToDocumentFromRoot().getFilePath(), "FilePath");
+        assertEquals("test45", actual.getDocumentName(), "DocumentName");
+    }
 
 
-	Document getDocument(String relativePath, String documentName, FileType fileType){
+    @Test
+    void testExistsDocumentReturnsFalseWhenDocumentDoesNotExist() {
 
-		Document document = new Document();
+        boolean exists = documentDao.existsDocument(getDocument("root/test", "Test", FileType.PDF));
 
-		document.setDocumentName(documentName);
-		document.setFileType(fileType);
-		document.setContent(new byte[]{12, 34, 54, 32});
-		document.setPathToDocumentFromRoot(new FilePath(relativePath));
+        assertFalse(exists);
+    }
 
-		return document;
-	}
+    @Test
+    void testExistsDocumentReturnsTrueWhenDocumentDoesExist() {
+
+        Document test = getDocument("root/test", "Test", FileType.PDF);
+        Optional<Document> saved = documentDao.saveDocument(test);
+
+        assertTrue(saved.isPresent());
+
+        boolean exists = documentDao.existsDocument(test);
+
+        assertTrue(exists);
+    }
+
+    @Test
+    void testSetCustomerOnNonExistingDocumentReturnsEmptyOptional() {
+
+        Optional<Document> actual = documentDao.setCustomer(398347L, 12L);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    void testSetCustomerOnExistingDocumentSetsCustomer() {
+
+        Optional<Document> savedWithoutCustomer = documentDao.saveDocument(getDocument("a\\b", "test", FileType.PNG));
+
+        assertTrue(savedWithoutCustomer.isPresent());
+        assertNull(savedWithoutCustomer.get().getCustomerId());
+
+        Optional<Document> withCustomer = documentDao.setCustomer(savedWithoutCustomer.get().getDocumentId(), 12L);
+
+        assertTrue(withCustomer.isPresent());
+        assertEquals(12L, withCustomer.get().getCustomerId());
+    }
+
+    @Test
+    void testResetCustomerOnNonExistingDocumentReturnsEmptyOptional() {
+
+        Optional<Document> actual = documentDao.resetCustomer(398347L);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    void testResetCustomerOnExistingDocumentResetsCustomer() {
+        Optional<Document> savedWithoutCustomer = documentDao.saveDocument(getDocumentWithCustomer("a\\b", "test", FileType.PNG, 12L));
+
+        assertTrue(savedWithoutCustomer.isPresent());
+        assertEquals(12L, savedWithoutCustomer.get().getCustomerId());
+
+        Optional<Document> withCustomer = documentDao.resetCustomer(savedWithoutCustomer.get().getDocumentId());
+
+        assertTrue(withCustomer.isPresent());
+        assertNull(withCustomer.get().getCustomerId());
+    }
+
+
+    Document getDocument(String relativePath, String documentName, FileType fileType) {
+
+        Document document = new Document();
+
+        document.setDocumentName(documentName);
+        document.setFileType(fileType);
+        document.setContent(new byte[]{12, 34, 54, 32});
+        document.setPathToDocumentFromRoot(new FilePath(relativePath));
+
+        return document;
+    }
+
+    Document getDocumentWithCustomer(String relativePath, String documentName, FileType fileType, Long customerId) {
+
+        Document document = getDocument(relativePath, documentName, fileType);
+
+        document.setCustomerId(customerId);
+
+        return document;
+    }
+
+    Document getDocumentWithTags(String relativePath, String documentName, FileType fileType, Set<String> tags) {
+
+        Document document = getDocument(relativePath, documentName, fileType);
+
+        document.setTags(tags.stream().map(Tag::new).collect(Collectors.toSet()));
+
+        return document;
+    }
+
+    Document getDocumentWithCustomerIdAndTags(String relativePath, String documentName, FileType fileType, Long customerId, Set<String> tags) {
+
+        Document document = getDocumentWithCustomer(relativePath, documentName, fileType, customerId);
+
+        document.setTags(tags.stream().map(Tag::new).collect(Collectors.toSet()));
+
+        return document;
+    }
+
+    public boolean equalsWithoutId(Document document1, Document document2) {
+
+        return Objects.equals(document1.getPathToDocumentFromRoot(), document2.getPathToDocumentFromRoot())
+                && Objects.equals(document1.getDocumentName(), document2.getDocumentName())
+                && Objects.equals(document1.getFileType(), document2.getFileType())
+                && Objects.equals(document1.getCustomerId(), document2.getCustomerId())
+                && Objects.equals(document1.getTags(), document2.getTags())
+                && Arrays.equals(document1.getContent(), document2.getContent());
+    }
 
 }

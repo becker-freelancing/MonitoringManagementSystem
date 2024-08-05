@@ -1,12 +1,12 @@
 package com.jabasoft.mms.documentmanagement.spi;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.jabasoft.mms.documentmanagement.domain.model.Document;
 import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
 import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class DocumentRepositoryWrapper implements DocumentRepository{
 
@@ -60,6 +60,16 @@ public class DocumentRepositoryWrapper implements DocumentRepository{
 	@Override
 	public boolean existsDocument(DocumentWithoutContent document) {
 		return defaultDocumentRepository.existsDocument(document);
+	}
+
+	@Override
+	public Optional<Document> setCustomer(Long documentId, Long customerId) {
+		return defaultDocumentRepository.setCustomer(documentId, customerId);
+	}
+
+	@Override
+	public Optional<Document> resetCustomer(Long documentId) {
+		return defaultDocumentRepository.resetCustomer(documentId);
 	}
 
 

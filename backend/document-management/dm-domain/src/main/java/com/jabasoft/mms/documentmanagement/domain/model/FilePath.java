@@ -15,6 +15,16 @@ public class FilePath {
 
 	}
 
+	public String getFilePath() {
+
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+
+		this.filePath = transformFilePath(filePath);
+	}
+
 	public FilePath getParent() {
 		if (new FilePath("root").equals(this)) {
 			return this;
@@ -26,16 +36,6 @@ public class FilePath {
 		}
 
 		return new FilePath(parent.toString());
-	}
-
-	public String getFilePath() {
-
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-
-		this.filePath = transformFilePath(filePath);
 	}
 
 	private String transformFilePath(String filePath){

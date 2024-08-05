@@ -1,6 +1,9 @@
 package com.jabasoft.mms.documentmanagement.domain.service.filestructure;
 
-import com.jabasoft.mms.documentmanagement.domain.model.*;
+import com.jabasoft.mms.documentmanagement.domain.model.FilePath;
+import com.jabasoft.mms.documentmanagement.domain.model.FilePathWithDocument;
+import com.jabasoft.mms.documentmanagement.domain.model.FileStructure;
+import com.jabasoft.mms.documentmanagement.domain.model.FileStructureWithDocuments;
 import com.jabasoft.mms.documentmanagement.domain.model.error.FilePathDoesNotExistException;
 import com.jabasoft.mms.documentmanagement.domain.service.filepath.FilePathServiceImpl;
 import org.springframework.stereotype.Service;
@@ -14,7 +17,6 @@ public class FileStructureServiceImpl implements FileStructureService {
     @Override
     public FileStructureWithDocuments addDocument(FileStructureWithDocuments fileStructure, FilePathWithDocument filePathWithDocument){
         FilePathServiceImpl filePathService = new FilePathServiceImpl();
-
         List<FilePath> splitedFilePath = filePathService.splitPath(filePathWithDocument);
 
         FileStructureWithDocuments parent = fileStructure;

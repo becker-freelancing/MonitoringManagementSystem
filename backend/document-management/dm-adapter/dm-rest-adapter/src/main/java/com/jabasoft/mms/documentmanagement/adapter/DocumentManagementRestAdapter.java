@@ -3,6 +3,7 @@ package com.jabasoft.mms.documentmanagement.adapter;
 import com.jabasoft.mms.documentmanagement.api.DocumentManagementPort;
 import com.jabasoft.mms.documentmanagement.dto.DocumentDto;
 import com.jabasoft.mms.documentmanagement.dto.DocumentWithoutContentDto;
+import com.jabasoft.mms.documentmanagement.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,5 +60,38 @@ public class DocumentManagementRestAdapter {
     public ResponseEntity<Boolean> existsDocument(@RequestBody DocumentWithoutContentDto document) {
         boolean exists = documentManagementPort.existsDocument(document);
         return ResponseEntity.ok(exists);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/customer")
+    public ResponseEntity<DocumentDto> setCustomer(@RequestBody SetCustomerRequestBody body) {
+
+        Optional<DocumentDto> documentDto = documentManagementPort.setCustomer(body.getDocumentId(), body.getCustomerId());
+
+        return documentDto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @DeleteMapping("/customer")
+    public ResponseEntity<DocumentDto> resetCustomer(@RequestBody Long documentId) {
+        Optional<DocumentDto> documentDto = documentManagementPort.resetCustomer(documentId);
+
+        return documentDto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/tags")
+    public ResponseEntity<DocumentDto> addTag(@RequestBody AddDeleteTagRequestBody body) {
+        Optional<DocumentDto> documentDto = documentManagementPort.addTag(body.getDocumentId(), new TagDto(body.getTag()));
+
+        return documentDto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @DeleteMapping("/tags")
+    public ResponseEntity<DocumentDto> removeTag(@RequestBody AddDeleteTagRequestBody body) {
+        Optional<DocumentDto> documentDto = documentManagementPort.removeTag(body.getDocumentId(), new TagDto(body.getTag()));
+
+        return documentDto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 }

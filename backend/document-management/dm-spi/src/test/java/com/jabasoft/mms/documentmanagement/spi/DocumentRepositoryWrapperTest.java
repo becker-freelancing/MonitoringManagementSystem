@@ -1,17 +1,14 @@
 package com.jabasoft.mms.documentmanagement.spi;
 
 import com.jabasoft.mms.documentmanagement.domain.model.DocumentWithoutContent;
-import jakarta.persistence.Table;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.opentest4j.AssertionFailedError;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -150,6 +147,48 @@ class DocumentRepositoryWrapperTest {
         DocumentRepositoryWrapper repository = new DocumentRepositoryWrapper(List.of(repo2), repo1);
 
         repository.existsDocument(new DocumentWithoutContent());
+
+        assertEquals(1, methodCount.get());
+    }
+
+    @Test
+    void testSetCustomerIsOnlyExecutedOnDefaultRepository() {
+
+        DocumentRepository repo1 = mock(DocumentRepo1.class);
+        DocumentRepository repo2 = mock(DocumentRepo2.class);
+
+        AtomicInteger methodCount = new AtomicInteger(0);
+
+        doAnswer(invocationOnMock -> {
+            methodCount.getAndIncrement();
+            return null;
+        }).when(repo1).setCustomer(any(), any());
+        when(repo2.setCustomer(any(), any())).thenThrow(AssertionFailedError.class);
+
+        DocumentRepositoryWrapper repository = new DocumentRepositoryWrapper(List.of(repo2), repo1);
+
+        repository.setCustomer(12L, 43L);
+
+        assertEquals(1, methodCount.get());
+    }
+
+    @Test
+    void testResetCustomerIsOnlyExecutedOnDefaultRepository() {
+
+        DocumentRepository repo1 = mock(DocumentRepo1.class);
+        DocumentRepository repo2 = mock(DocumentRepo2.class);
+
+        AtomicInteger methodCount = new AtomicInteger(0);
+
+        doAnswer(invocationOnMock -> {
+            methodCount.getAndIncrement();
+            return null;
+        }).when(repo1).resetCustomer(any());
+        when(repo2.resetCustomer(any())).thenThrow(AssertionFailedError.class);
+
+        DocumentRepositoryWrapper repository = new DocumentRepositoryWrapper(List.of(repo2), repo1);
+
+        repository.resetCustomer(12L);
 
         assertEquals(1, methodCount.get());
     }
