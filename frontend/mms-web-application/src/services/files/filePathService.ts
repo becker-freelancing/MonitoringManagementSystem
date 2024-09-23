@@ -121,9 +121,9 @@ export class FilePathService {
         undefined
       );
     }
-    let tags = new Set<Tag>();
+    let tags: Tag[] = [];
     if (data.document.tags) {
-      data.document.tags.forEach(val => tags.add(new Tag(val.tag)));
+      data.document.tags.forEach(val => tags.push(new Tag(val.tag)));
     }
     let documentWithoutContent = new DocumentWithoutContent(
       new FilePath(data.document.pathToDocumentFromRoot.filePath),

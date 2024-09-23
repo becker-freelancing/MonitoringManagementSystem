@@ -1,17 +1,37 @@
 package com.jabasoft.mms.documentmanagement.entity;
 
+import java.util.Set;
+
 public class JpaDocumentWithoutContent {
 
     private Long documentId;
     private String pathToDocumentFromRoot;
     private String documentName;
     private String fileType;
+    private Set<JpaTag> tags;
+
+    public JpaDocumentWithoutContent(Long documentId, String pathToDocumentFromRoot, String documentName, String fileType, Set<JpaTag> tags) {
+        this.documentId = documentId;
+        this.pathToDocumentFromRoot = pathToDocumentFromRoot;
+        this.documentName = documentName;
+        this.fileType = fileType;
+        this.tags = tags;
+    }
+
+    public JpaDocumentWithoutContent(Long documentId, String pathToDocumentFromRoot, String documentName, String fileType, JpaTag tags) {
+        this.documentId = documentId;
+        this.pathToDocumentFromRoot = pathToDocumentFromRoot;
+        this.documentName = documentName;
+        this.fileType = fileType;
+        this.tags = Set.of(tags);
+    }
 
     public JpaDocumentWithoutContent(Long documentId, String pathToDocumentFromRoot, String documentName, String fileType) {
         this.documentId = documentId;
         this.pathToDocumentFromRoot = pathToDocumentFromRoot;
         this.documentName = documentName;
         this.fileType = fileType;
+        this.tags = Set.of();
     }
 
     public JpaDocumentWithoutContent(){}
@@ -46,5 +66,9 @@ public class JpaDocumentWithoutContent {
 
     public void setFileType(String fileType) {
         this.fileType = fileType;
+    }
+
+    public Set<JpaTag> getTags() {
+        return tags;
     }
 }

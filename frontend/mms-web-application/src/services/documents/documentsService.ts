@@ -114,9 +114,9 @@ export class DocumentsService {
   }
 
   private mapToDocument(data: DocumentResponseData) {
-    let tags = new Set<Tag>();
+    let tags: Tag[] = [];
     if (data.tags) {
-      data.tags.forEach(val => tags.add(this.mapToTag(val)));
+      data.tags.forEach(val => tags.push(this.mapToTag(val)));
     }
     return new Document(
       this.mapToFilePath(data.pathToDocumentFromRoot),
@@ -129,8 +129,8 @@ export class DocumentsService {
   }
 
   private mapToDocumentWithoutContent(data: DocumentWithoutContentResponseData) {
-    let tags = new Set<Tag>();
-    data.tags.forEach(val => tags.add(this.mapToTag(val)))
+    let tags: Tag[] = [];
+    data.tags.forEach(val => tags.push(this.mapToTag(val)))
     return new DocumentWithoutContent(
       this.mapToFilePath(data.pathToDocumentFromRoot),
       data.documentName,

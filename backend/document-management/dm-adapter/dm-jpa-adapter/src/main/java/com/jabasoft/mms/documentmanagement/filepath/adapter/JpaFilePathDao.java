@@ -1,17 +1,17 @@
 package com.jabasoft.mms.documentmanagement.filepath.adapter;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.jabasoft.mms.documentmanagement.domain.model.*;
 import com.jabasoft.mms.documentmanagement.domain.model.error.FileModificationException;
 import com.jabasoft.mms.documentmanagement.domain.model.error.FileModificationExceptionReason;
 import com.jabasoft.mms.documentmanagement.entity.JpaDocument;
 import com.jabasoft.mms.documentmanagement.entity.JpaDocumentWithoutContent;
+import com.jabasoft.mms.documentmanagement.entity.JpaTag;
+import com.jabasoft.mms.documentmanagement.filepath.spi.FilePathRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.jabasoft.mms.documentmanagement.filepath.spi.FilePathRepository;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class JpaFilePathDao implements FilePathRepository {
@@ -28,8 +28,8 @@ public class JpaFilePathDao implements FilePathRepository {
 	public Set<FilePath> findAllPaths() {
 
 		return filePathRepository.findAllPathsFromDocumentRootPath().stream()
-			.map(this::map)
-			.collect(Collectors.toSet());
+				.map(this::map)
+				.collect(Collectors.toSet());
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class JpaFilePathDao implements FilePathRepository {
 	@Override
 	public boolean hasPathChildren(FilePath path) {
 
-		Set<JpaDocumentWithoutContent> subPaths = filePathRepository.findPathLike(path.getFilePath() + "\\%");
+		Set<JpaDocumentWithoutContent> subPaths = filePathRepository.findPathLike(path.getFilePath() + "\\\\%");
 		Set<JpaDocumentWithoutContent> exactPaths = filePathRepository.findPathLike(path.getFilePath() + "%");
 
 		subPaths.addAll(exactPaths);
@@ -95,7 +95,7 @@ public class JpaFilePathDao implements FilePathRepository {
 					doc.setDocumentId(null);
 					doc.setFileType(null);
 					doc.setDocumentName(null);
-                })
+				})
 				.collect(Collectors.toSet());
 
 		exactPaths = exactPaths.stream()
@@ -129,7 +129,13 @@ public class JpaFilePathDao implements FilePathRepository {
 		document.setDocumentName(jpaDocument.getDocumentName());
 		document.setFileType(new FileType(jpaDocument.getFileType()));
 		document.setPathToDocumentFromRoot(new FilePath(jpaDocument.getPathToDocumentFromRoot()));
+		document.setTags(jpaDocument.getTags().stream().map(this::map).collect(Collectors.toSet()));
 
 		return document;
+	}
+
+
+	private Tag map(JpaTag jpaTag) {
+		return new Tag(jpaTag.getTag());
 	}
 }

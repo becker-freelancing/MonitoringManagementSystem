@@ -11,10 +11,10 @@
           <button (click)="addTag()" class="primary-button" id="add-tag-button">Hinzufügen</button>
         </div>
         <div class="horizontal-separator-big"></div>
-        <div *ngIf="documentWithoutContent.tags.size == 0">
+        <div *ngIf="documentWithoutContent.tags.length == 0">
           <p>Noch keine Tags an diesem Dokument</p>
         </div>
-        <div *ngIf="documentWithoutContent.tags.size > 0">
+        <div *ngIf="documentWithoutContent.tags.length > 0">
           <div *ngFor="let tag of documentWithoutContent.tags">
             {{ tag.tag }}
           </div>

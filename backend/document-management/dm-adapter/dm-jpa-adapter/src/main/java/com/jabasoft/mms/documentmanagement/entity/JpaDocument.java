@@ -28,7 +28,7 @@ public class JpaDocument {
     @Column(name = "CUSTOMER_ID")
     private Long customerId;
 
-    @ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "DOCUMENT_TAGS",
             joinColumns = @JoinColumn(name = "DOCUMENT_ID"),

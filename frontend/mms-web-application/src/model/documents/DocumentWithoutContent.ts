@@ -9,15 +9,15 @@ export class DocumentWithoutContent{
   fileType: FileType;
   documentId?: number;
   customerId?: number;
-  tags: Set<Tag>;
+  tags: Tag[];
 
 
-  constructor(pathToDocumentFromRoot: FilePath, documentName: string, fileType: FileType, documentId?: number, customerId?: number, tags?: Set<Tag>) {
+  constructor(pathToDocumentFromRoot: FilePath, documentName: string, fileType: FileType, documentId?: number, customerId?: number, tags?: Tag[]) {
     this.pathToDocumentFromRoot = pathToDocumentFromRoot;
     this.documentName = documentName;
     this.fileType = fileType;
     this.documentId = documentId;
     this.customerId = customerId;
-    this.tags = tags ? tags : new Set<Tag>();
+    this.tags = tags ? tags : [];
   }
 }

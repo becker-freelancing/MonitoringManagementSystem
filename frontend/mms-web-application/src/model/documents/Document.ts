@@ -8,7 +8,7 @@ export class Document extends DocumentWithoutContent {
   content: number[];
 
 
-  constructor(pathToDocumentFromRoot: FilePath, documentName: string, fileType: FileType, content: number[], documentId?: number, customerId?: number, tags?: Set<Tag>) {
+  constructor(pathToDocumentFromRoot: FilePath, documentName: string, fileType: FileType, content: number[], documentId?: number, customerId?: number, tags?: Tag[]) {
     super(pathToDocumentFromRoot, documentName, fileType, documentId, customerId, tags);
     this.content = content;
   }

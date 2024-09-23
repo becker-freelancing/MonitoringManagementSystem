@@ -3,9 +3,10 @@ package com.jabasoft.mms.documentmanagement.entity;
 import com.jabasoft.mms.junit.beans.DynamicBeanTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JpaDocumentWithoutContentTest extends DynamicBeanTest {
 
@@ -20,7 +21,8 @@ class JpaDocumentWithoutContentTest extends DynamicBeanTest {
                 12L,
                 "root/test",
                 "Test",
-                "PDF"
+                "PDF",
+                Set.of()
         );
 
         assertEquals(12L, document.getDocumentId());
