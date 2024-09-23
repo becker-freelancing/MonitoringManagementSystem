@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {CustomerManagementComponent} from "./main-ui/customer-management/customer-management.component";
 import {DashboardComponent} from "./main-ui/dashboard/dashboard.component";
 import {DocumentManagementComponent} from "./main-ui/document-management/document-management.component";
@@ -7,6 +7,7 @@ import {ProjectManagementComponent} from "./main-ui/project-management/project-m
 import {SettingsComponent} from "./main-ui/settings/settings.component";
 import {TodoManagementComponent} from "./main-ui/todo-management/todo-management.component";
 import {WorkingHoursManagementComponent} from "./main-ui/working-hours-management/working-hours-management.component";
+import {DocumentEditComponent} from "./main-ui/document-management/document-edit/document-edit.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -17,5 +18,6 @@ export const routes: Routes = [
   {path: 'todo-management', component: TodoManagementComponent},
   {path: 'working-hours-management', component: WorkingHoursManagementComponent},
   {path: 'project-management', component: ProjectManagementComponent},
-  {path: 'documents', component: DocumentManagementComponent}
+  {path: 'documents', component: DocumentManagementComponent},
+  {path: 'documents/edit/:id', component: DocumentEditComponent}
 ];

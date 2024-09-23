@@ -15,6 +15,8 @@
     <p class="file-explorer-file-type">{{ doc.document.document?.fileType?.fileEnding }}</p>
     <p class="file-explorer-file-name">{{ doc.document.document?.documentName }}</p>
     <div class="horizontal-div document-controls-container">
+      <img (click)="editDocument(doc)" alt="Edit" class="document-control" height="25"
+           ngSrc="assets/shared/edit-pencil.png" width="25">
       <img (click)="downloadDocument(doc)" alt="Download" class="document-control" height="25"
            ngSrc="assets/document-management/download.png" width="25">
     </div>

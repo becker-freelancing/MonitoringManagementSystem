@@ -47,6 +47,13 @@ public class DocumentManagementRestAdapter {
         return document.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("withoutcontent/{id}")
+    public ResponseEntity<DocumentWithoutContentDto> getDocumentWithoutContent(@PathVariable("id") Long documentId) {
+        Optional<DocumentWithoutContentDto> document = documentManagementPort.getDocumentWithoutContent(documentId);
+        return document.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
 
     @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping

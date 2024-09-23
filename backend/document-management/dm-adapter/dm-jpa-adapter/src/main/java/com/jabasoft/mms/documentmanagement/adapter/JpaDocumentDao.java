@@ -4,6 +4,7 @@ import com.jabasoft.mms.documentmanagement.domain.model.*;
 import com.jabasoft.mms.documentmanagement.entity.JpaDocument;
 import com.jabasoft.mms.documentmanagement.entity.JpaTag;
 import com.jabasoft.mms.documentmanagement.spi.DocumentRepository;
+import com.jabasoft.mms.documentmanagement.tag.adapter.SpringJpaTagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +17,13 @@ import java.util.stream.Collectors;
 public class JpaDocumentDao implements DocumentRepository {
 
 	private SpringJpaDocumentRepository documentRepository;
+	private SpringJpaTagRepository tagRepository;
 
 	@Autowired
-	public JpaDocumentDao(SpringJpaDocumentRepository documentRepository) {
+	public JpaDocumentDao(SpringJpaDocumentRepository documentRepository, SpringJpaTagRepository tagRepository) {
 
 		this.documentRepository = documentRepository;
+		this.tagRepository = tagRepository;
 	}
 
 	@Override
@@ -54,7 +57,9 @@ public class JpaDocumentDao implements DocumentRepository {
 			return Optional.empty();
 		}
 
-		JpaDocument saved = documentRepository.save(map(document));
+		JpaDocument doc = map(document);
+		tagRepository.saveAll(doc.getTags());
+		JpaDocument saved = documentRepository.save(doc);
 
 		return Optional.of(saved).map(this::map);
 	}

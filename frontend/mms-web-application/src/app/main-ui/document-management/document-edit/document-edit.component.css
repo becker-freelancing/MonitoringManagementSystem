@@ -1,0 +1,32 @@
+.edit-documents-wrapper-component {
+  margin: 10px;
+  height: 100%;
+}
+
+#edit-document-details {
+  width: 25%;
+}
+
+#edit-document-preview {
+  width: 75%;
+  text-align: center;
+  vertical-align: center;
+}
+
+#document-edit-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+#document-edit {
+  height: 100%;
+  width: 100%;
+}
+
+#add-tag-button {
+  width: 100px;
+}
+
+#add-tag-div {
+  padding-bottom: 8px;
+}

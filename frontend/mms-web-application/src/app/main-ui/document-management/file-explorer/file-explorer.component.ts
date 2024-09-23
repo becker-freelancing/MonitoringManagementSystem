@@ -4,6 +4,7 @@ import {FilePathWithDocument} from "../../../../model/files/filePathWithDocument
 import {FilePath} from "../../../../model/files/filePath";
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {DocumentsService} from "../../../../services/documents/documentsService";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-file-explorer',
@@ -32,7 +33,8 @@ export class FileExplorerComponent {
   childDocuments: FilePathWithDocumentAndId[] = []
 
   constructor(filePathService: FilePathService,
-              public documentService: DocumentsService) {
+              public documentService: DocumentsService,
+              private router: Router) {
     this.filePathService = filePathService;
     this.fetchElementsForDir("root")
   }
@@ -156,6 +158,10 @@ export class FileExplorerComponent {
 
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  }
+
+  editDocument(doc: FilePathWithDocumentAndId) {
+    this.router.navigate(['/documents/edit', doc.document.document?.documentId])
   }
 }
 

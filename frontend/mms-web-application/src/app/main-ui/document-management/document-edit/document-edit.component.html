@@ -1,0 +1,25 @@
+<div *ngIf="documentWithoutContent" id="document-edit-wrapper">
+  <div class="horizontal-div" id="document-edit">
+    <div class="edit-documents-wrapper-component" id="edit-document-preview">
+      Vorschau des Dokuments
+    </div>
+    <div class="edit-documents-wrapper-component" id="edit-document-details">
+      <div>
+        <h3>Tags</h3>
+        <div id="add-tag-div">
+          <input #addTagTagNameTextInput placeholder="Name des Tags" type="text">
+          <button (click)="addTag()" class="primary-button" id="add-tag-button">Hinzufügen</button>
+        </div>
+        <div class="horizontal-separator-big"></div>
+        <div *ngIf="documentWithoutContent.tags.size == 0">
+          <p>Noch keine Tags an diesem Dokument</p>
+        </div>
+        <div *ngIf="documentWithoutContent.tags.size > 0">
+          <div *ngFor="let tag of documentWithoutContent.tags">
+            {{ tag.tag }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

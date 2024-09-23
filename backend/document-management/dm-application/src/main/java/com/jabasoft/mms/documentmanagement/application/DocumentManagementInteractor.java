@@ -64,6 +64,14 @@ class DocumentManagementInteractor implements DocumentManagementPort {
 	}
 
 	@Override
+	public Optional<DocumentWithoutContentDto> getDocumentWithoutContent(Long documentId) {
+
+		Optional<Document> document = documentRepository.getDocument(documentId);
+
+		return document.map(this::map);
+	}
+
+	@Override
 	public Optional<DocumentWithoutContentDto> deleteDocument(FilePathDto path, String name) {
 
 		Optional<Document> deleted = documentRepository.deleteDocument(map(path), name);
@@ -135,6 +143,7 @@ class DocumentManagementInteractor implements DocumentManagementPort {
 
 		return documentDto;
 	}
+
 
 	private FilePathDto map(FilePath pathToDocumentFromRoot) {
 

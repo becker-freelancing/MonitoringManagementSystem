@@ -5,11 +5,13 @@ import {FilePath} from "../../model/files/filePath";
 import {FilePathWithDocument} from "../../model/files/filePathWithDocument";
 import {DocumentWithoutContent} from "../../model/documents/DocumentWithoutContent";
 import {FileType} from "../../model/files/fileType";
+import {Tag} from "../../model/documents/tag";
+import {DocumentWithoutContentResponseData} from "../documents/documentsService";
 
 @Injectable({
   providedIn: 'root'
 })
-export class FilePathService{
+export class FilePathService {
 
   httpClient: HttpClient;
 
@@ -18,10 +20,10 @@ export class FilePathService{
     this.httpClient = new HttpClient();
   }
 
-  getFileStructure(onSuccess: (fileStructure: FileStructure) => void, onError?: (errorCode: number) => void){
+  getFileStructure(onSuccess: (fileStructure: FileStructure) => void, onError?: (errorCode: number) => void) {
     this.httpClient.get('files/paths/filestructurewithchildren').then(r => {
-      if(r.status != 200){
-        if(onError){
+      if (r.status != 200) {
+        if (onError) {
           onError(r.status);
         }
       }
@@ -34,10 +36,10 @@ export class FilePathService{
     })
   }
 
-  createFileStructure(path: FilePath, onSuccess: (fileStructure: FileStructure) => void, onError?: (errorCode: number) => void){
+  createFileStructure(path: FilePath, onSuccess: (fileStructure: FileStructure) => void, onError?: (errorCode: number) => void) {
     this.httpClient.post('files/paths/filestructure', path).then(r => {
-      if(r.status != 200){
-        if(onError){
+      if (r.status != 200) {
+        if (onError) {
           onError(r.status);
         }
       }
@@ -50,10 +52,10 @@ export class FilePathService{
     })
   }
 
-  deleteFileStructure(path: FilePath, onSuccess: (fileStructure: FileStructure) => void, onError?: (errorCode: number) => void){
+  deleteFileStructure(path: FilePath, onSuccess: (fileStructure: FileStructure) => void, onError?: (errorCode: number) => void) {
     this.httpClient.delete('files/paths/filestructure', path).then(r => {
-      if(r.status != 200){
-        if(onError){
+      if (r.status != 200) {
+        if (onError) {
           onError(r.status);
         }
       }
@@ -66,10 +68,10 @@ export class FilePathService{
     })
   }
 
-  deleteFileStructureWithChildren(path: FilePath, onSuccess: (fileStructure: FileStructure) => void, onError?: (errorCode: number) => void){
+  deleteFileStructureWithChildren(path: FilePath, onSuccess: (fileStructure: FileStructure) => void, onError?: (errorCode: number) => void) {
     this.httpClient.post('files/paths/filestructurewithchildren', path).then(r => {
-      if(r.status != 200){
-        if(onError){
+      if (r.status != 200) {
+        if (onError) {
           onError(r.status);
         }
       }
@@ -82,17 +84,17 @@ export class FilePathService{
     })
   }
 
-  getChildrenFromPath(path: FilePath, onSuccess: (children: FilePathWithDocument[]) => void, onError?: (errorCode: number) => void){
+  getChildrenFromPath(path: FilePath, onSuccess: (children: FilePathWithDocument[]) => void, onError?: (errorCode: number) => void) {
     this.httpClient.post('files/paths/children', path).then(r => {
-      if(r.status != 200){
-        if(onError){
+      if (r.status != 200) {
+        if (onError) {
           onError(r.status);
         }
       }
 
       let responsePaths: FilePathWithDocument[] = [];
 
-      for (let dataItem of r.data){
+      for (let dataItem of r.data) {
         responsePaths.push(this.mapFilePathWithDocument(dataItem));
       }
 
@@ -113,20 +115,26 @@ export class FilePathService{
   }
 
   private mapFilePathWithDocument(data: FilePathWithDocumentResponseData) {
-    if(data.document === null){
+    if (data.document === null) {
       return new FilePathWithDocument(
         new FilePath(data.filePath),
         undefined
       );
     }
+    let tags = new Set<Tag>();
+    if (data.document.tags) {
+      data.document.tags.forEach(val => tags.add(new Tag(val.tag)));
+    }
+    let documentWithoutContent = new DocumentWithoutContent(
+      new FilePath(data.document.pathToDocumentFromRoot.filePath),
+      data.document.documentName,
+      new FileType(data.document.fileType.fileEnding),
+      data.document.documentId,
+      data.document.customerId,
+      tags);
     return new FilePathWithDocument(
       new FilePath(data.filePath),
-      new DocumentWithoutContent(
-        new FilePath(data.document.pathToDocumentFromRoot.filePath),
-        data.document.documentName,
-        new FileType(data.document.fileType.fileEnding),
-        data.document.documentId
-      )
+      documentWithoutContent
     );
   }
 }
@@ -138,12 +146,5 @@ export interface FileStructureResponseData {
 
 export interface FilePathWithDocumentResponseData {
   filePath: string;
-  document: {
-    documentId: number;
-    documentName: string;
-    fileType: any;
-    pathToDocumentFromRoot: {
-      filePath: string;
-    }
-  } | null;
+  document: DocumentWithoutContentResponseData | null;
 }

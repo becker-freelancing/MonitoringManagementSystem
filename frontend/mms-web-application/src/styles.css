@@ -246,3 +246,12 @@ Scrolling
 .vertical-scroll-pane{
   overflow-y: auto;
 }
+
+/*
+Documents
+ */
+
+.document-tag {
+  border: 1px solid #6392b0;
+  border-radius: 5px;
+}

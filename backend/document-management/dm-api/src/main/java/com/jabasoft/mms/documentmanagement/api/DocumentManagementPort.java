@@ -16,6 +16,8 @@ public interface DocumentManagementPort {
 
 	public Optional<DocumentDto> getDocument(Long documentId);
 
+    public Optional<DocumentWithoutContentDto> getDocumentWithoutContent(Long documentId);
+
 	public Optional<DocumentWithoutContentDto> deleteDocument(FilePathDto path, String name);
 
     boolean existsDocument(DocumentWithoutContentDto document);

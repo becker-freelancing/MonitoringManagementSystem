@@ -87,7 +87,7 @@ class DocumentManagementInteractorTest {
 	void testGetDocumentReturnsEmptyOptionalWhenNoDocumentExists() {
 		when(documentRepository.getDocument(any())).thenReturn(Optional.empty());
 
-		Optional<Document> actual = documentRepository.getDocument(123L);
+        Optional<DocumentDto> actual = interactor.getDocument(123L);
 		
 		assertTrue(actual.isEmpty());
 	}
@@ -108,6 +108,33 @@ class DocumentManagementInteractorTest {
 		assertEquals(new FileTypeDto("pdf"), actual.getFileType(), "FileType");
 		assertEquals("root\\dir1", actual.getPathToDocumentFromRoot().getFilePath(), "DocumentPath");
 	}
+
+
+    @Test
+    void testGetDocumentWithoutContentReturnsEmptyOptionalWhenNoDocumentExists() {
+        when(documentRepository.getDocument(any())).thenReturn(Optional.empty());
+
+        Optional<DocumentWithoutContentDto> actual = interactor.getDocumentWithoutContent(123L);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    void testGetDocumentWithoutContentReturnsOptionalWithDocumentWhenDocumentExists() {
+        when(documentRepository.getDocument(12L)).thenReturn(Optional.of(getDocument()));
+
+        Optional<DocumentWithoutContentDto> find = interactor.getDocumentWithoutContent(12L);
+
+        assertTrue(find.isPresent());
+
+        DocumentWithoutContentDto actual = find.get();
+
+        assertEquals(12L, actual.getDocumentId(), "DocumentId");
+        assertEquals("9ab2b6e2-e6ec-45ab-b2b6-e2e6ec65ab95", actual.getDocumentName(), "DocumentName");
+        assertEquals(new FileTypeDto("pdf"), actual.getFileType(), "FileType");
+        assertEquals("root\\dir1", actual.getPathToDocumentFromRoot().getFilePath(), "DocumentPath");
+    }
+
 
 	@Test
 	void testDeleteDocumentWithNotExistingDocumentReturnsEmptyOptional(){

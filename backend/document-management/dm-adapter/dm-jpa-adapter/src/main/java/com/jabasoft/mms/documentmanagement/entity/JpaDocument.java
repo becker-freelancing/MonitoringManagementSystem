@@ -32,7 +32,7 @@ public class JpaDocument {
     @JoinTable(
             name = "DOCUMENT_TAGS",
             joinColumns = @JoinColumn(name = "DOCUMENT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "TAG_ID")
+			inverseJoinColumns = @JoinColumn(name = "TAG")
     )
     private Set<JpaTag> tags;
 
